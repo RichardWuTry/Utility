@@ -1,0 +1,5 @@
+Runtime/Cache/*.*
+Runtime/Data/*.*
+Runtime/Logs/*.*
+Runtime/Temp/*.*
+Runtime/~runtime.php

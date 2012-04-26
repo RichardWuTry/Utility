@@ -1,0 +1,159 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>当年我们选的专业</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/major.css" />
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<section>
+	<h1>当年我们选的专业</h1>
+	<h2>本问卷适合已工作人员填写，无需提供个人联系信息。请帮助我们填写您的真实感受与情况。谢谢！</h2>
+	<form>
+		<table id="personal_info">
+			<tr>
+				<th>性别</th>
+				<td>
+					<label><input name="gender" type="radio" value="男" />男</label>
+					<label><input name="gender" type="radio" value="女" />女</label>
+				</td>
+			</tr>
+			<tr>
+				<th>本科专业</th>
+				<td>
+					<input name="major" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<th>最高学历</th>
+				<td>
+					<label><input name="highest_edu" type="radio" value="本科" />本科</label>
+					<label><input name="highest_edu" type="radio" value="硕士" />硕士</label>
+					<label><input name="highest_edu" type="radio" value="博士" />博士</label>
+				</td>
+			</tr>
+			<tr>
+				<th>工作年限</th>
+				<td>
+					<input name="work_year" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<th>当前职业</th>
+				<td>
+					<input name="job" type="text" placeholder="例：软件工程师，销售经理" />
+				</td>
+			</tr>
+		</table>
+		<table id="research_info">
+			<tr>
+				<th>1. 你觉得高考前，学校对填报志愿的指导是否有作用？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="school_help" type="radio" value="很有作用" />很有作用</label>
+					<label><input name="school_help" type="radio" value="有些作用" />有些作用</label>
+					<label><input name="school_help" type="radio" value="比没有强" />比没有强</label>
+					<label><input name="school_help" type="radio" value="完全没用" />完全没用/无指导</label>					
+				</td>
+			</tr>
+			
+			<tr>
+				<th>2. 你在选专业时，最主要的信息来源是什么？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="info_source" type="radio" value="父母的意见" />父母的意见</label>
+					<label><input name="info_source" type="radio" value="同学之间讨论" />同学之间讨论</label>
+					<label><input name="info_source" type="radio" value="学校组织的指导" />学校组织的指导</label>
+					<label><input name="info_source" type="radio" value="自己查资料研究" />自己查资料研究</label>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>3. 你在填报高考志愿时，你对自己选的专业了解的程度如何？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="understand_level" type="radio" value="很清楚这个专业" />很清楚这个专业</label>
+					<label><input name="understand_level" type="radio" value="较为了解" />较为了解</label>
+					<label><input name="understand_level" type="radio" value="不太了解" />不太了解</label>
+					<label><input name="understand_level" type="radio" value="不了解" />不了解</label>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>4. 进入大学后，专业内容与自己想象中或之前了解的差异如何？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="major_imagine_diff" type="radio" value="基本一致" />基本一致</label>
+					<label><input name="major_imagine_diff" type="radio" value="有些不同" />有些不同</label>
+					<label><input name="major_imagine_diff" type="radio" value="很不一样" />很不一样</label>
+					<label><input name="major_imagine_diff" type="radio" value="完全不一样" />完全不一样</label>				
+				</td>
+			</tr>
+			
+			<tr>
+				<th>5. 你从事的工作与大学专业的匹配度如何？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="job_major_match" type="radio" value="非常匹配" />非常匹配</label>
+					<label><input name="job_major_match" type="radio" value="较为匹配" />较为匹配</label>
+					<label><input name="job_major_match" type="radio" value="很少匹配" />很少匹配</label>
+					<label><input name="job_major_match" type="radio" value="完全没关系" />完全没关系</label>					
+				</td>
+			</tr>
+			
+			<tr>
+				<th>6. 你认为选择专业重要吗？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="major_important" type="radio" value="非常重要" />非常重要</label>
+					<label><input name="major_important" type="radio" value="较为重要" />较为重要</label>
+					<label><input name="major_important" type="radio" value="不太重要" />不太重要</label>
+					<label><input name="major_important" type="radio" value="完全没关系" />完全不重要</label>					
+				</td>
+			</tr>
+			
+			<tr>
+				<th>7. 如果让你重新选择本科专业，你还会选当时的专业吗？</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="choose_current_major" type="radio" value="是" />是</label>
+					<label><input name="choose_current_major" type="radio" value="否" />否</label>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>如果前一问题您的回答为“<em>否</em>”，请继续如下问题</td>			
+			</tr>
+			<tr>
+				<th>
+					8. 如果有机会重新选择专业，你想选择什么专业：
+					<input name="choose_major" type="text" />
+				</th>
+			</tr>
+						
+			<tr>
+				<th>9. 你想选择其他专业的原因是</th>
+			</tr>
+			<tr>
+				<td>
+					<label><input name="change_reason" type="radio" value="发现自己不喜欢原来的专业" />发现自己不喜欢原来的专业</label>
+					<label><input name="change_reason" type="radio" value="自己可能更适合干另一个专业" />自己可能更适合干另一个专业</label>
+					<label><input name="change_reason" type="radio" value="原来专业的职业市场不好" />原来专业的职业市场不好</label>
+					<label><input name="change_reason" type="radio" value="其他原因" />其他</label>
+					<input name="other_reason" type="text" placeholder="其他原因"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<input name="submit" type="submit" value="提 交" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />
