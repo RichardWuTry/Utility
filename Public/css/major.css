@@ -1,11 +1,39 @@
 
+#content {
+	width: 600px;
+}
 
-#personal_info tr {
-	height: 30px;
+h1 {
+	text-align: center;
+	
+}
+
+h2 {
+	margin: 0 auto;
+	width: 500px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	background-color: lightgreen;
+	padding: 10px;
 }
 
 #personal_info th {
 	text-align: right;
+	padding-top: 10px;
 }
 
-#research_info
+#research_info {
+	margin-top: 15px;
+}
+
+#research_info tr {
+	text-align: left;
+	padding-top: 10px;
+}
+
+#research_info th {
+	padding-top: 15px;
+}
+
+
+
