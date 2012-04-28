@@ -17,9 +17,20 @@ h2 {
 	padding: 10px;
 }
 
+tr img {
+	vertical-align: middle;
+}
+
+.help {
+	font-size: 80%;
+}
+
+#personal_info tr {
+	line-height: 25px;
+}
+
 #personal_info th {
 	text-align: right;
-	padding-top: 10px;
 }
 
 #research_info {
@@ -28,11 +39,14 @@ h2 {
 
 #research_info tr {
 	text-align: left;
-	padding-top: 10px;
 }
 
 #research_info th {
 	padding-top: 15px;
+}
+
+#research_info .additional {
+	display: none;
 }
 
 

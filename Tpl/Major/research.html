@@ -2,23 +2,117 @@
 <title>当年我们选的专业</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/major.css" />
+<script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script>
+	window.onload = function() {
+
+		//validate major input onblur
+		var majorInput = document.getElementById('major');
+		function validateMajor() {
+			return validateNonEmpty(majorInput,
+							document.getElementById('major_help'),
+							'请填写您的本科专业');
+		}
+		majorInput.onblur = validateMajor;
+		
+		//validate work_year input onblur
+		var workYearInput = document.getElementById('work_year');
+		function validateWorkYear() {
+			var workYearHelp = document.getElementById('work_year_help');
+			if (!validateNonEmpty(workYearInput,
+								workYearHelp,
+								'请填写您的工作年限')) {
+				return false;				
+			}
+			if (!validateNumber(workYearInput, workYearHelp, 0, 60)) {
+				return false;
+			}
+			return true;
+		}
+		workYearInput.onblur = validateWorkYear;
+		
+		//validate job input onblur
+		var jobInput = document.getElementById('job');
+		function validateJob() {
+			return validateNonEmpty(jobInput,
+							document.getElementById('job_help'),
+							'请填写您的当前职业');
+		}
+		jobInput.onblur = validateJob;
+		
+		//show additional research
+		var chooseCurrentMajorRadio = document.getElementById('choose_current_major');
+		//chooseCurrentMajorRadio.onchange = function() {
+		//	if (chooseCurrentMajorRadio.checked) {
+		//		alert(document.getElementsByClass('additional').style);
+		//	} else {
+		//		alert(document.getElementsByClass('additional').style);
+		//	}
+		//}
+		
+		//validate form
+		document.getElementById('researchForm').onsubmit = function() {
+			var isFormValid = true;
+			//A. validate personal information
+			//1. validate gender radio button
+			if (!validateRadioChecked(document.getElementsByName('gender'), 
+									document.getElementById('gender_help'))) {
+				isFormValid = false;
+			}
+			
+			//2. validate major text input
+			if (!validateMajor()) {
+				isFormValid = false;
+			}
+			
+			//3. validate highest_edu radio button
+			if (!validateRadioChecked(document.getElementsByName('highest_edu'),
+									document.getElementById('highest_edu_help'))) {
+				isFormValid = false;
+			}
+			
+			//4. validate work_year text input
+			if (!validateWorkYear()) {
+				isFormValid = false;
+			}
+			
+			//5. validate job text input
+			if (!validateJob()) {
+				isFormValid = false;
+			}
+			
+			//A. validate research information
+			
+			
+			return isFormValid;
+		}
+
+		
+	}
+</script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
-<section id="content">
+<section id="content">	
 	<h1>当年我们选的专业</h1>
 	<h2>本问卷适合已工作人员填写，无需提供个人联系信息。请帮助我们填写您的真实感受与情况。谢谢！</h2>
-	<form method="post" action="__URL__/addMajorResearch">
+	<form id="researchForm" method="post" action="__URL__/addMajorResearch">
 		<table id="personal_info">
 			<tr>
 				<th>性别：</th>
 				<td>
 					<label><input name="gender" type="radio" value="男" />男</label>
-					<label><input name="gender" type="radio" value="女" />女</label>
+					<label><input name="gender" type="radio" value="女" />女</label>					
+				</td>
+				<td>
+					<span id="gender_help" class="help"></span>
 				</td>
 			</tr>
 			<tr>
 				<th>本科专业：</th>
 				<td>
-					<input name="major" type="text" />
+					<input name="major" id="major" type="text" />
+				</td>
+				<td>
+					<span id="major_help" class="help"></span>
 				</td>
 			</tr>
 			<tr>
@@ -28,17 +122,26 @@
 					<label><input name="highest_edu" type="radio" value="硕士" />硕士</label>
 					<label><input name="highest_edu" type="radio" value="博士" />博士</label>
 				</td>
+				<td>
+					<span id="highest_edu_help" class="help"></span>
+				</td>
 			</tr>
 			<tr>
 				<th>工作年限：</th>
 				<td>
-					<input name="work_year" type="text" />
+					<input name="work_year" id="work_year" type="text" />					
+				</td>
+				<td>
+					<span id="work_year_help" class="help"></span>
 				</td>
 			</tr>
 			<tr>
 				<th>当前职业：</th>
 				<td>
-					<input name="job" type="text" placeholder="例：软件工程师，销售经理" />
+					<input name="job" id="job" type="text" placeholder="例：软件工程师，销售经理" />					
+				</td>
+				<td>
+					<span id="job_help" class="help"></span>
 				</td>
 			</tr>
 		</table>
@@ -121,11 +224,11 @@
 			<tr>
 				<td>
 					<label><input name="choose_current_major" type="radio" value="是" />是</label>
-					<label><input name="choose_current_major" type="radio" value="否" />否</label>
+					<label><input id="choose_current_major" name="choose_current_major" type="radio" value="否" />否</label>
 				</td>
 			</tr>
 			
-			<tr>
+			<tr class="additional">
 				<th>
 					如果前一问题您的回答为“<em>否</em>”，请继续如下问题<br />
 					8. 如果有机会重新选择专业，你想选择什么专业：
@@ -133,10 +236,10 @@
 				</th>
 			</tr>
 						
-			<tr>
+			<tr class="additional">
 				<th>9. 你想选择其他专业的原因是</th>
 			</tr>
-			<tr>
+			<tr class="additional">
 				<td>
 					<label><input name="change_reason" type="radio" value="发现自己不喜欢原来的专业" />发现自己不喜欢原来的专业</label>
 					<label><input name="change_reason" type="radio" value="自己可能更适合干另一个专业" />自己可能更适合干另一个专业</label><br/>
