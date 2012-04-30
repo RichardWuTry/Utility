@@ -2,10 +2,11 @@
 <title>当年我们选的专业</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/major.css" />
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
 	window.onload = function() {
-
 		//validate major input onblur
 		var majorInput = document.getElementById('major');
 		function validateMajor() {
@@ -41,14 +42,20 @@
 		jobInput.onblur = validateJob;
 		
 		//show additional research
-		var chooseCurrentMajorRadio = document.getElementById('choose_current_major');
-		//chooseCurrentMajorRadio.onchange = function() {
-		//	if (chooseCurrentMajorRadio.checked) {
-		//		alert(document.getElementsByClass('additional').style);
-		//	} else {
-		//		alert(document.getElementsByClass('additional').style);
-		//	}
-		//}
+		$('input[name=choose_current_major]').click(function () {
+			if ($('input[name=choose_current_major]:checked').val() == '否') {
+				$('.additional').show('slow');
+			} else {
+				$('.additional').hide();
+			}
+		});
+		
+		//change verify image
+		var verifyImg = document.getElementById('verifyImg');
+		verifyImg.onclick = function() {
+			var timenow = new Date().getTime();
+			verifyImg.src = "__URL__/showVerifyImage/" + timenow;
+		}
 		
 		//validate form
 		document.getElementById('researchForm').onsubmit = function() {
@@ -81,19 +88,106 @@
 				isFormValid = false;
 			}
 			
-			//A. validate research information
+			//B. validate research information
+			//1. validate school_help radio button
+			if (!validateRadioChecked(document.getElementsByName('school_help'), 
+									document.getElementById('school_help_help'))) {
+				isFormValid = false;
+			}
 			
+			//2. validate info_source radio button
+			if (!validateRadioChecked(document.getElementsByName('info_source'),
+									document.getElementById('info_source_help'))) {
+				isFormValid = false;
+			}
+			
+			//3. validate understand_level radio button
+			if (!validateRadioChecked(document.getElementsByName('understand_level'),
+									document.getElementById('understand_level_help'))) {
+				isFormValid = false;
+			}
+			
+			//4. validate major_imagine_diff radio button
+			if (!validateRadioChecked(document.getElementsByName('major_imagine_diff'),
+									document.getElementById('major_imagine_diff_help'))) {
+				isFormValid = false;
+			}
+			
+			//5. validate job_major_match radio button
+			if (!validateRadioChecked(document.getElementsByName('job_major_match'),
+									document.getElementById('job_major_match_help'))) {
+				isFormValid = false;
+			}
+			
+			//6. validate major_important radio button
+			if (!validateRadioChecked(document.getElementsByName('major_important'),
+									document.getElementById('major_important_help'))) {
+				isFormValid = false;
+			}
+			
+			//7. validate choose_current_major radio button
+			if (!validateRadioChecked(document.getElementsByName('choose_current_major'),
+									document.getElementById('choose_current_major_help'))) {
+				isFormValid = false;
+			}
+			
+			//8. validate choose_major text input
+			var chooseMajorHelp = document.getElementById('choose_major_help');
+			if ($('input[name=choose_current_major]:checked').val() == '否') {
+				if (!validateNonEmpty(document.getElementById('choose_major'),
+									chooseMajorHelp,
+									'此项必填')) {
+					isFormValid = false;
+				}
+			} else {
+				chooseMajorHelp.innerHTML = "";
+			}
+			
+			//9. validate change_reason radio button
+			var changeReasonHelp = document.getElementById('change_reason_help');
+			if ($('input[name=choose_current_major]:checked').val() == '否') {
+				if (!validateRadioChecked(document.getElementsByName('change_reason'),
+										changeReasonHelp)) {
+					isFormValid = false;
+				}
+			} else {
+				changeReasonHelp.innerHTML = "";
+			}
+			
+			var formHelp = document.getElementById('form_help');
+			if (isFormValid == false) {
+				formHelp.innerHTML = '<img src="/Utility/Public/images/error.png" /><请更正填写错误>';
+			} else {
+				formHelp.innerHTML = "";
+			}
 			
 			return isFormValid;
 		}
-
 		
+		
+		$('#researchForm').ajaxForm({
+            success:	showResponse,  // post-submit callback
+            dataType:	'json'
+        });
+	}
+	
+	function showResponse(data) {
+		$msg = $('#msg');
+		if (data.status == 0) {
+			$msg.css('color', 'red');
+			$msg.html(data.info).slideDown(function() {
+				setTimeout(function() { $msg.slideUp(); }, 2000);
+			});
+		} else {
+			$('#researchForm').html('<h2>感谢您的参与！</h2>');
+		}
 	}
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">	
 	<h1>当年我们选的专业</h1>
 	<h2>本问卷适合已工作人员填写，无需提供个人联系信息。请帮助我们填写您的真实感受与情况。谢谢！</h2>
+	<div id="msg"></div>
 	<form id="researchForm" method="post" action="__URL__/addMajorResearch">
 		<table id="personal_info">
 			<tr>
@@ -148,9 +242,10 @@
 		<table id="research_info">
 			<tr>
 				<th>1. 你觉得高考前，学校对填报志愿的指导是否有作用？</th>
+				<th><span id="school_help_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="school_help" type="radio" value="很有作用" />很有作用</label>
 					<label><input name="school_help" type="radio" value="有些作用" />有些作用</label>
 					<label><input name="school_help" type="radio" value="比没有强" />比没有强</label>
@@ -160,9 +255,10 @@
 			
 			<tr>
 				<th>2. 你在选专业时，最主要的信息来源是什么？</th>
+				<th><span id="info_source_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="info_source" type="radio" value="父母的意见" />父母的意见</label>
 					<label><input name="info_source" type="radio" value="同学之间讨论" />同学之间讨论</label>
 					<label><input name="info_source" type="radio" value="学校组织的指导" />学校组织的指导</label>
@@ -172,9 +268,10 @@
 			
 			<tr>
 				<th>3. 你在填报高考志愿时，你对自己选的专业了解的程度如何？</th>
+				<th><span id="understand_level_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="understand_level" type="radio" value="很清楚这个专业" />很清楚这个专业</label>
 					<label><input name="understand_level" type="radio" value="较为了解" />较为了解</label>
 					<label><input name="understand_level" type="radio" value="不太了解" />不太了解</label>
@@ -184,9 +281,10 @@
 			
 			<tr>
 				<th>4. 进入大学后，专业内容与自己想象中或之前了解的差异如何？</th>
+				<th><span id="major_imagine_diff_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="major_imagine_diff" type="radio" value="基本一致" />基本一致</label>
 					<label><input name="major_imagine_diff" type="radio" value="有些不同" />有些不同</label>
 					<label><input name="major_imagine_diff" type="radio" value="很不一样" />很不一样</label>
@@ -196,9 +294,10 @@
 			
 			<tr>
 				<th>5. 你从事的工作与大学专业的匹配度如何？</th>
+				<th><span id="job_major_match_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="job_major_match" type="radio" value="非常匹配" />非常匹配</label>
 					<label><input name="job_major_match" type="radio" value="较为匹配" />较为匹配</label>
 					<label><input name="job_major_match" type="radio" value="很少匹配" />很少匹配</label>
@@ -208,9 +307,10 @@
 			
 			<tr>
 				<th>6. 你认为选择专业重要吗？</th>
+				<th><span id="major_important_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="major_important" type="radio" value="非常重要" />非常重要</label>
 					<label><input name="major_important" type="radio" value="较为重要" />较为重要</label>
 					<label><input name="major_important" type="radio" value="不太重要" />不太重要</label>
@@ -220,38 +320,48 @@
 			
 			<tr>
 				<th>7. 如果让你重新选择本科专业，你还会选当时的专业吗？</th>
+				<th><span id="choose_current_major_help" class="help"></span></th>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<label><input name="choose_current_major" type="radio" value="是" />是</label>
-					<label><input id="choose_current_major" name="choose_current_major" type="radio" value="否" />否</label>
+					<label><input name="choose_current_major" type="radio" value="否" />否</label>
 				</td>
 			</tr>
 			
 			<tr class="additional">
-				<th>
-					如果前一问题您的回答为“<em>否</em>”，请继续如下问题<br />
-					8. 如果有机会重新选择专业，你想选择什么专业：
-					<input name="choose_major" type="text" />
-				</th>
+				<th colspan="2">如果前一问题您的回答为“<em>否</em>”，请继续如下问题</th>
 			</tr>
+			
+			<tr class="additional">
+				<th>8. 如果有机会重新选择专业，你想选择什么专业：</th>
+				<th><span id="choose_major_help" class="help"></span></th>
+			</tr>
+			<tr class="additional">
+				<td colspan="2">
+					<input id="choose_major" name="choose_major" type="text" />
+				</td>
+			</tr>
+			
 						
 			<tr class="additional">
 				<th>9. 你想选择其他专业的原因是</th>
+				<th><span id="change_reason_help" class="help"></span></th>
 			</tr>
 			<tr class="additional">
-				<td>
+				<td colspan="2">
 					<label><input name="change_reason" type="radio" value="发现自己不喜欢原来的专业" />发现自己不喜欢原来的专业</label>
 					<label><input name="change_reason" type="radio" value="自己可能更适合干另一个专业" />自己可能更适合干另一个专业</label><br/>
 					<label><input name="change_reason" type="radio" value="原来专业的职业市场不好" />原来专业的职业市场不好</label>
-					<label><input name="change_reason" type="radio" value="其他原因" />其他</label>
-					<input name="other_reason" type="text" placeholder="其他原因"/>
+					<label><input name="change_reason" type="radio" value="其他原因" />其他原因</label>
 				</td>
 			</tr>
 			
 			<tr>
-				<th>
-					<input name="submit" type="submit" value="提 交" />
+				<th colspan="2">
+					<input type="text" name="verify" size="4" />&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
+					&nbsp;&nbsp;&nbsp;&nbsp;<input id="submit" name="submit" type="submit" value="提  交" />
+					<span id="form_help" class="help"></span>
 				</th>
 			</tr>
 		</table>

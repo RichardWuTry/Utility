@@ -9,4 +9,10 @@ function redirect_to($url, $time) {
 		}
 	}
 }
+
+function verify()
+{
+	require_once 'Image.class.php';
+	Image::buildImageVerify(4, 1, 'gif');
+}
 ?>

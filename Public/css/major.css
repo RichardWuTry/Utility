@@ -23,6 +23,7 @@ tr img {
 
 .help {
 	font-size: 80%;
+	font-weight: normal;
 }
 
 #personal_info tr {
@@ -37,7 +38,7 @@ tr img {
 	margin-top: 15px;
 }
 
-#research_info tr {
+#research_info th, td {
 	text-align: left;
 }
 
@@ -46,8 +47,36 @@ tr img {
 }
 
 #research_info .additional {
-	display: none;
+	display: none; 
 }
 
+em {
+	font-size: 130%;
+	font-style: normal;
+}
+
+#verifyImg {
+	cursor: pointer;
+}
+
+#submit {
+	font-size: 100%;
+	font-weight: bold;
+	background-color: lightgreen;
+	cursor: pointer;
+}
+
+#msg {
+	background:#fff url("/Utility/Public/images/h80.png") repeat-x scroll 0 0;
+	border-bottom:2px solid #789;
+	padding: 13px;
+	display: none;
+	width: 100%;
+	text-align: center;
+	font-size: 130%;
+	position:fixed;
+	left:0;
+	top:0;
+}
 
 
