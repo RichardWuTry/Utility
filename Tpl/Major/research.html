@@ -7,6 +7,11 @@
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
 	window.onload = function() {
+		$('input[type=radio]').click(function() {
+			var helpId = '#' + $(this).attr('name') + '_help';
+			$(helpId).html('');
+		});
+	
 		//validate major input onblur
 		var majorInput = document.getElementById('major');
 		function validateMajor() {
