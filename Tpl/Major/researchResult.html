@@ -1,0 +1,97 @@
+<include file="./Tpl/Public/headstart.html" />
+	<title>调查结果统计</title>
+	<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+	<link rel="stylesheet" href="__PUBLIC__/css/major.css" />
+	<link rel="stylesheet" href="__PUBLIC__/css/jquery.jqplot.min.css" />
+	<style>
+		#gender, #highest_edu {
+			width: 300px;
+			height: 250px;
+		}
+		
+		#work_year {
+			width: 600px;
+			height: 300px;
+		}
+	</style>
+
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<!--[if lt IE 9]><script src="__PUBLIC__/javascript/excanvas.js"></script><![endif]-->
+	<script src="__PUBLIC__/javascript/jquery.jqplot.min.js"></script>
+	<script src="__PUBLIC__/javascript/jqplot.pieRenderer.min.js"></script>
+	<script src="__PUBLIC__/javascript/jqplot.barRenderer.min.js"></script>
+	<script src="__PUBLIC__/javascript/jqplot.categoryAxisRenderer.min.js"></script>
+	<script src="__PUBLIC__/javascript/jqplot.pointLabels.min.js"></script>
+	
+	<script>
+		$(document).ready(function() {
+			//1. gender pie chart
+			var genderData = {$gender};
+			$.jqplot('gender',[genderData],{
+				seriesDefaults: {
+					renderer: jQuery.jqplot.PieRenderer,
+					rendererOptions: {
+						showDataLabels: true
+					}
+				},
+				legend: {show:true, location: 'e'}
+			});
+			
+			//2. highest_edu pie chart
+			var highestEduData = {$highest_edu};
+			$.jqplot('highest_edu',[highestEduData],{
+				seriesDefaults: {
+					renderer: jQuery.jqplot.PieRenderer,
+					rendererOptions: {
+						showDataLabels: true
+					}
+				},
+				legend: {show:true, location: 'e'}
+			});
+			
+			//3. work_year bar chart
+			$.jqplot.config.enablePlugins = true;
+			var workYearData = {$work_year};
+			var workYearTicks = {$work_year_ticks};
+			 
+			plot1 = $.jqplot('work_year', [workYearData], {
+				// Only animate if we're not using excanvas (not in IE 7 or IE 8)..
+				animate: !$.jqplot.use_excanvas,
+				seriesDefaults:{
+					renderer:$.jqplot.BarRenderer,
+					pointLabels: { show: true }
+				},
+				axes: {
+					xaxis: {
+						renderer: $.jqplot.CategoryAxisRenderer,
+						ticks: workYearTicks
+					}
+				},
+				highlighter: { show: false }
+			});
+		});
+	</script>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+	<section id="content">
+		<h1>那些年，我们选的专业</h1>
+		<h2>基本信息统计</h2>
+		<table>
+			<tr>
+				<td>现有<em>{$count}</em>人参与本次调查，男/女比例如下</td>
+				<td>最高学历分布情况如下</td>
+			</tr>
+			<tr>
+				<td><div id="gender"></div></td>
+				<td><div id="highest_edu"></div></td>
+			</tr>
+			<tr>
+				<td colspan="2">调查参与者的工作年限分布如下</td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="work_year"></div></td>
+			</tr>
+		</table>
+		 
+		<h2>调查问题统计</h2>
+	</section>
+<include file="./Tpl/Public/footer_bodyend.html" />
