@@ -6,6 +6,11 @@
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
+	function refreshVerifyImage() {
+		var timenow = new Date().getTime();
+		document.getElementById('verifyImg').src = "__URL__/showVerifyImage/" + timenow;
+	}
+
 	window.onload = function() {
 		$('input[type=radio]').click(function() {
 			var helpId = '#' + $(this).attr('name') + '_help';
@@ -55,12 +60,8 @@
 			}
 		});
 		
-		//change verify image
-		var verifyImg = document.getElementById('verifyImg');
-		verifyImg.onclick = function() {
-			var timenow = new Date().getTime();
-			verifyImg.src = "__URL__/showVerifyImage/" + timenow;
-		}
+		//change verify image		
+		document.getElementById('verifyImg').onclick = refreshVerifyImage;
 		
 		//validate form
 		document.getElementById('researchForm').onsubmit = function() {
@@ -183,6 +184,7 @@
 			$msg.html(data.info).slideDown(function() {
 				setTimeout(function() { $msg.slideUp(); }, 2000);
 			});
+			refreshVerifyImage();
 		} else {
 			$('#researchForm').html('<h2>感谢您的参与！</h2>');
 		}
@@ -355,9 +357,9 @@
 			</tr>
 			<tr class="additional">
 				<td colspan="2">
-					<label><input name="change_reason" type="radio" value="发现自己不喜欢原来的专业" />发现自己不喜欢原来的专业</label>
-					<label><input name="change_reason" type="radio" value="自己可能更适合干另一个专业" />自己可能更适合干另一个专业</label><br/>
-					<label><input name="change_reason" type="radio" value="原来专业的职业市场不好" />原来专业的职业市场不好</label>
+					<label><input name="change_reason" type="radio" value="不喜欢原专业" />不喜欢原专业</label>
+					<label><input name="change_reason" type="radio" value="觉得更适合另一专业" />觉得更适合另一专业</label>
+					<label><input name="change_reason" type="radio" value="原专业市场不好" />原专业市场不好</label>
 					<label><input name="change_reason" type="radio" value="其他原因" />其他原因</label>
 				</td>
 			</tr>
