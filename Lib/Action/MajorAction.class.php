@@ -49,11 +49,20 @@ class MajorAction extends Action {
 			$important = 0; $some_important = 0; $little_important = 0; $unimportant = 0;
 			$important_name = '非常重要'; $some_important_name = '较为重要'; $little_important_name = '不太重要'; $unimportant_name = '完全不重要';
 			
-			$current_major = 0; $other_major = 0;
-			$current_major_name = '是'; $other_major_name = '否';
+			//$current_major = 0; $other_major = 0;
+			//$current_major_name = '是'; $other_major_name = '否';
 			
-			$not_like = 0; $suit_other = 0; $bad_market = 0; $other_reason = 0;
-			$not_like_name = '不喜欢原专业'; $suit_other_name = '觉得更适合另一专业'; $bad_market_name = '原专业市场不好'; $other_reason_name = '其他原因';
+			//$not_like = 0; $suit_other = 0; $bad_market = 0; $other_reason = 0;
+			//$not_like_name = '不喜欢原专业'; $suit_other_name = '觉得更适合另一专业'; $bad_market_name = '原专业市场不好'; $other_reason_name = '其他原因';
+			
+			$resultArray = array(
+								'choose_current_major' => array('是' => 0,
+																'否' => 0),
+								'change_reason'=>array('不喜欢原专业' => 0,
+														'觉得更适合另一专业' => 0,
+														'原专业市场不好' => 0,
+														'其他原因' => 0),								
+								);
 			
 			foreach($result as $item) {
 				if ($item['gender'] == '男') {
@@ -144,22 +153,31 @@ class MajorAction extends Action {
 					$unimportant++;
 				}
 				
-				if ($item['choose_current_major'] == $current_major_name) {
-					$current_major++;
-				} else {
-					$other_major++;
+				// if ($item['choose_current_major'] == $current_major_name) {
+					// $current_major++;
+				// } else {
+					// $other_major++;
+				// }
+				
+				// if ($item['change_reason'] == $not_like_name) {
+					// $not_like++;
+				// } else if ($item['change_reason'] == $suit_other_name) {
+					// $suit_other++;
+				// } else if ($item['change_reason'] == $bad_market_name) {
+					// $bad_market++;
+				// } else if ($item['change_reason'] == $other_reason_name) {
+					// $other_reason++;
+				// }
+				
+				if (array_key_exists($item['choose_current_major'], $resultArray['choose_current_major'])) {
+					$resultArray['choose_current_major'][$item['choose_current_major']]++;
 				}
 				
-				if ($item['change_reason'] == $not_like_name) {
-					$not_like++;
-				} else if ($item['change_reason'] == $suit_other_name) {
-					$suit_other++;
-				} else if ($item['change_reason'] == $bad_market_name) {
-					$bad_market++;
-				} else {
-					$other_reason++;
+				if (array_key_exists($item['change_reason'], $resultArray['change_reason'])) {
+					$resultArray['change_reason'][$item['change_reason']]++;
 				}
 			}
+			
 			
 			$gender = "[['男', $male], ['女', $female]]";
 			$highest_edu = "[['本科', $bachelor], ['硕士', $master], ['博士', $doctor]]";
@@ -177,10 +195,14 @@ class MajorAction extends Action {
 								['$little_match_name', $little_match], ['$unmatch_name', $unmatch]]";
 			$major_important = "[['$important_name', $important], ['$some_important_name', $some_important],
 								['$little_important_name', $little_important], ['$unimportant_name', $unimportant]]";
-			$choose_current_major = "[['$current_major_name', $current_major], ['$other_major_name', $other_major]]";
-			$change_reason = "[['$not_like_name', $not_like], ['$suit_other_name', $suit_other], 
-							['$bad_market_name', $bad_market], ['$other_reason_name', $other_reason]]";
+			//$choose_current_major = "[['$current_major_name', $current_major], ['$other_major_name', $other_major]]";
+			//$change_reason = "[['$not_like_name', $not_like], ['$suit_other_name', $suit_other], 
+			//				['$bad_market_name', $bad_market], ['$other_reason_name', $other_reason]]";
+							
+			$choose_current_major = $this->genPlotData($resultArray['choose_current_major']);
+			$change_reason = $this->genPlotData($resultArray['change_reason']);
 			
+
 			$this->assign('count', count($result)); //总人数
 			$this->assign('gender', $gender); //性别
 			$this->assign('highest_edu', $highest_edu); //最高学历
@@ -199,6 +221,16 @@ class MajorAction extends Action {
 			redirect_to(__URL__.'/research');
 		}
 		
+	}
+	
+	private function genPlotData($itemArray) {
+		$resultStr = "[";
+		
+		foreach($itemArray as $key => $value) {
+			$resultStr = $resultStr . "['" . $key . "'," . $value . "],";
+		}
+		$resultStr .= "]";
+		return $resultStr;
 	}
 	
 	public function showVerifyImage() {
