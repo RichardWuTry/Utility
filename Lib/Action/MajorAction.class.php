@@ -67,36 +67,71 @@ class MajorAction extends Action {
 														'其他原因' => 0),								
 								);
 			
+			$origMajorFreqArray = array();
+			$jobFreqArray = array();
+			$currMajorFreqArray = array();
+			
 			foreach($result as $record) {			
-				if ($item['work_year'] >= 0 && $item['work_year'] <= 5) {
+				if ($record['work_year'] >= 0 && $record['work_year'] <= 5) {
 					$workYear0_5++;
-				} else if ($item['work_year'] >= 6 && $item['work_year'] <= 10) {
+				} else if ($record['work_year'] >= 6 && $record['work_year'] <= 10) {
 					$workYear6_10++;
-				} else if ($item['work_year'] >= 11 && $item['work_year'] <= 15) {
+				} else if ($record['work_year'] >= 11 && $record['work_year'] <= 15) {
 					$workYear11_15++;
-				} else if ($item['work_year'] >= 16 && $item['work_year'] <= 20) {
+				} else if ($record['work_year'] >= 16 && $record['work_year'] <= 20) {
 					$workYear16_20++;
-				} else if ($item['work_year'] >= 21 && $item['work_year'] <= 25) {
+				} else if ($record['work_year'] >= 21 && $record['work_year'] <= 25) {
 					$workYear21_25++;
 				} else {
 					$workYear26_++;
 				}				
+				
+				$this->calTagFreq($origMajorFreqArray, $record['major']);
+				$this->calTagFreq($jobFreqArray, $record['job']);
+				$this->calTagFreq($currMajorFreqArray, $record['choose_major']);
 				
 				$this->calResultArray($resultArray, $record);
 			}
 			
 			$work_year = "[$workYear0_5, $workYear6_10, $workYear11_15, $workYear16_20, $workYear21_25, $workYear26_]";
 			$work_year_ticks = "['0~5', '6~10', '11~15', '16~20', '21~25', '26~']";
-
+			
+			$origMajorCloudHtml = $this->genTagCloud($origMajorFreqArray);
+			$jobCloudHtml = $this->genTagCloud($jobFreqArray);
+			$currMajorCloudHtml = $this->genTagCloud($currMajorFreqArray);
+			
 			$this->assign('count', count($result)); //总人数
 			$this->assign('work_year', $work_year); $this->assign('work_year_ticks', $work_year_ticks);//工作年限
 			$this->assignPlotData($resultArray);
+			
+			$this->assign('origMajorCloudHtml', $origMajorCloudHtml);
+			$this->assign('jobCloudHtml', $jobCloudHtml);
+			$this->assign('currMajorCloudHtml', $currMajorCloudHtml);
 			
 			$this->display();
 		} else {
 			redirect_to(__URL__.'/research');
 		}
 		
+	}
+	
+	private function genTagCloud($tagFreqArray) {
+		$colorPool = array('Green', 'Blue', 'Salmon', 'Orange', 'Red');
+		$tagCloudHtml = "";
+		foreach($tagFreqArray as $key => $value) {
+			$tagColor = $colorPool[rand(0, 4)];
+			$tagFontSize = log10($value) <= 1.0 ? 1.0 : log10($value);
+			$tagCloudHtml .= "<span style=\"color:{$tagColor}; font-size:{$tagFontSize}em; padding:5px; font-weight:bold;\">$key</span>";
+		}
+		return $tagCloudHtml;
+	}
+	
+	private function calTagFreq(&$tagFreqArray, $tagName) {
+		if (array_key_exists($tagName, $tagFreqArray)) {
+			$tagFreqArray[$tagName]++;
+		} else {
+			$tagFreqArray[$tagName] = 1;
+		}
 	}
 	
 	private function assignPlotData($resultArray) {

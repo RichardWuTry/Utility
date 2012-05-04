@@ -4,6 +4,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/css/major.css" />
 	<link rel="stylesheet" href="__PUBLIC__/css/jquery.jqplot.min.css" />
 	<style>
+		h2 {
+			width: 600px;
+			margin-top: 20px;
+		}
 		#personal .pie {
 			width: 300px;
 			height: 250px;
@@ -17,6 +21,10 @@
 		#research .pie, #additional_research .pie {
 			width: 400px;
 			height: 250px;
+		}
+		
+		#personal td {
+			padding-bottom: 5px;
 		}
 	</style>
 
@@ -93,10 +101,26 @@
 				<td><div id="highest_edu" class="pie"></div></td>
 			</tr>
 			<tr>
-				<td colspan="2">3. 调查参与者的工作年限分布如下</td>
+				<td colspan="2">3. 参与者本科专业</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					{$origMajorCloudHtml}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">4. 调查参与者的工作年限分布如下</td>
 			</tr>
 			<tr>
 				<td colspan="2"><div id="work_year"></div></td>
+			</tr>
+			<tr>
+				<td colspan="2">5. 参与者当前职业</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					{$jobCloudHtml}
+				</td>
 			</tr>
 		</table>
 		 
@@ -134,6 +158,12 @@
 		
 		<h2>附加调查统计（第7问选择“否”）</h2>
 		<table id="additional_research">
+			<tr>
+				<td>5. 参与者期望专业</td>
+				<td>
+					{$currMajorCloudHtml}
+				</td>
+			</tr>
 			<tr>
 				<td>9. 你想选择其他专业的原因是？</td>
 				<td><div id="change_reason" class="pie"></div></td>

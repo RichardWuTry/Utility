@@ -186,7 +186,7 @@
 			});
 			refreshVerifyImage();
 		} else {
-			$('#researchForm').html('<h2>感谢您的参与！</h2>');
+			$('#researchForm').html('<h2>感谢您的参与！<a href="__URL__/researchResult">查看调查结果</a></h2>');
 		}
 	}
 </script>
@@ -365,11 +365,14 @@
 			</tr>
 			
 			<tr>
-				<th colspan="2">
+				<th>
 					<input type="text" name="verify" size="4" />&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
-					&nbsp;&nbsp;&nbsp;&nbsp;<input id="submit" name="submit" type="submit" value="提  交" />
+					&nbsp;&nbsp;&nbsp;&nbsp;<input id="submit" name="submit" type="submit" value="提 交" />
 					<span id="form_help" class="help"></span>
 				</th>
+				<td>
+					<a href="__URL__/researchResult">查看调查结果</a>
+				</td>
 			</tr>
 		</table>
 	</form>
