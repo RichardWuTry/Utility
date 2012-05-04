@@ -53,6 +53,10 @@
 					xaxis: {
 						renderer: $.jqplot.CategoryAxisRenderer,
 						ticks: {$work_year_ticks}
+					},
+					yaxis: {
+						tickOptions: {formatString: '%d'},
+						tickInterval: 1
 					}
 				},
 				highlighter: { show: false }
@@ -109,7 +113,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">4. 调查参与者的工作年限分布如下</td>
+				<td colspan="2">4. 调查参与者的工作年限分布如下（横轴：年，纵轴：人）</td>
 			</tr>
 			<tr>
 				<td colspan="2"><div id="work_year"></div></td>

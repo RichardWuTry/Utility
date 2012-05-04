@@ -94,7 +94,7 @@ class MajorAction extends Action {
 			}
 			
 			$work_year = "[$workYear0_5, $workYear6_10, $workYear11_15, $workYear16_20, $workYear21_25, $workYear26_]";
-			$work_year_ticks = "['0~5', '6~10', '11~15', '16~20', '21~25', '26~']";
+			$work_year_ticks = "['0~5年', '6~10年', '11~15年', '16~20年', '21~25年', '26年以上']";
 			
 			$origMajorCloudHtml = $this->genTagCloud($origMajorFreqArray);
 			$jobCloudHtml = $this->genTagCloud($jobFreqArray);
