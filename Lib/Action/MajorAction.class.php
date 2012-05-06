@@ -1,8 +1,29 @@
 <?php
 class MajorAction extends Action {
     public function research(){
+		$MajorResearch = M('MajorResearch');
+		if ($tagBtnRecords = $MajorResearch
+						->field("major, job, choose_major")
+						->select()) {
+			$origMajorBtnArray = $this->genTagArray($tagBtnRecords, 'major');
+			
+		}
+		$this->assign('origMajorBtnArray', $origMajorBtnArray);
+		
 		$this->display();
     }
+	
+	private function genTagArray($records, $colName) {
+		$tagBtnArray = array();
+		foreach ($records as $r) {
+			foreach ($r as $key => $value) {
+				if ($key == $colName && !in_array($value, $tagBtnArray)) {
+					array_push($tagBtnArray, $value);
+				}
+			}
+		}
+		return $tagBtnArray;
+	}
 	
 	public function addMajorResearch(){
 		if (isset($_POST['submit'])) {
