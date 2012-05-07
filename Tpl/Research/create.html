@@ -49,20 +49,18 @@
 	$(function() {
 		$('.input').click(function(){
 			if ($('#currInput').length == 0) {
-				$inputHtml = '<input type="text" id="currInput" style="width:90%;" onblur="inputBlur(this);" />';
+				var prevStr = $(this).text();
+				$inputHtml = '<input type="text" id="currInput" style="width:95%;" onblur="inputBlur(this);" />';
 				$(this).html($inputHtml);
-				$('#currInput').focus();
-			}			
+				$('#currInput').val(prevStr).focus();
+			}
 		});
 	});
 	
 	function inputBlur(currInput) {
-		$(currInput).parent().append($(currInput).val());
-		$(currInput).hide();
-		
+		$(currInput).parent().text($(currInput).val());
+		$(currInput).remove();		
 	}
-	
-
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <aside>
