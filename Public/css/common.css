@@ -13,3 +13,7 @@ body {
 td, th {
 	vertical-align: middle;
 }
+
+aside {
+	float: left;
+}

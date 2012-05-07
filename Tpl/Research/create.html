@@ -1,0 +1,108 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>设计视图</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<style>
+	#content {
+		width: 600px;
+	}
+
+	h1 {
+		text-align: center;	
+	}
+
+	h2 {
+		margin: 0 auto;
+		width: 500px;
+		margin-bottom: 20px;
+		font-size: 15px;
+		background-color: lightgreen;
+		padding: 10px;
+	}
+	
+	aside ul {
+		list-style-type:none;
+		float: left;
+	}
+
+	aside li {
+		padding:3px;
+		border: 1px dashed #000000;
+		margin: 3px;
+	}
+	
+	h1 .input {
+		border: 1px dashed #000000;
+		width: 300px;
+		height: 30px;
+		display: inline-block;
+	}
+	
+	h2 .input {
+		border: 1px dashed #000000;
+		width: 500px;
+		height: 60px;
+		display: inline-block;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>
+	$(function() {
+		$('.input').click(function(){
+			if ($('#currInput').length == 0) {
+				$inputHtml = '<input type="text" id="currInput" style="width:90%;" onblur="inputBlur(this);" />';
+				$(this).html($inputHtml);
+				$('#currInput').focus();
+			}			
+		});
+	});
+	
+	function inputBlur(currInput) {
+		$(currInput).parent().append($(currInput).val());
+		$(currInput).hide();
+		
+	}
+	
+
+</script>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<aside>
+	<ul>
+		<li>
+			输入框 <input type="text" size="4" onblur="alert('bbb');" />
+		</li>
+		<li>
+			单选项 <input type="radio" />
+		</li>
+	</ul>
+</aside>
+<section id="content">
+	<h1><span class="input"></span></h1>
+	<h2><span class="input"></span></h2>
+	<table>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />
