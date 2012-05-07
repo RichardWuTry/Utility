@@ -79,4 +79,18 @@ em {
 	top:0;
 }
 
+#origMajorBtns, #jobBtns {
+	width: 350px;
+}
+
+.tagBtn {
+	display: inline-block;
+	padding:0px 5px; 
+	margin:5px 5px 5px 0px; 	
+	background-color: #FFCC33;
+	cursor: pointer;
+	font-weight: bold;
+	border-radius: 10px;
+}
+
 

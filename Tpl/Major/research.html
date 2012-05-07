@@ -175,6 +175,19 @@
             success:	showResponse,  // post-submit callback
             dataType:	'json'
         });
+		
+		$('#origMajorBtns .tagBtn').click(function(){
+			var tagName = $(this).text();			
+			$('#major').val(tagName);
+		});
+		
+		$('#jobBtns .tagBtn').click(function(){
+			$('#job').val($(this).text());
+		});
+		
+		$('#chooseMajorBtns .tagBtn').click(function(){
+			$('#choose_major').val($(this).text());
+		});
 	}
 	
 	function showResponse(data) {
@@ -210,7 +223,7 @@
 			<tr>
 				<th>本科专业：</th>
 				<td>
-					<input name="major" id="major" type="text" />
+					<input name="major" id="major" type="text" placeholder="点选以下标签，或填写"/>
 				</td>
 				<td>
 					<span id="major_help" class="help"></span>
@@ -218,7 +231,11 @@
 			</tr>
 			<tr>	
 				<th></th>
-				<td>{$origMajorTagBtn}</td>
+				<td id="origMajorBtns">
+					<foreach name="origMajorBtnArray" item="origBtn">
+						<span class="tagBtn">{$origBtn}</span>
+					</foreach>
+				</td>
 			</tr>
 			<tr>
 				<th>最高学历：</th>
@@ -247,6 +264,14 @@
 				</td>
 				<td>
 					<span id="job_help" class="help"></span>
+				</td>
+			</tr>
+			<tr>	
+				<th></th>
+				<td id="jobBtns">
+					<foreach name="jobBtnArray" item="jobBtn">
+						<span class="tagBtn">{$jobBtn}</span>
+					</foreach>
 				</td>
 			</tr>
 		</table>
@@ -350,10 +375,16 @@
 			</tr>
 			<tr class="additional">
 				<td colspan="2">
-					<input id="choose_major" name="choose_major" type="text" />
+					<input id="choose_major" name="choose_major" type="text" placeholder="点选以下标签，或填写" />
 				</td>
 			</tr>
-			
+			<tr class="additional">
+				<td id="chooseMajorBtns" colspan="2">
+					<foreach name="chooseMajorBtnArray" item="chooseMajorBtn">
+						<span class="tagBtn">{$chooseMajorBtn}</span>
+					</foreach>
+				</td>
+			</tr>
 						
 			<tr class="additional">
 				<th>9. 你想选择其他专业的原因是</th>

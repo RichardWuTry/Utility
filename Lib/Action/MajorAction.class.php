@@ -6,9 +6,13 @@ class MajorAction extends Action {
 						->field("major, job, choose_major")
 						->select()) {
 			$origMajorBtnArray = $this->genTagArray($tagBtnRecords, 'major');
+			$jobBtnArray = $this->genTagArray($tagBtnRecords, 'job');
+			$chooseMajorBtnArray = $this->genTagArray($tagBtnRecords, 'choose_major');
 			
-		}
-		$this->assign('origMajorBtnArray', $origMajorBtnArray);
+			$this->assign('origMajorBtnArray', $origMajorBtnArray);
+			$this->assign('jobBtnArray', $jobBtnArray);
+			$this->assign('chooseMajorBtnArray', $chooseMajorBtnArray);
+		}		
 		
 		$this->display();
     }
