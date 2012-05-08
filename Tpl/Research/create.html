@@ -1,9 +1,13 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>设计视图</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.7.3/themes/ui-lightness/jquery-ui.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <style>
 	#content {
 		width: 600px;
+		background-color: lightyellow;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 
 	h1 {
@@ -30,43 +34,77 @@
 		margin: 3px;
 	}
 	
-	h1 .input {
-		border: 1px dashed #000000;
-		width: 300px;
-		height: 30px;
-		display: inline-block;
+	.input {
+		border: 1px dashed gray;
 	}
 	
-	h2 .input {
-		border: 1px dashed #000000;
-		width: 500px;
-		height: 60px;
-		display: inline-block;
+	table {
+		border-collapse: collapse;
+		margin: 20px auto;
+		width: 550px;
+	}
+	
+	tr {
+		height: 30px;
+	}
+	
+	.ctrl {
+		width: 33px;
+	}
+	
+	.del, .add {
+		cursor: pointer;
+	}
+	
+	.ui-widget, .ui-widget button {
+		font-size: 0.9em;
 	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.7.3/jquery-ui.min.js"></script>
 <script>
 	$(function() {
-		$('.input').click(function(){
-			if ($('#currInput').length == 0) {
-				var prevStr = $(this).text();
-				$inputHtml = '<input type="text" id="currInput" style="width:95%;" onblur="inputBlur(this);" />';
-				$(this).html($inputHtml);
-				$('#currInput').val(prevStr).focus();
-			}
+		var lineCtrl = '<img src="__PUBLIC__/images/delete.png" class="del" /><img src="__PUBLIC__/images/add.png" class="add" />';
+		$('.ctrl').html(lineCtrl);
+		
+		$('.del').click(function(){			
+			var hasContent = false;	
+			var currTr = $(this).parents('tr');
+			currTr.children('.input').each(function(){				
+				if ($(this).html().length != 0) {
+					hasContent = true;
+				}
+			});	
+			
+			if (hasContent) {			
+				$( "#delConfirm" ).dialog({
+					title: "删除确认",
+					resizable: false,
+					height:180,
+					modal: true,
+					buttons: {
+						"取消": function() {
+							$(this).dialog("close");
+						},
+						"确定": function() {
+							$(this).dialog( "close" );
+						}						
+					}
+				});
+			} else {
+				currTr.remove();
+			}			
 		});
 	});
-	
-	function inputBlur(currInput) {
-		$(currInput).parent().text($(currInput).val());
-		$(currInput).remove();		
-	}
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
+<div id="delConfirm" style="display:none;">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>该行中填有内容，您确定要删除吗？</p>
+</div>
 <aside>
 	<ul>
 		<li>
-			输入框 <input type="text" size="4" onblur="alert('bbb');" />
+			输入框 <input type="text" size="4" />
 		</li>
 		<li>
 			单选项 <input type="radio" />
@@ -74,32 +112,38 @@
 	</ul>
 </aside>
 <section id="content">
-	<h1><span class="input"></span></h1>
-	<h2><span class="input"></span></h2>
+	<h1 class="input">主标题</h1>
+	<h2 class="input">副标题或说明</h2>
 	<table>
 		<tr>
-			<td></td>
-			<td></td>
+			<td class="input"><input type="text" /></td>
+			<td class="input">bbb</td>
+			<td class="ctrl"></td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td class="input"></td>
+			<td class="input"></td>
+			<td class="ctrl"></td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td class="input"></td>
+			<td class="input"></td>
+			<td class="ctrl"></td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td class="input"></td>
+			<td class="input"></td>
+			<td class="ctrl"></td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td class="input"></td>
+			<td class="input"></td>
+			<td class="ctrl"></td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td class="input"></td>
+			<td class="input"></td>
+			<td class="ctrl"></td>
 		</tr>
 	</table>
 </section>
