@@ -64,9 +64,11 @@
 <script src="http://code.jquery.com/ui/1.7.3/jquery-ui.min.js"></script>
 <script>
 	$(function() {
-		var lineCtrl = '<img src="__PUBLIC__/images/delete.png" class="del" /><img src="__PUBLIC__/images/add.png" class="add" />';
+		//attach delete and add buttons
+		var lineCtrl = '<img src="__PUBLIC__/images/delete.png" title="删除行" class="del" /><img src="__PUBLIC__/images/add.png" title="插入行" class="add" />';
 		$('.ctrl').html(lineCtrl);
 		
+		//click delete button
 		$('.del').click(function(){			
 			var hasContent = false;	
 			var currTr = $(this).parents('tr');
@@ -76,24 +78,34 @@
 				}
 			});	
 			
+			$( "#delConfirm" ).dialog({
+				title: "删除确认",
+				autoOpen: false,
+				resizable: false,
+				height:170,
+				modal: true,
+				buttons: {
+					"取消": function() {
+						$(this).dialog("close");
+					},
+					"确定": function() {
+						currTr.remove();
+						$(this).dialog("close");
+					}						
+				}
+			});
+			
 			if (hasContent) {			
-				$( "#delConfirm" ).dialog({
-					title: "删除确认",
-					resizable: false,
-					height:180,
-					modal: true,
-					buttons: {
-						"取消": function() {
-							$(this).dialog("close");
-						},
-						"确定": function() {
-							$(this).dialog( "close" );
-						}						
-					}
-				});
+				$( "#delConfirm" ).dialog('open');
 			} else {
 				currTr.remove();
 			}			
+		});
+		
+		//click add button
+		$('.add').click(function() {
+			var currTr = $(this).parents('tr');
+			$('<tr><td class="input"></td><td class="input"></td><td class="ctrl">' + lineCtrl + '</td></tr>').insertAfter(currTr);
 		});
 	});
 </script>
