@@ -38,13 +38,13 @@
 		border: 1px dashed gray;
 	}
 	
-	table {
+	table.mainframe {
 		border-collapse: collapse;
 		margin: 20px auto;
 		width: 550px;
 	}
 	
-	tr {
+	.mainframe tr {
 		height: 30px;
 	}
 	
@@ -79,10 +79,8 @@
 			});	
 			
 			$( "#delConfirm" ).dialog({
-				title: "删除确认",
 				autoOpen: false,
 				resizable: false,
-				height:170,
 				modal: true,
 				buttons: {
 					"取消": function() {
@@ -107,11 +105,79 @@
 			var currTr = $(this).parents('tr');
 			$('<tr><td class="input"></td><td class="input"></td><td class="ctrl">' + lineCtrl + '</td></tr>').insertAfter(currTr);
 		});
+		
+		//click .input field
+		$('.input').click(function() {
+			$(this).addClass('poped');
+			var currElement = $(this);
+			var inputBox = $('#inputBox');
+			var currAlignValue = currElement.css('text-align');
+			if ($("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]").length == 0) {
+				var alignRadio = $("#txtInputBox input[name='inputAlign'][value='left']");
+			} else {
+				var alignRadio = $("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]");
+			}
+			
+			inputBox.val(currElement.text());
+			alignRadio.attr('checked', 'checked');
+			
+			$( "#txtInputBox" ).dialog({
+				autoOpen: false,
+				resizable: false,
+				modal: true,
+				buttons: {
+					"确定": function() {
+						var currElement = $('.poped');
+						alert(currElement.text());
+						currElement.text(inputBox.val());
+						currElement.css('text-align', $("#txtInputBox input[name='inputAlign']:checked").val());
+						$( this ).dialog( "close" );
+					},
+					"取消": function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+					var currElement = $('.poped');
+					currElement.removeClass('poped');
+				}
+			});
+			
+			if (currElement.is('td')) {
+				alert('this element is td');
+			} else {
+				$( "#txtInputBox" ).dialog('open');
+			}
+		});		
 	});
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
-<div id="delConfirm" style="display:none;">
+<div id="delConfirm" style="display:none;" title="删除确认">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>该行中填有内容，您确定要删除吗？</p>
+</div>
+<div id="txtInputBox" style="display:none;" title="输入文本">
+	<form>
+		<table style="text-align: left;">
+			<tr>
+				<th>内容输入</th>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="inputBox" rows="2" cols="40" class="text ui-widget-content ui-corner-all"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<th>水平对齐</th>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="inputAlign" value="left" class="radio ui-widget-content ui-corner-all" />居左
+					<input type="radio" name="inputAlign" value="center" class="radio ui-widget-content ui-corner-all"/>居中
+					<input type="radio" name="inputAlign" value="right" class="radio ui-widget-content ui-corner-all" />居右
+				</td>
+			</tr>
+		</table>
+	</form>
 </div>
 <aside>
 	<ul>
@@ -126,9 +192,9 @@
 <section id="content">
 	<h1 class="input">主标题</h1>
 	<h2 class="input">副标题或说明</h2>
-	<table>
+	<table class="mainframe">
 		<tr>
-			<td class="input"><input type="text" /></td>
+			<td class="input"></td>
 			<td class="input">bbb</td>
 			<td class="ctrl"></td>
 		</tr>
