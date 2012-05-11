@@ -173,16 +173,7 @@
 	
 		//click .input field
 		$('.input').live("click", function() {
-			var currElement = $(this);
-			var currAlignValue = currElement.css('text-align');
-			if ($("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]").length == 0) {
-				var alignRadio = $("#txtInputBox input[name='inputAlign'][value='left']");
-			} else {
-				var alignRadio = $("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]");
-			}
-			
-			$('#inputBox').val(currElement.text());
-			alignRadio.attr('checked', 'checked');
+			var currElement = $(this);		
 			
 			//init txtInputBox
 			$( "#txtInputBox" ).dialog({
@@ -208,8 +199,10 @@
 				modal: true,
 				buttons: {
 					"确定": function() {
-						currElement.text($('#inputBox').val());
-						currElement.css('text-align', $("#txtInputBox input[name='inputAlign']:checked").val());
+						var selectedCtrl = $('input[name="chooseCtrl"]:checked').val();
+						if (selectedCtrl == 'label') {
+							currElement.text($('.label textarea').val());
+						}
 						$( this ).dialog( "destroy" );
 					},
 					"取消": function() {
@@ -222,17 +215,24 @@
 			if (currElement.is('td')) {
 				$("#tdInputBox").dialog('open');
 			} else {
+				var currAlignValue = currElement.css('text-align');
+				if ($("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]").length == 0) {
+					var alignRadio = $("#txtInputBox input[name='inputAlign'][value='left']");
+				} else {
+					var alignRadio = $("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]");
+				}
+				
+				$('#inputBox').val(currElement.text());
+				alignRadio.attr('checked', 'checked');
+			
 				$( "#txtInputBox" ).dialog('open');
 			}
 		});
 
 		/*new added*/
-		$('input[name="chooseCtrl"]').click(function () {
-			if ($('input[name="chooseCtrl"]:checked').val() == 'label') {
-				$('.label').show('slow');
-			} else {
-				$('.label').hide();
-			}
+		$('input[name="chooseCtrl"]').change(function () {
+			$('.expand').hide();
+			$('.' + $('input[name="chooseCtrl"]:checked').val()).show();
 		});		
 	});
 </script>
@@ -278,12 +278,12 @@
 					<label><input type="radio" name="chooseCtrl" value="none" />清空</label><br />
 				</td>
 			</tr>
-			<tr class="label" style="display:none">
+			<tr class="expand label" style="display:none">
 				<th>文本内容</th>
 			</tr>
-			<tr class="label" style="display:none">
+			<tr class="expand label" style="display:none">
 				<td><textarea rows="2" cols="40"></textarea></td>
-			</tr>			
+			</tr>
 		</table>
 	</form>
 </div>
