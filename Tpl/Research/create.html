@@ -182,12 +182,12 @@
 				modal: true,
 				buttons: {
 					"确定": function() {
-						currElement.text($('#inputBox').val());
-						currElement.css('text-align', $("#txtInputBox input[name='inputAlign']:checked").val());
-						$( this ).dialog( "destroy" );
+						$(this).data('el').text($('#inputBox').val());
+						$(this).data('el').css('text-align', $("#txtInputBox input[name='inputAlign']:checked").val());
+						$( this ).dialog( "close" );
 					},
 					"取消": function() {
-						$( this ).dialog( "destroy" );
+						$( this ).dialog( "close" );
 					}
 				}
 			});
@@ -201,19 +201,19 @@
 					"确定": function() {
 						var selectedCtrl = $('input[name="chooseCtrl"]:checked').val();
 						if (selectedCtrl == 'label') {
-							currElement.text($('.label textarea').val());
+							$(this).data('el').text($('.label textarea').val());
 						}
-						$( this ).dialog( "destroy" );
+						$( this ).dialog( "close" );
 					},
 					"取消": function() {
-						$( this ).dialog( "destroy" );
+						$( this ).dialog( "close" );
 					}
 				}
 			});
 			
 			
 			if (currElement.is('td')) {
-				$("#tdInputBox").dialog('open');
+				$("#tdInputBox").data('el', currElement).dialog('open');
 			} else {
 				var currAlignValue = currElement.css('text-align');
 				if ($("#txtInputBox input[name='inputAlign'][value="+currAlignValue+"]").length == 0) {
@@ -225,7 +225,7 @@
 				$('#inputBox').val(currElement.text());
 				alignRadio.attr('checked', 'checked');
 			
-				$( "#txtInputBox" ).dialog('open');
+				$( "#txtInputBox" ).data('el', currElement).dialog('open');
 			}
 		});
 
