@@ -1,8 +1,12 @@
 body {
 	margin: 0;
-	padding: 0;
-	font: "Trebuchet MS", arial, helvetica, clean, sans-serif;
+	padding: 0;	
 	line-height: 1.4em;	
+}
+
+
+html, body, textarea, div, span, pre, input {
+	font: 12px/1.4 "Microsoft Yahei","微软雅黑","Helvetica Neue",Arial,"Liberation Sans",FreeSans,sans-serif;
 }
 
 #content{
@@ -10,7 +14,7 @@ body {
 	width: 960px;
 }
 
-td, th {
+td img, th img{
 	vertical-align: middle;
 }
 

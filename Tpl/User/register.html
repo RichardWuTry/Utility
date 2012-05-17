@@ -1,0 +1,95 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考评牛马</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<style>
+	#main {
+		padding: 20px;
+		margin: 20px auto;
+		width: 400px;
+	}
+	
+	h1 {
+		color:#223f4a;
+		text-align:center;
+		font-size:24px;
+	}
+	
+	th {
+		text-align: right;
+		padding-right: 10px;
+		color: #5093B0;
+		font-size: 16px;
+		line-height: 30px;
+	}
+	
+	input {
+		outline: none;
+		border: 1px solid #C0D8E2;
+		margin: 0px;
+		height: 20px;
+		width: 200px;
+		padding: 4px;
+	}
+	
+	input[type="submit"] {
+		background: #5093B0;
+		text-decoration: none;
+		color: white;
+		font-size: 18px;
+		padding: 5px 10px;
+		border: none;
+		height: 35px;
+		width: 61px;
+		margin-top: 10px;
+	}
+	
+	
+</style>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<section id="content">
+	<section id="main">		
+		<form>
+		<table>
+			<tr>
+				<td colspan="2"><h1>拥有考评牛马</h1></td>
+			</tr>
+			<tr>
+				<th>用户名</th>
+				<td>
+					<input type="text" name="username" />
+				</td>
+			</tr>
+			<tr>
+				<th>邮箱</th>
+				<td>
+					<input type="text" name="email" />
+				</td>
+			</tr>
+			<tr>
+				<th>密码</th>
+				<td>
+					<input type="password" name="password" />
+				</td>
+			</tr>
+			<tr>
+				<th>公司/组织</th>
+				<td>
+					<input type="text" name="organization" />
+				</td>
+			</tr>
+			<tr>
+				<th>验证码</th>
+				<td>
+					<input type="text" name="verify"/>&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;">
+					<input type="submit" id="submit" name="submit" value="注 册" />
+				</td>
+			</tr>
+		</table>
+		</form>
+	</section>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />
