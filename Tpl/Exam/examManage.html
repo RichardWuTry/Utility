@@ -2,48 +2,84 @@
 <title>考评木马</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <style>
-	ul.nav {
+	nav {
 		background-color: #262626;	
-		-webkit-border-radius: 4px 4px 0 0;
-		-moz-border-radius: 4px 4px 0 0;
-		-ms-border-radius: 4px 4px 0 0;
-		-o-border-radius: 4px 4px 0 0;
-		border-radius: 4px 4px 0 0;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
 	}
 	
-	ul.nav li {
-		list-style: none outside none;
+	nav a {
+		margin: 0px;
+		display: block;
+		padding: 10px 10px 10px 46px;
+		font-size: 15px;
+		text-decoration: none;
+		color: #CACACA;
+		width: 164px;
+		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 transparent;
+	}
+	
+	nav a.top {
+		border-bottom: 1px solid #202020;
+	}
+	
+	nav a.middle {
 		border-bottom: 1px solid #202020;
 		border-top: 1px solid #292929;
 	}
 	
-	ul.nav a {
-		clear: both;
-		font-size: 15px;
-		padding: 10px 10px 10px 10px;
-		color: #CACACA;
-		text-decoration: none;
+	nav a.bottom {
+		border-top: 1px solid #292929;
 	}
 	
-	ul.nav li.selected {
-		border-top: 1px solid #202020;
-		background: #202020;
-		
-		-webkit-border-radius: 4px 4px 0 0;
-		-moz-border-radius: 4px 4px 0 0;
-		-ms-border-radius: 4px 4px 0 0;
-		-o-border-radius: 4px 4px 0 0;
-		border-radius: 4px 4px 0 0;
+	nav a.examManage {
+		background-position: 3px -489px;
+	}
+	
+	nav a.itemManage {
+		background-position: 3px -89px;
+	}
+	
+	nav a.teamShare {
+		background-position: 3px -689px;
+	}
+
+	nav a.selected, nav a.examManage.hover {
+		background-position: 3px -389px;
+	}
+	
+	nav a.itemManage.hover {
+		background-position: 3px 11px;
+	}
+	
+	nav a.teamShare.hover {
+		background-position: 3px -589px;
 	}
 </style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>
+	$(function(){
+		$('nav a').hover(
+			function(){
+				$(this).addClass('hover');
+			},
+			function(){
+				$(this).removeClass('hover');
+			}
+		);		
+	});
+</script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
 	<aside>
-		<ul class="nav">
-			<li class="selected">
-				<a href="/">考卷管理</a>
-			</li>
-		</ul>
+		<nav>
+			<a href="/" class="top examManage selected">考试安排</a>
+			<a href="/" class="middle itemManage">题库管理</a>
+			<a href="/" class="bottom teamShare">共享协作</a>
+		</nav>
 	</aside>
 	<div>
 	</div>
