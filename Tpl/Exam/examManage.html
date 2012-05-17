@@ -1,11 +1,48 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>考评木马</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<style>
+	ul.nav {
+		background-color: #262626;	
+		-webkit-border-radius: 4px 4px 0 0;
+		-moz-border-radius: 4px 4px 0 0;
+		-ms-border-radius: 4px 4px 0 0;
+		-o-border-radius: 4px 4px 0 0;
+		border-radius: 4px 4px 0 0;
+	}
+	
+	ul.nav li {
+		list-style: none outside none;
+		border-bottom: 1px solid #202020;
+		border-top: 1px solid #292929;
+	}
+	
+	ul.nav a {
+		clear: both;
+		font-size: 15px;
+		padding: 10px 10px 10px 10px;
+		color: #CACACA;
+		text-decoration: none;
+	}
+	
+	ul.nav li.selected {
+		border-top: 1px solid #202020;
+		background: #202020;
+		
+		-webkit-border-radius: 4px 4px 0 0;
+		-moz-border-radius: 4px 4px 0 0;
+		-ms-border-radius: 4px 4px 0 0;
+		-o-border-radius: 4px 4px 0 0;
+		border-radius: 4px 4px 0 0;
+	}
+</style>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
 	<aside>
-		<ul>
-			<li>考卷管理</li>
+		<ul class="nav">
+			<li class="selected">
+				<a href="/">考卷管理</a>
+			</li>
 		</ul>
 	</aside>
 	<div>
