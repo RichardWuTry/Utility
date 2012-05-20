@@ -1,3 +1,6 @@
+html, body, textarea, div, span, pre, input, aside, section, nav, header, footer {
+	font-size: 15px;
+}
 
 #content {
 	width: 600px;

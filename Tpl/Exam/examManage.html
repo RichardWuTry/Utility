@@ -2,6 +2,10 @@
 <title>考评木马</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <style>
+	body {
+		background-color: #E3EDF2;
+	}
+	
 	nav {
 		background-color: #262626;	
 		-webkit-border-radius: 4px;
@@ -9,6 +13,7 @@
 		-ms-border-radius: 4px;
 		-o-border-radius: 4px;
 		border-radius: 4px;
+		width: 220px;
 	}
 	
 	nav a {
@@ -18,7 +23,6 @@
 		font-size: 15px;
 		text-decoration: none;
 		color: #CACACA;
-		width: 164px;
 		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 transparent;
 	}
 	
@@ -47,16 +51,46 @@
 		background-position: 3px -689px;
 	}
 
-	nav a.selected, nav a.examManage.hover {
+	nav a.examManage.selected, nav a.examManage.hover, .main-title.examManage {
 		background-position: 3px -389px;
+		background-color: #202020;
 	}
 	
-	nav a.itemManage.hover {
+	nav a.itemManage.selected, nav a.itemManage.hover {
 		background-position: 3px 11px;
+		background-color: #202020;
 	}
 	
-	nav a.teamShare.hover {
+	nav a.teamShare.selected, nav a.teamShare.hover {
 		background-position: 3px -589px;
+		background-color: #202020;
+	}
+	
+	#main {
+		margin-left: 20px;
+		width: 720px;
+		height: 600px;
+		float: left;
+	}
+	
+	.main-title {
+		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 #262626;
+		border-bottom: 5px solid #5093B0;
+		border-radius: 4px 4px 0 0;
+		padding: 10px 42px;
+		color: #FFFFFF;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	
+	.main-ctrl {
+		background: none no-repeat scroll 0 0 #FFFFFF;
+		border-bottom: 1px solid #DDDDDD;
+		padding: 6px 15px;
+	}
+	
+	.main-ctrl button {
+		
 	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -81,7 +115,11 @@
 			<a href="/" class="bottom teamShare">共享协作</a>
 		</nav>
 	</aside>
-	<div>
+	<div id="main">
+		<header class="main-title examManage">考试安排</header>
+		<div class="main-ctrl examManage">
+			<button type="button">创建考卷</button>
+		</div>
 	</div>
 </section>
 <include file="./Tpl/Public/footer_bodyend.html" />
