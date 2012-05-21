@@ -16,3 +16,24 @@ td img, th img{
 aside {
 	float: left;
 }
+
+.radius {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.shadow {
+	-moz-box-shadow: 5px 5px 3px #888;
+	-webkit-box-shadow: 5px 5px 3px #888;
+	box-shadow: 5px 5px 3px #888;
+}
+
+.one-edge-shadow {
+	-webkit-box-shadow: 0 8px 6px -6px #ccc;
+	-moz-box-shadow: 0 8px 6px -6px #ccc;
+	box-shadow: 0 8px 6px -6px #ccc;
+}
+

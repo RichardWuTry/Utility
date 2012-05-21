@@ -1,0 +1,72 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考评木马</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<style>
+	html, body, textarea, div, span, pre, input, aside, section, nav, header, footer {
+		font-size: 16px;
+	}
+	
+	#content {
+		height: 100%;
+	}
+	
+	header, footer {
+		background-color: #E3EDF2;
+		height: 40px;
+	}
+	
+	table {
+		margin: 0 auto;
+	}
+	
+	th,td {
+		padding: 5px;
+	}
+	
+	th {
+		text-align: right;
+	}
+	
+	input, textarea {
+		outline: none;
+		border: 1px solid #C0D8E2;
+		margin: 0px;
+		padding: 4px;
+	}
+
+	.long {
+		width: 400px;
+	}
+	
+	.wide {
+		height: 100px;
+	}
+</style>
+</head>
+<body>
+	<header>
+	</header>
+	<section id="content">
+		<table>
+			<tr>
+				<th>考试名称：</th>
+				<td><input type="text" name="exam_name" class="long" /></td>
+			</tr>
+			<tr>
+				<th>总分：</th>
+				<td><input type="text" name="total_score" /></td>
+			</tr>
+			<tr>
+				<th>时间：</th>
+				<td><input type="text" name="total_mins" />分钟</td>
+			</tr>
+			<tr>
+				<th>考试说明：</th>
+				<td><textarea name="exam_desc" class="long wide"></textarea></td>
+			</tr>
+		</table>
+	</section>
+	<footer>
+	</footer>
+</body>
+</html>

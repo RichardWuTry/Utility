@@ -1,0 +1,127 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考评木马</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<style>
+	body {
+		background-color: #E3EDF2;
+	}
+	
+	nav {
+		background-color: #262626;	
+		width: 220px;
+	}
+	
+	nav a {
+		margin: 0px;
+		display: block;
+		padding: 10px 10px 10px 46px;
+		font-size: 15px;
+		text-decoration: none;
+		color: #CACACA;
+		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 transparent;
+	}
+	
+	nav a.top {
+		border-bottom: 1px solid #202020;
+	}
+	
+	nav a.middle {
+		border-bottom: 1px solid #202020;
+		border-top: 1px solid #292929;
+	}
+	
+	nav a.bottom {
+		border-top: 1px solid #292929;
+	}
+	
+	nav a.examManage {
+		background-position: 3px -489px;
+	}
+	
+	nav a.itemManage {
+		background-position: 3px -89px;
+	}
+	
+	nav a.teamShare {
+		background-position: 3px -689px;
+	}
+
+	nav a.examManage.selected, nav a.examManage.hover, .main-title.examManage {
+		background-position: 3px -389px;
+		background-color: #202020;
+	}
+	
+	nav a.itemManage.selected, nav a.itemManage.hover {
+		background-position: 3px 11px;
+		background-color: #202020;
+	}
+	
+	nav a.teamShare.selected, nav a.teamShare.hover {
+		background-position: 3px -589px;
+		background-color: #202020;
+	}
+	
+	#main {
+		margin-left: 20px;
+		width: 720px;
+		height: 600px;
+		float: left;
+	}
+	
+	.main-title {
+		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 #262626;
+		border-bottom: 5px solid #5093B0;
+		border-radius: 4px 4px 0 0;
+		padding: 10px 42px;
+		color: #FFFFFF;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	
+	.main-ctrl {
+		background: none no-repeat scroll 0 0 #FFFFFF;
+		border-bottom: 1px solid #DDDDDD;
+		padding: 6px 15px;
+	}
+	
+	.main-ctrl {
+		padding: 20px 15px;
+	}
+	
+	.main-ctrl a {
+		text-decoration: none;
+		font-size: 15px;
+		padding: 6px 15px;
+		background-color: #E3EDF2;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>
+	$(function(){
+		$('nav a').hover(
+			function(){
+				$(this).addClass('hover');
+			},
+			function(){
+				$(this).removeClass('hover');
+			}
+		);		
+	});
+</script>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<section id="content">
+	<aside>
+		<nav class="radius">
+			<a href="/" class="top examManage selected">考试安排</a>
+			<a href="/" class="middle itemManage">题库管理</a>
+			<a href="/" class="bottom teamShare">共享协作</a>
+		</nav>
+	</aside>
+	<div id="main">
+		<header class="main-title examManage">考试安排</header>
+		<div class="main-ctrl examManage">
+			<a href="__URL__/create" class="one-edge-shadow">创建考卷</a>			
+		</div>
+	</div>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />
