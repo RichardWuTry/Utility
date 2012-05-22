@@ -6,25 +6,28 @@
 		font-size: 16px;
 	}
 	
-	#content {
+	html, body {
 		height: 100%;
-	}
+	}	
 	
 	header, footer {
-		background-color: #E3EDF2;
-		height: 40px;
+		background-color: #4C88BE;
+		height: 10%;
+		min-height: 35px;
+	}	
+	
+	#content {
+		height: 80%;
+		min-height: 300px;	
 	}
 	
-	table {
-		margin: 0 auto;
+	form {
+		text-align: center;
+		padding-top: 100px;
 	}
 	
-	th,td {
-		padding: 5px;
-	}
-	
-	th {
-		text-align: right;
+	p label[for="exam_desc"] {
+		vertical-align: top;
 	}
 	
 	input, textarea {
@@ -35,11 +38,15 @@
 	}
 
 	.long {
-		width: 400px;
+		width: 600px;
 	}
 	
-	.wide {
-		height: 100px;
+	.short {
+		width: 100px;
+	}
+	
+	.high {
+		height: 120px;
 	}
 </style>
 </head>
@@ -47,24 +54,22 @@
 	<header>
 	</header>
 	<section id="content">
-		<table>
-			<tr>
-				<th>考试名称：</th>
-				<td><input type="text" name="exam_name" class="long" /></td>
-			</tr>
-			<tr>
-				<th>总分：</th>
-				<td><input type="text" name="total_score" /></td>
-			</tr>
-			<tr>
-				<th>时间：</th>
-				<td><input type="text" name="total_mins" />分钟</td>
-			</tr>
-			<tr>
-				<th>考试说明：</th>
-				<td><textarea name="exam_desc" class="long wide"></textarea></td>
-			</tr>
-		</table>
+		<form>
+		<p>
+			<label for="exam_name">考试名称：</label>
+			<input type="text" id="exam_name" name="exam_name" class="long" />
+		</p>
+		<p>
+			<label for="total_score">总分：</label>
+			<input type="text" id="total_score" name="total_score" class="short" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="total_mins">时间：</label>
+			<input type="text" id="total_mins" name="total_mins" class="short" />分钟
+		</p>
+		<p>
+			<label for="exam_desc">考试说明：</label>
+			<textarea id="exam_desc" name="exam_desc" class="long high"></textarea>
+		</p>		
+		</form>
 	</section>
 	<footer>
 	</footer>
