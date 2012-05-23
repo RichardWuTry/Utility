@@ -1,40 +1,10 @@
 <include file="./Tpl/Public/headstart.html" />
-<title>考评木马</title>
+<title>创建考卷</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
-<style>
-	html, body, textarea, div, span, pre, input, aside, section, nav, header, footer {
-		font-size: 16px;
-	}
-	
-	html, body {
-		height: 100%;
-	}	
-	
-	header, footer {
-		background-color: #4C88BE;
-		height: 10%;
-		min-height: 35px;
-	}	
-	
-	#content {
-		height: 80%;
-		min-height: 300px;	
-	}
-	
-	form {
-		text-align: center;
-		padding-top: 100px;
-	}
-	
-	p label[for="exam_desc"] {
+<link rel="stylesheet" href="__PUBLIC__/css/examPaper.css" />
+<style>	
+	p label[for="paper_desc"] {
 		vertical-align: top;
-	}
-	
-	input, textarea {
-		outline: none;
-		border: 1px solid #C0D8E2;
-		margin: 0px;
-		padding: 4px;
 	}
 
 	.long {
@@ -49,29 +19,99 @@
 		height: 120px;
 	}
 </style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script>
+	$(function() {
+		//返回
+		$('#back').click(function(){
+			window.location = "__URL__/manage";
+		});
+		
+		//下一步
+		$('#exam').submit(function(){
+			var isValid = true;
+			var helpMsg = $('#helpMsg');
+			
+			$('.non-empty').each(function(){
+				var labelText = $('label[for = "' + $(this).prop('id') + '"]').text();
+				var label = labelText.replace(/[:：]/g, "");
+				isValid = validateNonEmpty(this, helpMsg[0], label + ' 不能为空', '');
+				return isValid;
+			});
+			
+			if (isValid) {
+				$('.num-range').each(function(){
+					var labelText = $('label[for = "' + $(this).prop('id') + '"]').text();
+					var label = labelText.replace(/[:：]/g, "");
+					isValid = validateNumber(this, helpMsg[0], label + ' 输入无效','', 1, 1440);
+					return isValid;
+				});
+			}
+			
+			if (!isValid) {
+				helpMsg.show();
+			} else {
+				helpMsg.hide();
+			}
+			return isValid;
+		});
+		
+		$('#paperForm').ajaxForm({
+            success:	showResponse,  // post-submit callback
+            dataType:	'json'
+        });
+	});
+	
+	function showResponse(data) {
+		if (data.status == 0) {
+			$('#helpMsg').html(data.info).show();
+		} else {
+			window.location = "__URL__/addQuestion/paper/" + data.info;
+		}
+	}
+</script>
 </head>
 <body>
-	<header>
-	</header>
-	<section id="content">
-		<form>
-		<p>
-			<label for="exam_name">考试名称：</label>
-			<input type="text" id="exam_name" name="exam_name" class="long" />
-		</p>
-		<p>
-			<label for="total_score">总分：</label>
-			<input type="text" id="total_score" name="total_score" class="short" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<label for="total_mins">时间：</label>
-			<input type="text" id="total_mins" name="total_mins" class="short" />分钟
-		</p>
-		<p>
-			<label for="exam_desc">考试说明：</label>
-			<textarea id="exam_desc" name="exam_desc" class="long high"></textarea>
-		</p>		
-		</form>
-	</section>
-	<footer>
-	</footer>
+	<form method="post" action="__URL__/savePaper" id="paperForm">
+		<header>
+		</header>
+		<section id="content">
+			<div id="main">
+				<div>
+					<span id="helpMsg" class="hide"></span>
+				</div>
+				<p>
+					<label for="paper_name">考卷名称：</label>
+					<input type="text" id="paper_name" name="paper_name" class="long non-empty" />
+				</p>
+				<p>
+					<label for="total_score">满分：</label>
+					<input type="text" id="total_score" name="total_score" class="short non-empty num-range" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="total_mins">时间：</label>
+					<input type="text" id="total_mins" name="total_mins" class="short non-empty num-range" />分钟
+				</p>
+				<p>
+					<label for="paper_desc">考卷说明：</label>
+					<textarea id="paper_desc" name="paper_desc" class="long high non-empty"></textarea>
+				</p>
+			</div>
+		</section>
+		<footer>
+			<table>
+				<tr>
+					<td>
+						<input id="back" type="button" value="返 回" class="footer-btn" />
+					</td>
+					<td></td>
+					<td></td>
+					<td>
+						<input id="next" type="submit" name="submit" value="下一步" class="footer-btn" />
+					</td>
+				</tr>
+			</table>
+		</footer>
+	</form>
 </body>
 </html>

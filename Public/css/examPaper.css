@@ -1,0 +1,57 @@
+html, body, textarea, div, span, pre, input, aside, section, nav, header, footer {
+	font-size: 16px;
+}
+
+html, body, form {
+	height: 100%;
+}	
+
+header, footer {
+	background-color: #4C88BE;
+	height: 10%;
+	min-height: 35px;
+}	
+
+#content {
+	height: 80%;
+	min-height: 300px;	
+}
+
+#main {
+	text-align: center;
+	padding-top: 100px;
+}
+
+	
+input, textarea {
+	outline: none;
+	border: 1px solid #C0D8E2;
+	margin: 0px;
+	padding: 4px;
+}
+
+#helpMsg {
+	padding: 6px 15px;
+	background-color: #FFE6E6;
+	color: #FF0000;
+}
+
+footer table {
+	width: 100%;		
+	height: 100%;
+}
+
+footer td{
+	width: 25%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.footer-btn {
+	display: inline-block;
+	font-size: 15px;
+	width: 100px;
+	height: 30px;
+	background-color: #1E364C;
+	color: #FFFFFF;
+}
