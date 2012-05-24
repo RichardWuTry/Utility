@@ -8,7 +8,23 @@
 <body>
 	<form method="post" action="__URL__/saveQuestion" id="addQuestionForm">
 		<header>
-			
+			<table>
+				<tr>
+					<td>第{$currQ}题 / 共{$totalQ}题</td>
+					<td>
+						<label><input type="radio" name="ctrlType" value="radio" /> 单选题</label>
+					</td>
+					<td>
+						<label><input type="radio" name="ctrlType" value="checkbox" /> 多选题</label>
+					</td>
+					<td>
+						<label><input type="radio" name="ctrlType" value="textarea" /> 问答题</label>
+					</td>
+					<td>
+						剩余<span id="remainScore">{$remainScore}</span>分
+					</td>
+				</tr>
+			</table>
 		</header>
 		<section id="content">
 			<div id="main">
@@ -16,6 +32,12 @@
 					<span id="helpMsg" class="hide"></span>
 				</div>
 				<div id="qBody">
+					<div>
+						<p>
+							<label for="question_name" class="vertical-top">试题：</label>
+							<textarea id="question_name" name="question_name" class="width-l height-s"></textarea>
+						</p>
+					</div>
 				</div>
 			</div>
 		</section>

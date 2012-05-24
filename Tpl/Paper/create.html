@@ -2,23 +2,6 @@
 <title>创建考卷</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/examPaper.css" />
-<style>	
-	p label[for="paper_desc"] {
-		vertical-align: top;
-	}
-
-	.long {
-		width: 600px;
-	}
-	
-	.short {
-		width: 100px;
-	}
-	
-	.high {
-		height: 120px;
-	}
-</style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
@@ -86,17 +69,17 @@
 				</div>
 				<p>
 					<label for="paper_name">考卷名称：</label>
-					<input type="text" id="paper_name" name="paper_name" class="long non-empty" />
+					<input type="text" id="paper_name" name="paper_name" class="width-l non-empty" />
 				</p>
 				<p>
 					<label for="total_score">满分：</label>
-					<input type="text" id="total_score" name="total_score" class="short non-empty num-range" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" id="total_score" name="total_score" class="width-s non-empty num-range" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label for="total_mins">时间：</label>
-					<input type="text" id="total_mins" name="total_mins" class="short non-empty num-range" />分钟
+					<input type="text" id="total_mins" name="total_mins" class="width-s non-empty num-range" />分钟
 				</p>
 				<p>
-					<label for="paper_desc">考卷说明：</label>
-					<textarea id="paper_desc" name="paper_desc" class="long high non-empty"></textarea>
+					<label for="paper_desc" class="vertical-top">考卷说明：</label>
+					<textarea id="paper_desc" name="paper_desc" class="width-l height-l non-empty"></textarea>
 				</p>
 			</div>
 		</section>
