@@ -1,0 +1,43 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>添加考题</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/examPaper.css" />
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+</head>
+<body>
+	<form method="post" action="__URL__/saveQuestion" id="addQuestionForm">
+		<header>
+			
+		</header>
+		<section id="content">
+			<div id="main">
+				<div>
+					<span id="helpMsg" class="hide"></span>
+				</div>
+				<div id="qBody">
+				</div>
+			</div>
+		</section>
+		<footer>
+			<table>
+				<tr>
+					<td>
+						<input id="prev" type="button" value="上一题" class="footer-btn" />
+					</td>
+					<td></td>
+					<td>
+						<input id="finish" type="button" value="完 成" class="footer-btn" />
+					</td>
+					<td></td>
+					<td>
+						<input id="next" type="submit" name="submit" value="下一题" class="footer-btn" />
+					</td>
+				</tr>
+			</table>
+		</footer>
+	</form>
+</body>
+</html>	
+</body>
+</html>

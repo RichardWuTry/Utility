@@ -26,7 +26,7 @@
 	$(function() {
 		//返回
 		$('#back').click(function(){
-			window.location = "__URL__/manage";
+			window.location = "__APP__/Exam/manage";
 		});
 		
 		//下一步
@@ -68,7 +68,9 @@
 		if (data.status == 0) {
 			$('#helpMsg').html(data.info).show();
 		} else {
-			window.location = "__URL__/addQuestion/paper/" + data.info;
+			$('#helpMsg').html('考卷创建成功').css('background-color', 'lightgreen').css('color', 'green').show();
+			var url = "__APP__/Question/add/paper/" + data.info;			
+			setTimeout('window.location="' + url + '"', 2000 );
 		}
 	}
 </script>
@@ -106,8 +108,9 @@
 					</td>
 					<td></td>
 					<td></td>
+					<td></td>
 					<td>
-						<input id="next" type="submit" name="submit" value="下一步" class="footer-btn" />
+						<input id="next" type="submit" name="submit" value="创建试题" class="footer-btn" />
 					</td>
 				</tr>
 			</table>
