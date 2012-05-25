@@ -7,6 +7,8 @@
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
 	$(function() {
+		valignMainDiv();
+	
 		//返回
 		$('#back').click(function(){
 			window.location = "__APP__/Exam/manage";
@@ -47,12 +49,20 @@
         });
 	});
 	
+	function valignMainDiv() {
+		var halfMainHeight = parseFloat($('#main').css('height').replace('px', ''))/2;
+		var halfContentHeight = parseFloat($('#content').css('height').replace('px', ''))/2;
+		if (halfContentHeight > halfMainHeight) {			
+			$('#main').css('padding-top', (halfContentHeight - halfMainHeight)/2 + 'px');
+		}
+	}
+	
 	function showResponse(data) {
 		if (data.status == 0) {
 			$('#helpMsg').html(data.info).show();
 		} else {
 			$('#helpMsg').html('考卷创建成功').css('background-color', 'lightgreen').css('color', 'green').show();
-			var url = "__APP__/Question/add/paper/" + data.info;			
+			var url = "__APP__/Question/add/p/" + data.info;			
 			setTimeout('window.location="' + url + '"', 2000 );
 		}
 	}

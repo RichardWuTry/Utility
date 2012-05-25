@@ -19,11 +19,9 @@ header, footer {
 
 #main {
 	text-align: center;
-	padding-top: 100px;
 }
-
 	
-input, textarea {
+input, textarea, select {
 	outline: none;
 	border: 1px solid #C0D8E2;
 	margin: 0px;
@@ -76,3 +74,9 @@ header td, footer td{
 .vertical-top {
 	vertical-align: top;
 }
+
+.qBody {
+	display: inline-block;
+	text-align: left;
+}
+

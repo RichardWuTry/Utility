@@ -21,7 +21,7 @@
 						<label><input type="radio" name="ctrlType" value="textarea" /> 问答题</label>
 					</td>
 					<td>
-						剩余<span id="remainScore">{$remainScore}</span>分
+						
 					</td>
 				</tr>
 			</table>
@@ -31,11 +31,32 @@
 				<div>
 					<span id="helpMsg" class="hide"></span>
 				</div>
-				<div id="qBody">
-					<div>
+				<div>
+					<div class="qBody">
 						<p>
 							<label for="question_name" class="vertical-top">试题：</label>
 							<textarea id="question_name" name="question_name" class="width-l height-s"></textarea>
+						</p>
+						<p>
+							<label for="item_num">选项数：</label>
+							<select id="item_num" class="width-s">
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4" selected="selected">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+							</select>
+						</p>
+						<p>
+							请填写各选项，并点选正确答案
+						</p>
+						<p>
+							<input type="radio" name="" />
+							<input type="radio" name="" />
+							<input type="radio" name="" />
+							<input type="radio" name="" />
 						</p>
 					</div>
 				</div>
