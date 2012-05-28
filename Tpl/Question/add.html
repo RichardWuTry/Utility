@@ -1,85 +1,163 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>添加考题</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
-<link rel="stylesheet" href="__PUBLIC__/css/examPaper.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script src="__PUBLIC__/javascript/paper.js"></script>
+<script>
+	$(function() {		
+		valignMainDiv();
+		
+		//change item number in drop down list
+		$('#item_num').change(function(){
+			var itemNumDdl = document.getElementById('item_num');
+			var selectNum = itemNumDdl[itemNumDdl.selectedIndex].value;
+			var itemCnt = $('ul.option li').length;
+			if (selectNum > itemCnt) {
+				for (var i=1; i<=selectNum-itemCnt; i++) {
+					$('ul.option').append('<li><input type="radio" name="option" /><input type="text" /></li>');
+				}
+			} else if (selectNum < itemCnt) {
+				$('ul.option li').filter(':gt(' + (selectNum - 1) + ')').remove();
+			}
+		});
+		
+		//click prev button
+		$('#prev').click(function(){
+			alert({$paper_id});
+			window.location = "__URL__/edit/p/{$paper_id}/q/{$prevQ}";
+		});
+		
+		//完成
+		$('#finish').click(function(){
+			if (validateThisForm()) {
+				
+			}
+		});
+		
+		$('#next').click(function() {
+			if (validateThisForm()) {
+				var itemStr = '';
+				
+				$('ul.option li').each(function(){
+					alert($(this).children('input[type="radio"]').attr('checked'));
+				});
+				//var thisForm = document.forms['addQuestionForm'];
+			}
+		});
+	});
+	
+	function validateThisForm() {
+		var isValid = true;
+		var helpMsg = $('#helpMsg');
+		
+		$('.non-empty').each(function(){
+			var labelText = $('label[for = "' + $(this).prop('id') + '"]').text();
+			var label = labelText.replace(/[:：]/g, "");
+			if (label == '') {
+				label = '选项';
+			}
+			isValid = validateNonEmpty(this, helpMsg[0], label + ' 不能为空', '');
+			return isValid;
+		});
+		
+		if (isValid) {
+			isValid = validateRadioChecked(document.getElementsByName('option'),
+										helpMsg[0],
+										'请点选正确答案', '');
+		}
+		
+		if (!isValid) {
+			helpMsg.show();
+		} else {
+			helpMsg.hide();
+		}
+		
+		return isValid;
+	}
+</script>	
 </head>
-<body>
-	<form method="post" action="__URL__/saveQuestion" id="addQuestionForm">
-		<header>
-			<table>
-				<tr>
-					<td>第{$currQ}题 / 共{$totalQ}题</td>
-					<td>
-						<label><input type="radio" name="ctrlType" value="radio" /> 单选题</label>
-					</td>
-					<td>
-						<label><input type="radio" name="ctrlType" value="checkbox" /> 多选题</label>
-					</td>
-					<td>
-						<label><input type="radio" name="ctrlType" value="textarea" /> 问答题</label>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-			</table>
-		</header>
-		<section id="content">
-			<div id="main">
-				<div>
-					<span id="helpMsg" class="hide"></span>
-				</div>
-				<div>
-					<div class="qBody">
-						<p>
-							<label for="question_name" class="vertical-top">试题：</label>
-							<textarea id="question_name" name="question_name" class="width-l height-s"></textarea>
-						</p>
-						<p>
-							<label for="item_num">选项数：</label>
-							<select id="item_num" class="width-s">
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4" selected="selected">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-							</select>
-						</p>
-						<p>
-							请填写各选项，并点选正确答案
-						</p>
-						<p>
-							<input type="radio" name="" />
-							<input type="radio" name="" />
-							<input type="radio" name="" />
-							<input type="radio" name="" />
-						</p>
-					</div>
+<body>	
+	<header>
+		<table>
+			<tr>
+				<td>第{$currQ}题 / 共{$totalQ}题</td>
+				<td>
+					<label><input type="radio" name="ctrlType" value="radio" checked="checked"/> 单选题</label>
+				</td>
+				<td>
+					<label><input type="radio" name="ctrlType" value="checkbox" /> 多选题</label>
+				</td>
+				<td>
+					<label><input type="radio" name="ctrlType" value="textarea" /> 问答题</label>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+		</table>
+	</header>
+	<section id="content">
+	<form method="post" action="__URL__/saveQuestion" id="addQuestionForm" name="addQuestionForm">
+		<div id="main">
+			<div>
+				<span id="helpMsg" class="hide"></span>
+			</div>
+			<div>
+				<div class="qBody">
+					<p>
+						<label for="question_name" class="vertical-top">试题：</label>
+						<textarea id="question_name" name="question_name" class="width-l height-s non-empty"></textarea>
+					</p>
+					<p>
+						<label for="item_num">选项数：</label>
+						<select id="item_num" class="width-s">
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4" selected="selected">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+						</select>
+					</p>
+					<p>
+						请填写各选项，并点选正确答案
+					</p>
+					<ul class="option">
+						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
+						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
+						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
+						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
+					</ul>
 				</div>
 			</div>
-		</section>
-		<footer>
-			<table>
-				<tr>
-					<td>
+		</div>
+		</form>
+	</section>
+	<footer>
+		<table>
+			<tr>
+				<td>
+					<if condition="$prevQ neq '0'">
 						<input id="prev" type="button" value="上一题" class="footer-btn" />
-					</td>
-					<td></td>
-					<td>
-						<input id="finish" type="button" value="完 成" class="footer-btn" />
-					</td>
-					<td></td>
-					<td>
-						<input id="next" type="submit" name="submit" value="下一题" class="footer-btn" />
-					</td>
-				</tr>
-			</table>
-		</footer>
-	</form>
+					</if>
+				</td>
+				<td></td>
+				<td>
+					<input id="finish" type="button" value="完 成" class="footer-btn" />
+				</td>
+				<td></td>
+				<td>
+					<input id="next" type="button" value="下一题" class="footer-btn" />
+				</td>
+			</tr>
+		</table>
+	</footer>
 </body>
 </html>	
 </body>

@@ -19,6 +19,7 @@ class QuestionAction extends Action {
 		$currQ = $totalQ;
 		$prevQ = $currQ - 1;
 		
+		$this->assign('paper_id', $paper_id);
 		$this->assign('currQ', $currQ);
 		$this->assign('totalQ', $totalQ);
 		$this->assign('prevQ', $prevQ);

@@ -1,10 +1,11 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>创建考卷</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
-<link rel="stylesheet" href="__PUBLIC__/css/examPaper.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script src="__PUBLIC__/javascript/paper.js"></script>
 <script>
 	$(function() {
 		valignMainDiv();
@@ -48,14 +49,6 @@
             dataType:	'json'
         });
 	});
-	
-	function valignMainDiv() {
-		var halfMainHeight = parseFloat($('#main').css('height').replace('px', ''))/2;
-		var halfContentHeight = parseFloat($('#content').css('height').replace('px', ''))/2;
-		if (halfContentHeight > halfMainHeight) {			
-			$('#main').css('padding-top', (halfContentHeight - halfMainHeight)/2 + 'px');
-		}
-	}
 	
 	function showResponse(data) {
 		if (data.status == 0) {
