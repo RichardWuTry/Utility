@@ -30,24 +30,30 @@
 			window.location = "__URL__/edit/p/{$paper_id}/q/{$prevQ}";
 		});
 		
+
+		
 		//完成
 		$('#finish').click(function(){
 			if (validateThisForm()) {
-				
+				submitThisForm();
 			}
 		});
 		
 		$('#next').click(function() {
 			if (validateThisForm()) {
-				var itemStr = '';
-				
-				$('ul.option li').each(function(){
-					alert($(this).children('input[type="radio"]').attr('checked'));
-				});
-				//var thisForm = document.forms['addQuestionForm'];
+				submitThisForm();
 			}
 		});
 	});
+	
+	function showResponse(data) {
+		if (data.status == 0) {
+			$('#helpMsg').html(data.info).show();
+		} else {
+			$('#helpMsg').html('考题添加成功').css('background-color', 'lightgreen').css('color', 'green').show();
+			setTimeout('window.location="' + data.info + '"', 2000 );
+		}
+	}
 	
 	function validateThisForm() {
 		var isValid = true;
@@ -64,9 +70,7 @@
 		});
 		
 		if (isValid) {
-			isValid = validateRadioChecked(document.getElementsByName('option'),
-										helpMsg[0],
-										'请点选正确答案', '');
+			isValid = validateRadioChecked(document.getElementsByName('option'), helpMsg[0], '请点选正确答案', '');
 		}
 		
 		if (!isValid) {
@@ -77,21 +81,41 @@
 		
 		return isValid;
 	}
+	
+	function submitThisForm() {
+		var ajaxOptions = { 
+			success:	showResponse,  // post-submit callback
+            dataType:	'json'
+		}; 
+	
+		var itemStr = '';
+		
+		$('ul.option li').each(function(){
+			itemStr += $(this).children('input[type="text"]').val();
+			itemStr += "|";
+			itemStr += $(this).children('input[type="radio"]').is(':checked') ? "1" : "0";
+			itemStr += ",";
+		});
+		document.forms['addQuestionForm']['itemStr'] = itemStr;		
+		
+		$('#addQuestionForm').ajaxSubmit(ajaxOptions);
+	}
 </script>	
 </head>
 <body>	
+	<form method="post" action="__URL__/save" id="addQuestionForm">
 	<header>
 		<table>
 			<tr>
 				<td>第{$currQ}题 / 共{$totalQ}题</td>
 				<td>
-					<label><input type="radio" name="ctrlType" value="radio" checked="checked"/> 单选题</label>
+					<label><input type="radio" name="question_type" value="radio" checked="checked"/> 单选题</label>
 				</td>
 				<td>
-					<label><input type="radio" name="ctrlType" value="checkbox" /> 多选题</label>
+					<label><input type="radio" name="question_type" value="checkbox" /> 多选题</label>
 				</td>
 				<td>
-					<label><input type="radio" name="ctrlType" value="textarea" /> 问答题</label>
+					<label><input type="radio" name="question_type" value="textarea" /> 问答题</label>
 				</td>
 				<td>
 					
@@ -99,8 +123,9 @@
 			</tr>
 		</table>
 	</header>
+
 	<section id="content">
-	<form method="post" action="__URL__/saveQuestion" id="addQuestionForm" name="addQuestionForm">
+	
 		<div id="main">
 			<div>
 				<span id="helpMsg" class="hide"></span>
@@ -110,6 +135,9 @@
 					<p>
 						<label for="question_name" class="vertical-top">试题：</label>
 						<textarea id="question_name" name="question_name" class="width-l height-s non-empty"></textarea>
+					</p>
+					<p class="hide">
+						<input type="text" name="question_score" value="0" />
 					</p>
 					<p>
 						<label for="item_num">选项数：</label>
@@ -137,8 +165,9 @@
 				</div>
 			</div>
 		</div>
-		</form>
+	
 	</section>
+	</form>
 	<footer>
 		<table>
 			<tr>
@@ -158,6 +187,7 @@
 			</tr>
 		</table>
 	</footer>
+
 </body>
 </html>	
 </body>

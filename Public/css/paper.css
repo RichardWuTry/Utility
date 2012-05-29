@@ -6,6 +6,10 @@ html, body {
 	height: 100%;
 }
 
+form {
+	height: 90%;
+}
+
 header, footer {
 	background-color: #4C88BE;
 	height: 10%;

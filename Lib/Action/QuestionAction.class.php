@@ -25,5 +25,14 @@ class QuestionAction extends Action {
 		$this->assign('prevQ', $prevQ);
 		$this->display();
 	}
+	
+	public function save() {
+		if (isset($_POST['option'])) {
+			$this->error($_POST['option']);
+		} else {
+			$this->error('option is not set');
+		}
+		
+	}
 }
 ?>
