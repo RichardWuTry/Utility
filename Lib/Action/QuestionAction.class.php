@@ -27,12 +27,28 @@ class QuestionAction extends Action {
 	}
 	
 	public function save() {
-		if (isset($_POST['option'])) {
-			$this->error($_POST['option']);
+		if ($this->isPost()) {
+			$QuestionHead = D('QuestionHead');
+			if ($QuestionHead->create()) {
+				
+				$QuestionHead->startTrans();
+				
+				if ($QuestionHeadId = $QuestionHead->add()) {
+					
+					
+					$QuestionHead->commit();
+					$this->success($QuestionHeadId);
+				} else {
+					$QuestionHead->rollback();
+					$this->error('写入数据库错误');
+				}
+				
+			} else {
+				$this->error($QuestionHead->getError());
+			}
 		} else {
-			$this->error('option is not set');
-		}
-		
+			redirect_to(__APP__.'/Paper/create');
+		}		
 	}
 }
 ?>

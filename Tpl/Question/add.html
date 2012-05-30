@@ -16,8 +16,9 @@
 			var selectNum = itemNumDdl[itemNumDdl.selectedIndex].value;
 			var itemCnt = $('ul.option li').length;
 			if (selectNum > itemCnt) {
-				for (var i=1; i<=selectNum-itemCnt; i++) {
-					$('ul.option').append('<li><input type="radio" name="option" /><input type="text" /></li>');
+				for (var i=itemCnt+1; i<=selectNum; i++) {
+					var liHtml = '<li><input type="radio" name="option" value="' + i + '" /><input type="text" name="' + i + '" /></li>';
+					$('ul.option').append(liHtml);
 				}
 			} else if (selectNum < itemCnt) {
 				$('ul.option li').filter(':gt(' + (selectNum - 1) + ')').remove();
@@ -87,16 +88,6 @@
 			success:	showResponse,  // post-submit callback
             dataType:	'json'
 		}; 
-	
-		var itemStr = '';
-		
-		$('ul.option li').each(function(){
-			itemStr += $(this).children('input[type="text"]').val();
-			itemStr += "|";
-			itemStr += $(this).children('input[type="radio"]').is(':checked') ? "1" : "0";
-			itemStr += ",";
-		});
-		document.forms['addQuestionForm']['itemStr'] = itemStr;		
 		
 		$('#addQuestionForm').ajaxSubmit(ajaxOptions);
 	}
@@ -133,7 +124,7 @@
 			<div>
 				<div class="qBody">
 					<p>
-						<label for="question_name" class="vertical-top">试题：</label>
+						<label for="question_name" class="vertical-top">考题：</label>
 						<textarea id="question_name" name="question_name" class="width-l height-s non-empty"></textarea>
 					</p>
 					<p class="hide">
@@ -157,10 +148,10 @@
 						请填写各选项，并点选正确答案
 					</p>
 					<ul class="option">
-						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
-						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
-						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
-						<li><input type="radio" name="option" /><input type="text" class="non-empty" /></li>
+						<li><input type="radio" name="option" value="1" /><input type="text" class="non-empty" name="1" /></li>
+						<li><input type="radio" name="option" value="2" /><input type="text" class="non-empty" name="2" /></li>
+						<li><input type="radio" name="option" value="3" /><input type="text" class="non-empty" name="3" /></li>
+						<li><input type="radio" name="option" value="4" /><input type="text" class="non-empty" name="4" /></li>
 					</ul>
 				</div>
 			</div>
