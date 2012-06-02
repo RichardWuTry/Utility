@@ -17,6 +17,23 @@ function validateRadioChecked(radioGrp, helpText, helpMessage, errorImgHtml) {
 	return false;	
 }
 
+function validateOptionChecked(optionGrp, helpText, helpMessage, errorImgHtml) {
+	for (var i = 0; i < optionGrp.length; i++) {
+		if (optionGrp[i].checked) {
+			if (helpText != null) {
+				helpText.innerHTML = "";
+			}
+			return true;
+		}
+	}
+	if (helpText != null) {
+		helpMessage = typeof helpMessage !== 'undefined' ? helpMessage : "此项必选";
+		errorImgHtml = typeof errorImgHtml !== 'undefined' ? errorImgHtml : defaultErrorImgHtml;
+		helpText.innerHTML = errorImgHtml + helpMessage;
+	}
+	return false;	
+}
+
 function validateRegEx(regex, input, helpText, helpMessage, errorImgHtml) {
 	// See if the input data validates OK
 	if (!regex.test(input)) {
