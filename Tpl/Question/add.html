@@ -45,19 +45,26 @@
 			}
 		});
 		
-		
+		//题型选择
 		$('input[name="question_type"]').change(function() {
-			var checkedQuestionType = $('input[name="question_type"]:checked');
-			if (checkedQuestionType.val() == 'radio') {
+			var checkedQuestionType = $('input[name="question_type"]:checked').val();
+			if (checkedQuestionType == 'radio') {
+				$('.option').show();
+				$('.input').hide();				
 				$('input[name="option[]"]').each(function(){
 					$(this).clone().attr('type', 'radio').insertAfter($(this));
 					$(this).remove();
 				});
-			} else if (checkedQuestionType.val() == 'checkbox') {
+			} else if (checkedQuestionType == 'checkbox') {
+				$('.option').show();
+				$('.input').hide();	
 				$('input[name="option[]"]').each(function() {
 					$(this).clone().attr('type', 'checkbox').insertAfter($(this));
 					$(this).remove();
 				});
+			} else if (checkedQuestionType == 'textarea') {
+				$('.option').hide();
+				$('.input').show();
 			} else {
 			
 			}
@@ -160,7 +167,7 @@
 						<input type="text" name="paper_id" value="{$paper_id}" />
 						<input type="text" name="question_seq" value="{$currQ}" />
 					</p>
-					<p>
+					<p class="option">
 						<label for="item_num">选项数：</label>
 						<select id="item_num" class="width-s">
 							<option value="2">2</option>
@@ -174,7 +181,7 @@
 							<option value="10">10</option>
 						</select>
 					</p>
-					<p>
+					<p class="option">
 						请填写各选项，并点选正确答案
 					</p>
 					<ul class="option">
@@ -191,6 +198,17 @@
 							<input type="radio" name="option[]" value="4" /><input type="text" class="non-empty" name="4" />
 						</li>
 					</ul>
+					<p class="input hide">
+						<label for="row_count">答题区域行数：</label>
+						<select id="row_count" name="row_count" class="width-s">
+							<option value="10" selected="selected">10行</option>
+							<option value="30">30行</option>
+							<option value="60">60行</option>							
+						</select>
+					</p>
+					<p class="input hide">
+						<textarea id="input_area" rows="10" class="width-xl" disabled="disabled"></textarea>
+					</p>
 				</div>
 			</div>
 		</div>

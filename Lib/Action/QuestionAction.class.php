@@ -26,7 +26,7 @@ class QuestionAction extends Action {
 		$this->display();
 	}
 	
-	public function save() {		
+	public function save() {
 		if ($this->isPost()) {
 			$QuestionHead = D('QuestionHead');
 			if ($QuestionHead->create()) {				
@@ -36,24 +36,31 @@ class QuestionAction extends Action {
 					$flag = false;
 				}
 				
+				$qType = $_POST['question_type'];
 				if ($flag) {
-					$QuestionDetail = M('QuestionDetail');
-					$currDateTime = date("Y-m-d H:i:s");
-					$i = 1;
-					$options = $_POST['option'];
-					while (isset($_POST[$i])) {
-						$data[$i-1]['question_id'] = $QuestionHeadId;
-						$data[$i-1]['item_name'] = $_POST[$i];
-						if (in_array($i, $options)) {
-							$data[$i-1]['correct_value'] = '1';
-						} else {
-							$data[$i-1]['correct_value'] = '0';
+					if ($qType == 'radio' || $qType == 'checkbox') {
+						$OptionDetail = M('OptionDetail');
+						$currDateTime = date("Y-m-d H:i:s");
+						$i = 1;
+						$options = $_POST['option'];
+						while (isset($_POST[$i])) {
+							$data[$i-1]['question_id'] = $QuestionHeadId;
+							$data[$i-1]['item_name'] = $_POST[$i];
+							if (in_array($i, $options)) {
+								$data[$i-1]['correct_value'] = '1';
+							} else {
+								$data[$i-1]['correct_value'] = '0';
+							}
+							$data[$i-1]['create_at'] = $currDateTime;
+							$i++;
 						}
-						$data[$i-1]['create_at'] = $currDateTime;
-						$i++;
-					}
-					if (!$QuestionDetail->addAll($data)) {
-						$flag = false;					
+						if (!$OptionDetail->addAll($data)) {
+							$flag = false;					
+						}
+					} else if ($qType == 'textarea') {
+					
+					} else {
+					
 					}
 				}				
 				
