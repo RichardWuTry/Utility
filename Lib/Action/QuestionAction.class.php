@@ -16,14 +16,61 @@ class QuestionAction extends Action {
 		} else {
 			$totalQ = 1;
 		}
-		$currQ = $totalQ;
-		$prevQ = $currQ - 1;
+		$currSeq = $totalQ;
+		$prevSeq = $currSeq - 1;
 		
 		$this->assign('paper_id', $paper_id);
-		$this->assign('currQ', $currQ);
+		$this->assign('currSeq', $currSeq);
 		$this->assign('totalQ', $totalQ);
-		$this->assign('prevQ', $prevQ);
+		$this->assign('prevSeq', $prevSeq);
 		$this->display();
+	}
+	
+	public function edit() {
+		if ((!isset($_GET['p']) || !isset($_GET['s']))
+			&& !isset($_GET['q'])) {
+			redirect_to(__APP__.'/Paper/create');
+		}
+		$paper_id = $_GET['p'];
+		$currSeq = intval($_GET['s']);
+		$prevSeq = $currSeq - 1;
+		$PaperQuestion = M('PaperQuestion');
+		if ($seq_max = $PaperQuestion->where("paper_id = $paper_id")
+									->max('question_seq')) {
+			$totalQ = intval($seq_max);
+			if ($currSeq < $totalQ) {
+				$nextSeq = $currSeq + 1;
+			} else {
+				$nextSeq = 0;
+			}
+			
+			if ($question_id = $PaperQuestion
+							->where("paper_id = $paper_id and question_seq = $currSeq")
+							->getField('question_id')) {
+				$QuestionHead = M('QuestionHead');
+				if ($question_head = $QuestionHead
+									->where("question_id = $question_id")
+									->field('question_name, question_type')
+									->find()) {
+					$qType = $question_head['question_type'];
+					if ($qType == 'radio' || $qType == 'checkbox') {
+						$OptionDetail = M('OptionDetail');
+						$option_detail = $OptionDetail
+										->where("question_id = $question_id")
+										->field('item_name, correct_value')
+										->find();
+					} else if ($qType == 'textarea') {
+						$InputDetail = M('InputDetail');
+						$input_detail = $InputDetail
+										->where("question_id = $question_id")
+										->field('row_count')
+										->find();
+					} else {
+					
+					}
+				} 
+			}
+		}
 	}
 	
 	public function save() {
@@ -37,10 +84,10 @@ class QuestionAction extends Action {
 				}
 				
 				$qType = $_POST['question_type'];
+				$currDateTime = date("Y-m-d H:i:s");
 				if ($flag) {
 					if ($qType == 'radio' || $qType == 'checkbox') {
-						$OptionDetail = M('OptionDetail');
-						$currDateTime = date("Y-m-d H:i:s");
+						$OptionDetail = M('OptionDetail');						
 						$i = 1;
 						$options = $_POST['option'];
 						while (isset($_POST[$i])) {
@@ -58,7 +105,14 @@ class QuestionAction extends Action {
 							$flag = false;					
 						}
 					} else if ($qType == 'textarea') {
-					
+						$inputDetailData['question_id'] = $QuestionHeadId;
+						$inputDetailData['row_count'] = $_POST['row_count'];
+						$inputDetailData['create_at'] = $currDateTime;
+						
+						$InputDetail = M('InputDetail');						
+						if (!$InputDetail->add($inputDetailData)) {
+							$flag = false;
+						}
 					} else {
 					
 					}

@@ -7,7 +7,14 @@
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script>
-	$(function() {		
+	$(function() {				
+		var optionTpl = $('.option');
+		var inputTpl = $('.input');
+		
+		//初始化模板
+		inputTpl.remove();
+	
+		//垂直对齐各元素
 		valignMainDiv();
 		
 		//change item number in drop down list
@@ -26,9 +33,16 @@
 			}
 		});
 		
+		//改变 答题区域行数
+		$('.qBody').on('change', '#row_count', function(){
+			var rowCntDdl = document.getElementById('row_count');
+			var selectCnt = rowCntDdl[rowCntDdl.selectedIndex].value;
+			$('#input_area').attr('rows', selectCnt);
+		});
+		
 		//click prev button
 		$('#prev').click(function(){
-			window.location = "__URL__/edit/p/{$paper_id}/q/{$prevQ}";
+			window.location = "__URL__/edit/p/{$paper_id}/s/{$prevSeq}";
 		});
 				
 		//完成
@@ -49,26 +63,29 @@
 		$('input[name="question_type"]').change(function() {
 			var checkedQuestionType = $('input[name="question_type"]:checked').val();
 			if (checkedQuestionType == 'radio') {
-				$('.option').show();
-				$('.input').hide();				
+				inputTpl.remove();
+				$('.qBody').append(optionTpl);
+				
 				$('input[name="option[]"]').each(function(){
 					$(this).clone().attr('type', 'radio').insertAfter($(this));
 					$(this).remove();
 				});
 			} else if (checkedQuestionType == 'checkbox') {
-				$('.option').show();
-				$('.input').hide();	
+				inputTpl.remove();
+				$('.qBody').append(optionTpl);
+				
 				$('input[name="option[]"]').each(function() {
 					$(this).clone().attr('type', 'checkbox').insertAfter($(this));
 					$(this).remove();
 				});
 			} else if (checkedQuestionType == 'textarea') {
-				$('.option').hide();
-				$('.input').show();
+				optionTpl.remove();
+				$('.qBody').append(inputTpl);
 			} else {
 			
 			}
 		});
+
 	});
 	
 	function showResponse(data) {
@@ -100,8 +117,9 @@
 			return isValid;
 		});
 		
-		if (isValid) {
-			isValid = validateOptionChecked(document.getElementsByName('option[]'), helpMsg[0], '请点选正确答案', '');
+		var optionGrp = document.getElementsByName('option[]');
+		if (isValid && optionGrp.length > 0) {
+			isValid = validateOptionChecked(optionGrp, helpMsg[0], '请点选正确答案', '');
 		}
 		
 		if (!isValid) {
@@ -131,7 +149,7 @@
 			<tr>
 				<td>
 					<if condition="$paper_id neq '0'">
-						第{$currQ}题 / 共{$totalQ}题
+						第{$currSeq}题 / 共{$totalQ}题
 					</if>				
 				</td>
 				<td>
@@ -164,8 +182,10 @@
 					</p>
 					<p class="hide">
 						<input type="text" name="question_score" value="0" />
-						<input type="text" name="paper_id" value="{$paper_id}" />
-						<input type="text" name="question_seq" value="{$currQ}" />
+						<if condition="$paper_id neq '0'">
+							<input type="text" name="paper_id" value="{$paper_id}" />
+						</if>
+						<input type="text" name="question_seq" value="{$currSeq}" />
 					</p>
 					<p class="option">
 						<label for="item_num">选项数：</label>
@@ -198,7 +218,7 @@
 							<input type="radio" name="option[]" value="4" /><input type="text" class="non-empty" name="4" />
 						</li>
 					</ul>
-					<p class="input hide">
+					<p class="input">
 						<label for="row_count">答题区域行数：</label>
 						<select id="row_count" name="row_count" class="width-s">
 							<option value="10" selected="selected">10行</option>
@@ -206,7 +226,7 @@
 							<option value="60">60行</option>							
 						</select>
 					</p>
-					<p class="input hide">
+					<p class="input">
 						<textarea id="input_area" rows="10" class="width-xl" disabled="disabled"></textarea>
 					</p>
 				</div>
@@ -219,7 +239,7 @@
 		<table>
 			<tr>
 				<td>
-					<if condition="$prevQ neq '0'">
+					<if condition="$prevSeq neq '0'">
 						<input id="prev" type="button" value="上一题" class="footer-btn" />
 					</if>
 				</td>
