@@ -99,7 +99,7 @@ class QuestionAction extends Action {
 		if (!isset($_GET['q'])) {
 			$this->error('页面错误');
 		}
-		$question_id = $_GET['p'];
+		$question_id = $_GET['q'];
 		
 		$QuestionHead = M('QuestionHead');
 		if ($question_head = $QuestionHead
@@ -124,7 +124,9 @@ class QuestionAction extends Action {
 			}
 			$this->assign('question_head', $question_head);
 			if (isset($_GET['p']) && isset($_GET['s'])) {
-				$this->assign('fromUrl', __URL__."/review/p/$_GET['p']/s/$_GET['s']");
+				$p = $_GET['p'];
+				$s = $_GET['s'];
+				$this->assign('fromUrl', __URL__."/review/p/$p/s/$s");
 			}
 			$this->display();
 		}

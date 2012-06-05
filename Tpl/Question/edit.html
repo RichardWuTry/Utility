@@ -17,28 +17,38 @@
 		//垂直对齐各元素
 		valignMainDiv();
 		
-		//改变 选项数
-		$('#item_num').change(function(){
-			var itemNumDdl = document.getElementById('item_num');
-			var selectNum = itemNumDdl[itemNumDdl.selectedIndex].value;
-			var itemCnt = $('ul.option li').length;
-			if (selectNum > itemCnt) {
-				for (var i=itemCnt+1; i<=selectNum; i++) {
-					var qType = $('input[name="question_type"]:checked').val();
-					var liHtml = '<li><input type="' + qType + '" name="option[]" value="' + i + '" /><input type="text" class="non-empty" name="' + i + '" /></li>';
-					$('ul.option').append(liHtml);
-				}
-			} else if (selectNum < itemCnt) {
-				$('ul.option li').filter(':gt(' + (selectNum - 1) + ')').remove();
-			}
-		});
+		<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">
+			//初始化 选项数
+			$('#item_num').val($('ul.option li').length);
 		
-		//改变 答题区域行数
-		$('.qBody').on('change', '#row_count', function(){
-			var rowCntDdl = document.getElementById('row_count');
-			var selectCnt = rowCntDdl[rowCntDdl.selectedIndex].value;
-			$('#input_area').attr('rows', selectCnt);
-		});
+			//改变 选项数
+			$('#item_num').change(function(){
+				var itemNumDdl = document.getElementById('item_num');
+				var selectNum = itemNumDdl[itemNumDdl.selectedIndex].value;
+				var itemCnt = $('ul.option li').length;
+				if (selectNum > itemCnt) {
+					for (var i=itemCnt+1; i<=selectNum; i++) {
+						var qType = $('input[name="option[]"]').attr('type');
+						var liHtml = '<li><input type="' + qType + '" name="option[]" value="' + i + '" /><input type="text" class="non-empty" name="' + i + '" /></li>';
+						$('ul.option').append(liHtml);
+					}
+				} else if (selectNum < itemCnt) {
+					$('ul.option li').filter(':gt(' + (selectNum - 1) + ')').remove();
+				}
+			});
+		</if>
+		
+		<if condition="$question_head.question_type eq 'textarea'">
+			//初始化 选项数
+			$('#row_count').val({$input_detail.row_count});
+			
+			//改变 答题区域行数
+			$('.qBody').on('change', '#row_count', function(){
+				var rowCntDdl = document.getElementById('row_count');
+				var selectCnt = rowCntDdl[rowCntDdl.selectedIndex].value;
+				$('#input_area').attr('rows', selectCnt);
+			});
+		</if>
 		
 		//上一题
 		$('#prev').click(function(){
@@ -48,44 +58,16 @@
 		//完成
 		$('#finish').click(function(){			
 			if (validateThisForm()) {
-				submitThisForm($(this).attr('id'));
+				submitThisForm($(this).attr('id'), $('#editQuestionForm'));
 			}
 		});
 		
 		//下一题
 		$('#next').click(function() {
 			if (validateThisForm()) {
-				submitThisForm($(this).attr('id'));
+				submitThisForm($(this).attr('id'), $('#editQuestionForm'));
 			}
 		});
-		
-		//题型选择
-		$('input[name="question_type"]').change(function() {
-			var checkedQuestionType = $('input[name="question_type"]:checked').val();
-			if (checkedQuestionType == 'radio') {
-				inputTpl.remove();
-				$('.qBody').append(optionTpl);
-				
-				$('input[name="option[]"]').each(function(){
-					$(this).clone().attr('type', 'radio').insertAfter($(this));
-					$(this).remove();
-				});
-			} else if (checkedQuestionType == 'checkbox') {
-				inputTpl.remove();
-				$('.qBody').append(optionTpl);
-				
-				$('input[name="option[]"]').each(function() {
-					$(this).clone().attr('type', 'checkbox').insertAfter($(this));
-					$(this).remove();
-				});
-			} else if (checkedQuestionType == 'textarea') {
-				optionTpl.remove();
-				$('.qBody').append(inputTpl);
-			} else {
-			
-			}
-		});
-
 	});
 	
 	function showResponse(data) {
@@ -102,48 +84,10 @@
 			setTimeout('window.location="' + url + '"', 2000 );
 		}
 	}
-	
-	function validateThisForm() {
-		var isValid = true;
-		var helpMsg = $('#helpMsg');
-		
-		$('.non-empty').each(function(){
-			var labelText = $('label[for = "' + $(this).prop('id') + '"]').text();
-			var label = labelText.replace(/[:：]/g, "");
-			if (label == '') {
-				label = '选项';
-			}
-			isValid = validateNonEmpty(this, helpMsg[0], label + ' 不能为空', '');
-			return isValid;
-		});
-		
-		var optionGrp = document.getElementsByName('option[]');
-		if (isValid && optionGrp.length > 0) {
-			isValid = validateOptionChecked(optionGrp, helpMsg[0], '请点选正确答案', '');
-		}
-		
-		if (!isValid) {
-			helpMsg.show();
-		} else {
-			helpMsg.hide();
-		}
-		
-		return isValid;
-	}
-	
-	function submitThisForm(elementId) {
-		var ajaxOptions = { 
-			success:	showResponse,  // post-submit callback
-            dataType:	'json',
-			data: {eid: elementId}
-		}; 
-		
-		$('#addQuestionForm').ajaxSubmit(ajaxOptions);
-	}
 </script>	
 </head>
 <body>	
-	<form method="post" action="__URL__/save" id="addQuestionForm">
+	<form method="post" action="__URL__/save" id="editQuestionForm">
 	<header>
 		<table>
 			<tr>
@@ -151,13 +95,13 @@
 		
 				</td>
 				<td>
-					<label><input type="radio" name="question_type" value="radio" checked="checked"/> 单选题</label>
+					
 				</td>
 				<td>
-					<label><input type="radio" name="question_type" value="checkbox" /> 多选题</label>
+					
 				</td>
 				<td>
-					<label><input type="radio" name="question_type" value="textarea" /> 问答题</label>
+					
 				</td>
 				<td>
 					
@@ -176,50 +120,47 @@
 				<div class="qBody">
 					<p>
 						<label for="question_name" class="vertical-top">考题：</label>
-						<textarea id="question_name" name="question_name" class="width-l height-s non-empty"></textarea>
+						<textarea id="question_name" name="question_name" class="width-l height-s non-empty">{$question_head.question_name}</textarea>
 					</p>
-					<p class="option">
-						<label for="item_num">选项数：</label>
-						<select id="item_num" class="width-s">
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4" selected="selected">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							<option value="10">10</option>
-						</select>
-					</p>
-					<p class="option">
-						请填写各选项，并点选正确答案
-					</p>
-					<ul class="option">
-						<li>
-							<input type="radio" name="option[]" value="1" /><input type="text" class="non-empty" name="1" />
-						</li>
-						<li>
-							<input type="radio" name="option[]" value="2" /><input type="text" class="non-empty" name="2" />
-						</li>
-						<li>
-							<input type="radio" name="option[]" value="3" /><input type="text" class="non-empty" name="3" />
-						</li>
-						<li>
-							<input type="radio" name="option[]" value="4" /><input type="text" class="non-empty" name="4" />
-						</li>
-					</ul>
-					<p class="input">
-						<label for="row_count">答题区域行数：</label>
-						<select id="row_count" name="row_count" class="width-s">
-							<option value="10" selected="selected">10行</option>
-							<option value="30">30行</option>
-							<option value="60">60行</option>							
-						</select>
-					</p>
-					<p class="input">
-						<textarea id="input_area" rows="10" class="width-xl" disabled="disabled"></textarea>
-					</p>
+					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">
+						<p class="option">
+							<label for="item_num">选项数：</label>
+							<select id="item_num" class="width-s">
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</p>
+						<p class="option">
+							请填写各选项，并点选正确答案
+						</p>						
+						<ul class="option">
+							<volist name="option_detail" id="item">
+								<li>
+									<input type="{$question_head.question_type}" name="option[]" value="{$key+1}" /><input type="text" class="non-empty" name="{$key+1}" value="{$item.item_name}" />
+								</li>
+							</volist>
+						</ul>
+					</if>
+					<if condition="$question_head.question_type eq 'textarea'">
+						<p class="input">
+							<label for="row_count">答题区域行数：</label>
+							<select id="row_count" name="row_count" class="width-s">
+								<option value="10">10行</option>
+								<option value="30">30行</option>
+								<option value="60">60行</option>							
+							</select>
+						</p>
+						<p class="input">
+							<textarea id="input_area" rows="{$input_detail.row_count}" class="width-xl" disabled="disabled"></textarea>
+						</p>
+					</if>
 				</div>
 			</div>
 		</div>
