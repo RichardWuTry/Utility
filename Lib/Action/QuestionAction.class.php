@@ -1,76 +1,27 @@
 <?php
 class QuestionAction extends Action {	
 	public function add() {
-		// if (!isset($_GET['p'])) {
-			// redirect_to(__APP__.'/Paper/create');
-			// return;
+		// $paper_id = isset($_GET['p']) ? $_GET['p'] : 0;
+		
+		// $totalQ = 0;
+		// $PaperQuestion = M('PaperQuestion');
+		// if ($seq_max = $PaperQuestion
+						// ->where("paper_id = $paper_id")
+						// ->max('question_seq')) {
+			// $totalQ = intval($seq_max) + 1;
+		// } else {
+			// $totalQ = 1;
 		// }
-		$paper_id = isset($_GET['p']) ? $_GET['p'] : 0;
+		// $currSeq = $totalQ;
+		// $prevSeq = $currSeq - 1;
 		
-		$totalQ = 0;
-		$PaperQuestion = M('PaperQuestion');
-		if ($seq_max = $PaperQuestion
-						->where("paper_id = $paper_id")
-						->max('question_seq')) {
-			$totalQ = intval($seq_max) + 1;
-		} else {
-			$totalQ = 1;
-		}
-		$currSeq = $totalQ;
-		$prevSeq = $currSeq - 1;
-		
-		$this->assign('paper_id', $paper_id);
-		$this->assign('currSeq', $currSeq);
-		$this->assign('totalQ', $totalQ);
-		$this->assign('prevSeq', $prevSeq);
+		// $this->assign('paper_id', $paper_id);
+		// $this->assign('currSeq', $currSeq);
+		// $this->assign('totalQ', $totalQ);
+		// $this->assign('prevSeq', $prevSeq);
+		$QuestionNav = new QuestionNav($_GET['p'], 0, 'add');
+		$this->assign('QuestionNav', $QuestionNav);
 		$this->display();
-	}
-	
-	public function edit() {
-		if ((!isset($_GET['p']) || !isset($_GET['s']))
-			&& !isset($_GET['q'])) {
-			redirect_to(__APP__.'/Paper/create');
-		}
-		$paper_id = $_GET['p'];
-		$currSeq = intval($_GET['s']);
-		$prevSeq = $currSeq - 1;
-		$PaperQuestion = M('PaperQuestion');
-		if ($seq_max = $PaperQuestion->where("paper_id = $paper_id")
-									->max('question_seq')) {
-			$totalQ = intval($seq_max);
-			if ($currSeq < $totalQ) {
-				$nextSeq = $currSeq + 1;
-			} else {
-				$nextSeq = 0;
-			}
-			
-			if ($question_id = $PaperQuestion
-							->where("paper_id = $paper_id and question_seq = $currSeq")
-							->getField('question_id')) {
-				$QuestionHead = M('QuestionHead');
-				if ($question_head = $QuestionHead
-									->where("question_id = $question_id")
-									->field('question_name, question_type')
-									->find()) {
-					$qType = $question_head['question_type'];
-					if ($qType == 'radio' || $qType == 'checkbox') {
-						$OptionDetail = M('OptionDetail');
-						$option_detail = $OptionDetail
-										->where("question_id = $question_id")
-										->field('item_name, correct_value')
-										->find();
-					} else if ($qType == 'textarea') {
-						$InputDetail = M('InputDetail');
-						$input_detail = $InputDetail
-										->where("question_id = $question_id")
-										->field('row_count')
-										->find();
-					} else {
-					
-					}
-				} 
-			}
-		}
 	}
 	
 	public function save() {
@@ -142,6 +93,119 @@ class QuestionAction extends Action {
 		} else {
 			redirect_to(__APP__.'/Paper/create');
 		}		
+	}
+	
+	public function edit() {
+		if (!isset($_GET['q'])) {
+			$this->error('页面错误');
+		}
+		$question_id = $_GET['p'];
+		
+		$QuestionHead = M('QuestionHead');
+		if ($question_head = $QuestionHead
+							->where("question_id = $question_id")
+							->field('question_id, question_name, question_type')
+							->find()) {
+			$qType = $question_head['question_type'];
+			if ($qType == 'radio' || $qType == 'checkbox') {
+				$OptionDetail = M('OptionDetail');
+				$option_detail = $OptionDetail
+								->where("question_id = $question_id")
+								->field('item_name, correct_value')
+								->select();
+				$this->assign('option_detail', $option_detail);
+			} else if ($qType == 'textarea') {
+				$InputDetail = M('InputDetail');
+				$input_detail = $InputDetail
+								->where("question_id = $question_id")
+								->field('row_count')
+								->find();
+				$this->assign('input_detail', $input_detail);
+			}
+			$this->assign('question_head', $question_head);
+			if (isset($_GET['p']) && isset($_GET['s'])) {
+				$this->assign('fromUrl', __URL__."/review/p/$_GET['p']/s/$_GET['s']");
+			}
+			$this->display();
+		}
+	}
+	
+	public function review() {
+		$QuestionNav = new QuestionNav($_GET['p'], $_GET['s'], 'review');
+		if ($question_id = $this->getQuestionId($QuestionNav->paper_id, $QuestionNav->currSeq)) {
+			$QuestionHead = M('QuestionHead');
+			if ($question_head = $QuestionHead
+								->where("question_id = $question_id")
+								->field('question_id, question_name, question_type')
+								->find()) {
+				$qType = $question_head['question_type'];
+				if ($qType == 'radio' || $qType == 'checkbox') {
+					$OptionDetail = M('OptionDetail');
+					$option_detail = $OptionDetail
+									->where("question_id = $question_id")
+									->field('item_name, correct_value')
+									->select();
+					$this->assign('option_detail', $option_detail);
+				} else if ($qType == 'textarea') {
+					$InputDetail = M('InputDetail');
+					$input_detail = $InputDetail
+									->where("question_id = $question_id")
+									->field('row_count')
+									->find();
+					$this->assign('input_detail', $input_detail);
+				}
+				$this->assign('question_head', $question_head);
+				$this->assign('QuestionNav', $QuestionNav);
+				$this->display();
+			}			
+		}		
+	}
+
+	private function getQuestionId($pId, $seqId) {
+		$PaperQuestion = M('PaperQuestion');
+		if ($question_id = $PaperQuestion
+							->where("paper_id = $pId and question_seq = $seqId")
+							->getField('question_id')) {
+			return $question_id;
+		} else {
+			return false;
+		}
+	}
+}
+
+class QuestionNav {
+	public $paper_id = 0;
+	public $currSeq = 0;
+	public $prevSeq = 0;
+	public $nextSeq = 0;
+	public $totalQ = 0;
+	
+	public function __construct($pid, $seq, $action) {
+		$this->paper_id = empty($pid) ? 0 : intval($pid);
+		//向题库添加新题
+		if ($this->paper_id == 0) {
+			return;
+		}
+		$PaperQuestion = M('PaperQuestion');
+		//获得该考卷最大question_seq，若取不到则保持为0
+		if ($seq_max = $PaperQuestion->where("paper_id = $this->paper_id")
+									->max('question_seq')) {
+			$this->totalQ = intval($seq_max);
+		}
+								
+		if ($action == 'add') {
+			$this->totalQ++;
+			$this->currSeq = $this->totalQ;			
+			$this->nextSeq = 0;
+		} else if ($action == 'review') {
+			$this->currSeq = empty($seq) ? 1 : intval($seq);
+			if ($this->currSeq < $this->totalQ) {
+				$this->nextSeq = $this->currSeq + 1;
+			} else {
+				$this->nextSeq = 0;
+			}
+		} 
+		$this->prevSeq = $this->currSeq - 1;
 	}
 }
 ?>

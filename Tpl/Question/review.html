@@ -1,0 +1,126 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考题预览</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/paper.js"></script>
+<script>
+	$(function() {	
+		//垂直对齐各元素
+		valignMainDiv();		
+		
+		<if condition="$QuestionNav:prevSeq neq '0'">
+			//上一题
+			$('#prev').click(function(){
+				window.location = "__URL__/review/p/{$QuestionNav:paper_id}/s/{$QuestionNav:prevSeq}";
+			});
+		</if>
+				
+		//修改
+		$('#edit').click(function() {
+			window.location = "__URL__/edit/q/{$question_head.question_id}/p/{$QuestionNav:paper_id}/s/{$QuestionNav:currSeq}";
+		});
+		
+		//完成
+		$('#finish').click(function(){			
+			window.location = "__URL__/list/p/{$QuestionNav:paper_id}";
+		});
+			
+		//下一题
+		$('#next').click(function() {
+			<if condition="$QuestionNav:nextSeq neq '0'">
+				window.location = "__URL__/review/p/{$QuestionNav:paper_id}/s/{$QuestionNav:nextSeq}";
+			<else />
+				window.location = "__URL__/add/p/{$QuestionNav:paper_id}";
+			</if>
+		});
+	});
+</script>	
+</head>
+<body>	
+	<header>
+		<table>
+			<tr>
+				<td>
+					<if condition="$QuestionNav:paper_id neq '0'">
+						第{$QuestionNav:currSeq}题 / 共{$QuestionNav:totalQ}题
+					</if>				
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+		</table>
+	</header>
+
+	<section id="content">
+	
+		<div id="main">
+			<div>
+				<span id="helpMsg" class="hide"></span>
+			</div>
+			<div>
+				<div class="qBody">
+					<p class="width-l">
+						{$question_head.question_name}
+					</p>
+					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">					
+						<ul class="option">
+							<volist name="option_detail" id="item">
+								<li>
+									<label><input type="{$question_head.question_type}" />{$item.item_name}</label>
+								</li>
+							</volist>							
+						</ul>
+					</if>
+					<if condition="$question_head.question_type eq 'textarea'">
+						<p class="input">
+							<textarea id="input_area" rows="{$input_detail.row_count}" class="width-xl"></textarea>
+						</p>
+					</if>
+				</div>
+			</div>
+		</div>
+	
+	</section>
+	<footer>
+		<table>
+			<tr>
+				<td>
+					<if condition="$QuestionNav:prevSeq neq '0'">
+						<input id="prev" type="button" value="上一题" class="footer-btn" />
+					</if>
+				</td>
+				<td>
+					<input id="edit" type="button" value="修 改" class="footer-btn" />
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					<input id="finish" type="button" value="完 成" class="footer-btn" />
+				</td>
+				<td>
+					<if condition="$QuestionNav:nextSeq neq '0'">
+						<input id="next" type="button" value="下一题" class="footer-btn" />
+					<else />
+						<input id="next" type="button" value="创建新题" class="footer-btn" />
+					</if>
+				</td>
+			</tr>
+		</table>
+	</footer>
+
+</body>
+</html>	
+</body>
+</html>

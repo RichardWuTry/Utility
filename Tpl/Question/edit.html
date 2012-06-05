@@ -1,5 +1,5 @@
 <include file="./Tpl/Public/headstart.html" />
-<title>添加考题</title>
+<title>修改考题</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -148,9 +148,7 @@
 		<table>
 			<tr>
 				<td>
-					<if condition="$QuestionNav:paper_id neq '0'">
-						第{$QuestionNav:currSeq}题 / 共{$QuestionNav:totalQ}题
-					</if>				
+		
 				</td>
 				<td>
 					<label><input type="radio" name="question_type" value="radio" checked="checked"/> 单选题</label>
@@ -179,13 +177,6 @@
 					<p>
 						<label for="question_name" class="vertical-top">考题：</label>
 						<textarea id="question_name" name="question_name" class="width-l height-s non-empty"></textarea>
-					</p>
-					<p class="hide">
-						<input type="text" name="question_score" value="0" />
-						<if condition="$QuestionNav:paper_id neq '0'">
-							<input type="text" name="paper_id" value="{$QuestionNav:paper_id}" />
-						</if>
-						<input type="text" name="question_seq" value="{$QuestionNav:currSeq}" />
 					</p>
 					<p class="option">
 						<label for="item_num">选项数：</label>
@@ -239,17 +230,15 @@
 		<table>
 			<tr>
 				<td>
-					<if condition="$QuestionNav:prevSeq neq '0'">
-						<input id="prev" type="button" value="上一题" class="footer-btn" />
-					</if>
+					<input id="cancel" type="button" value="取 消" class="footer-btn" />
 				</td>
 				<td></td>
 				<td>
-					<input id="finish" type="button" value="完 成" class="footer-btn" />
+					
 				</td>
 				<td></td>
 				<td>
-					<input id="next" type="button" value="创建新题" class="footer-btn" />
+					<input id="save" type="button" value="确 定" class="footer-btn" />
 				</td>
 			</tr>
 		</table>
