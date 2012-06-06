@@ -118,7 +118,7 @@ class QuestionAction extends Action {
 				$InputDetail = M('InputDetail');
 				$input_detail = $InputDetail
 								->where("question_id = $question_id")
-								->field('row_count')
+								->field('input_detail_id, row_count')
 								->find();
 				$this->assign('input_detail', $input_detail);
 			}
@@ -130,6 +130,69 @@ class QuestionAction extends Action {
 			}
 			$this->display();
 		}
+	}
+	
+	public function update() {
+		if (!$this->isPost()) {
+			$this->error('页面错误');
+		}
+		
+		$qId = $_POST['question_id'];
+		$QuestionHead = M('QuestionHead');
+		$qHeadData['question_id'] = $qId;
+		$qHeadData['question_name'] = $_POST['question_name'];
+		$QuestionHead->startTrans();
+		$flag = true;
+		
+		if (false === $QuestionHead->save($qHeadData)) {
+			$flag = false;
+		}		
+		
+		$qType = $_POST['question_type'];
+		$currDateTime = date("Y-m-d H:i:s");
+		if ($flag) {
+			if ($qType == 'radio' || $qType == 'checkbox') {
+				$OptionDetail = M('OptionDetail');
+				if (false === $OptionDetail->where("question_id = $qId")->delete()) {
+					$flag = false;
+				}
+				
+				if ($flag) {
+					$i = 1;
+					$options = $_POST['option'];
+					while (isset($_POST[$i])) {
+						$data[$i-1]['question_id'] = $qId;
+						$data[$i-1]['item_name'] = $_POST[$i];
+						if (in_array($i, $options)) {
+							$data[$i-1]['correct_value'] = '1';
+						} else {
+							$data[$i-1]['correct_value'] = '0';
+						}
+						$data[$i-1]['create_at'] = $currDateTime;
+						$i++;
+					}
+					if (!$OptionDetail->addAll($data)) {
+						$flag = false;					
+					}
+				}
+			} else if ($qType == 'textarea') {
+				$inputDetailData['input_detail_id'] = $_POST['input_detail_id'];
+				$inputDetailData['row_count'] = $_POST['row_count'];
+				
+				$InputDetail = M('InputDetail');						
+				if (false === $InputDetail->save($inputDetailData)) {
+					$flag = false;
+				}
+			}
+		}
+		
+		if ($flag) {				
+			$QuestionHead->commit();
+			$this->success();
+		} else {
+			$QuestionHead->rollback();
+			$this->error('写入数据库错误');
+		}	
 	}
 	
 	public function review() {

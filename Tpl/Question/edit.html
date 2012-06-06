@@ -8,12 +8,6 @@
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script>
 	$(function() {				
-		var optionTpl = $('.option');
-		var inputTpl = $('.input');
-		
-		//初始化模板
-		inputTpl.remove();
-	
 		//垂直对齐各元素
 		valignMainDiv();
 		
@@ -50,44 +44,31 @@
 			});
 		</if>
 		
-		//上一题
-		$('#prev').click(function(){
-			window.location = "__URL__/review/p/{$QuestionNav:paper_id}/s/{$QuestionNav:prevSeq}";
+		//取消
+		$('#cancel').click(function(){
+			window.location = "{$fromUrl}";
 		});
-				
+		
 		//完成
 		$('#finish').click(function(){			
 			if (validateThisForm()) {
 				submitThisForm($(this).attr('id'), $('#editQuestionForm'));
 			}
 		});
-		
-		//下一题
-		$('#next').click(function() {
-			if (validateThisForm()) {
-				submitThisForm($(this).attr('id'), $('#editQuestionForm'));
-			}
-		});
-	});
-	
+	});	
+
 	function showResponse(data) {
 		if (data.status == 0) {
 			$('#helpMsg').html(data.info).show();
 		} else {
-			$('#helpMsg').html('考题添加成功').css('background-color', 'lightgreen').css('color', 'green').show();
-			var url = "";
-			if (data.info == 'finish') {
-				url = "__APP__/Paper/review/p/{$QuestionNav:paper_id}";
-			} else {
-				url = "__URL__/add/p/{$QuestionNav:paper_id}";
-			}			
-			setTimeout('window.location="' + url + '"', 2000 );
+			$('#helpMsg').html('考题修改成功').css('background-color', 'lightgreen').css('color', 'green').show();
+			setTimeout('window.location="{$fromUrl}"', 2000 );
 		}
 	}
 </script>	
 </head>
 <body>	
-	<form method="post" action="__URL__/save" id="editQuestionForm">
+	<form method="post" action="__URL__/update" id="editQuestionForm">
 	<header>
 		<table>
 			<tr>
@@ -122,6 +103,10 @@
 						<label for="question_name" class="vertical-top">考题：</label>
 						<textarea id="question_name" name="question_name" class="width-l height-s non-empty">{$question_head.question_name}</textarea>
 					</p>
+					<p class="hide">
+						<input type="text" name="question_id" value="{$question_head.question_id}" />
+						<input type="text" name="question_type" value="{$question_head.question_type}" />
+					</p>
 					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">
 						<p class="option">
 							<label for="item_num">选项数：</label>
@@ -143,7 +128,7 @@
 						<ul class="option">
 							<volist name="option_detail" id="item">
 								<li>
-									<input type="{$question_head.question_type}" name="option[]" value="{$key+1}" /><input type="text" class="non-empty" name="{$key+1}" value="{$item.item_name}" />
+									<input type="{$question_head.question_type}" name="option[]" value="{$key+1}" <if condition="$item.correct_value eq '1'">checked="checked"</if> /><input type="text" class="non-empty" name="{$key+1}" value="{$item.item_name}" />
 								</li>
 							</volist>
 						</ul>
@@ -159,6 +144,9 @@
 						</p>
 						<p class="input">
 							<textarea id="input_area" rows="{$input_detail.row_count}" class="width-xl" disabled="disabled"></textarea>
+						</p>
+						<p class="hide">
+							<input type="text" name="input_detail_id" value="{$input_detail.input_detail_id}" />
 						</p>
 					</if>
 				</div>
@@ -179,7 +167,7 @@
 				</td>
 				<td></td>
 				<td>
-					<input id="save" type="button" value="确 定" class="footer-btn" />
+					<input id="finish" type="button" value="确 定" class="footer-btn" />
 				</td>
 			</tr>
 		</table>
