@@ -1,0 +1,89 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考卷总览</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/paper.js"></script>
+<script>
+	
+</script>	
+</head>
+<body>	
+	<header>
+		<table>
+			<tr>
+				<td>
+					共{$QuestionNav:totalQ}题
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					各题合计{}分/满分{}分
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					总时长{}
+				</td>
+			</tr>
+		</table>
+	</header>
+
+	<section id="content">
+	
+		<div id="main">
+			<div>
+				<span id="helpMsg" class="hide"></span>
+			</div>
+			<div>
+				<div class="qBody">
+					<p class="width-l qTitle">
+						{$question_head.question_name}
+					</p>
+					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">					
+						<ul class="option">
+							<volist name="option_detail" id="item">
+								<li>
+									<label><input type="{$question_head.question_type}" />{$item.item_name}</label>
+								</li>
+							</volist>							
+						</ul>
+					</if>
+					<if condition="$question_head.question_type eq 'textarea'">
+						<p class="input">
+							<textarea id="input_area" rows="{$input_detail.row_count}" class="width-xl"></textarea>
+						</p>
+					</if>
+				</div>
+			</div>
+		</div>
+	
+	</section>
+	<footer>
+		<table>
+			<tr>
+				<td>
+					<input id="browseAllQuestion" type="button" value="浏览考题" class="footer-btn" />
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					<input id="saveAndBack" type="button" value="保存&返回" class="footer-btn" />
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					<input id="addNew" type="button" value="添加新题" class="footer-btn" />
+				</td>
+			</tr>
+		</table>
+	</footer>
+
+</body>
+</html>	
+</body>
+</html>

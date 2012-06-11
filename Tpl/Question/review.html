@@ -23,7 +23,7 @@
 		
 		//完成
 		$('#finish').click(function(){			
-			window.location = "__URL__/list/p/{$QuestionNav:paper_id}";
+			window.location = "__APP__/Paper/review/p/{$QuestionNav:paper_id}";
 		});
 			
 		//下一题
@@ -113,7 +113,7 @@
 					<if condition="$QuestionNav:nextSeq neq '0'">
 						<input id="next" type="button" value="下一题" class="footer-btn" />
 					<else />
-						<input id="next" type="button" value="创建新题" class="footer-btn" />
+						<input id="next" type="button" value="添加新题" class="footer-btn" />
 					</if>
 				</td>
 			</tr>
