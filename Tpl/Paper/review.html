@@ -2,10 +2,32 @@
 <title>考卷总览</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
+<style>
+	#qTable {
+		border-collapse: collapse;
+		margin: 20px auto;
+	}
+	
+	#qTable th, #qTable td {
+		border: 1px dashed gray;
+		padding: 2px 5px;
+	}
+</style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script>
+	$(function(){
+		setSumScoreColor();
+	});
 	
+	
+	function setSumScoreColor() {
+		if ($('#sumScore').text() == $('#totalScore').text()) {
+			$('#sumScore').css('color', $('#totalScore').css('color'));
+		} else {
+			$('#sumScore').css('color', 'Orange');
+		}
+	}
 </script>	
 </head>
 <body>	
@@ -13,19 +35,19 @@
 		<table>
 			<tr>
 				<td>
-					共{$QuestionNav:totalQ}题
+					共{$question|count}题
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					各题合计{}分/满分{}分
+					各题合计<span id="sumScore">{$sumScore}</span>分/满分<span id="totalScore">{$paper.total_score}</span>分
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					总时长{}
+					共{$paper.total_mins}分钟
 				</td>
 			</tr>
 		</table>
@@ -37,27 +59,63 @@
 			<div>
 				<span id="helpMsg" class="hide"></span>
 			</div>
-			<div>
+
 				<div class="qBody">
-					<p class="width-l qTitle">
-						{$question_head.question_name}
+					<h1 class="qTitle" style="text-align:center">
+						{$paper.paper_name}					
+					</h1>
+					<p class="width-l">
+						<strong>注意事项：</strong>{$paper.paper_desc}
 					</p>
-					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">					
-						<ul class="option">
-							<volist name="option_detail" id="item">
-								<li>
-									<label><input type="{$question_head.question_type}" />{$item.item_name}</label>
-								</li>
-							</volist>							
-						</ul>
-					</if>
-					<if condition="$question_head.question_type eq 'textarea'">
-						<p class="input">
-							<textarea id="input_area" rows="{$input_detail.row_count}" class="width-xl"></textarea>
-						</p>
-					</if>
+
+					<div>
+						<span style="margin-right: 20px">选择题 <input type="text" id="allOption" class="width-xs" />分</span>
+						<span style="margin-right: 20px">问答题 <input type="text" id="allInput" class="width-xs" />分</span>
+						<span style="margin-right: 20px;"><input id="setBatchScore" type="button" value="批量设置" class="width-s" /></span>
+					</div>
 				</div>
-			</div>
+				<table id="qTable" class="qBody width-xxl">
+					<tr>
+						<th>考题</th>
+						<th>题型</th>
+						<th>分值</th>
+						<th>调序</th>
+						<th>查看&编辑</th>
+						<th>删除</th>
+						<th>插入</th>
+					</tr>
+					<volist name="question" id="q">
+						<tr>
+							<td>
+								{$q.question_name}
+							</td>
+							<td>
+								<if condition="$q.question_type eq 'radio'">
+									单选题
+								<elseif condition="$q.question_type eq 'checkbox'" />
+									多选题
+								<elseif condition="$q.question_type eq 'textarea'" />
+									问答题
+								<else />
+									其他
+								</if>
+							</td>
+							<td>
+								<input type="input" name="score{$q.paper_question_id}" value="{$q.question_score}" class="width-xs" />
+							</td>
+							<td>
+							</td>
+							<td>
+							</td>
+							<td>
+							</td>
+							<td>
+							</td>
+						</tr>
+					</volist>
+				</table>
+				
+				
 		</div>
 	
 	</section>

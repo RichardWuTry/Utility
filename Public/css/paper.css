@@ -61,6 +61,10 @@ header td, footer td{
 	font-size: 16px;
 }
 
+.width-xxl {
+	width: 900px;
+}
+
 .width-xl {
 	width: 800px;
 }
@@ -69,8 +73,16 @@ header td, footer td{
 	width: 600px;
 }
 
+.width-m {
+	width: 400px;
+}
+
 .width-s {
 	width: 100px;
+}
+
+.width-xs {
+	width: 50px;
 }
 
 .height-l {

@@ -34,11 +34,12 @@ class PaperAction extends Action {
 					-> find()) {
 			$Model = M();
 			if ($question = $Model->query("select
+											pq.paper_question_id,
 											pq.question_seq,
 											pq.question_id,
 											qh.question_name,
 											qh.question_type,
-											qh.question_score
+											pq.question_score
 										from
 											paper_question pq
 											join
@@ -47,12 +48,15 @@ class PaperAction extends Action {
 												pq.question_id = qh.question_id
 										where
 											paper_id = $paperId")) {
+				foreach ($question as $row) {
+					$sumScore = $sumScore + $row['question_score'];
+				}							
+				$this->assign('sumScore', $sumScore);							
 				$this->assign('question', $question);				
 			}
 			$this->assign('paper', $paper);
+			$this->display();
 		}
-		
-		$this->display();
 	}
 }
 ?>
