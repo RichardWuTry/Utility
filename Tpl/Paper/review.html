@@ -23,6 +23,10 @@
 		padding: 2px 5px;
 	}
 	
+	#qTable td {
+		text-align: left;
+	}
+	
 	.qName {
 		color:black;
 	}
@@ -53,8 +57,8 @@
 		});
 		
 		$('.qReview').click(function(){	
-			alert($(this).siblings().html());
-			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/";
+			alert($(this).parentsUntil('td'));
+			//window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/";
 		});
 	});
 	
@@ -119,7 +123,7 @@
 						<span style="margin-right: 20px;"><input id="setBatchScore" type="button" value="批量设置" class="width-s" /></span>						
 					</div>
 				</div>
-				<table id="qTable" class="qBody width-xxl">
+				<table id="qTable" class="width-xxl">
 					<tr>
 						<th>序号</th>
 						<th>考题</th>
