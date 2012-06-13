@@ -1,5 +1,5 @@
 <include file="./Tpl/Public/headstart.html" />
-<title>创建考卷</title>
+<title>修改卷首</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <style>
@@ -16,8 +16,8 @@
 		valignMainDiv();
 	
 		//返回
-		$('#back').click(function(){
-			window.location = "__APP__/Exam/manage";
+		$('#cancel').click(function(){
+			window.location = "__URL__/review/p/{$paper.paper_id}";
 		});
 		
 		//下一步
@@ -59,15 +59,15 @@
 		if (data.status == 0) {
 			$('#helpMsg').html(data.info).show();
 		} else {
-			$('#helpMsg').html('考卷创建成功').css('background-color', 'lightgreen').css('color', 'green').show();
-			var url = "__APP__/Question/add/p/" + data.info;			
+			$('#helpMsg').html('考卷修改成功').css('background-color', 'lightgreen').css('color', 'green').show();
+			var url = "__URL__/review/p/{$paper.paper_id}";			
 			setTimeout('window.location="' + url + '"', 2000 );
 		}
 	}
 </script>
 </head>
 <body>
-	<form method="post" action="__URL__/savePaper" id="paperForm">
+	<form method="post" action="__URL__/updatePaper" id="paperForm">
 		<header>
 		</header>
 		<section id="content">
@@ -77,17 +77,18 @@
 				</div>
 				<p>
 					<label for="paper_name">考卷名称：</label>
-					<input type="text" id="paper_name" name="paper_name" class="width-l non-empty" />
+					<input type="text" id="paper_name" name="paper_name" class="width-l non-empty" value="{$paper.paper_name}" />
+					<input type="text" name="paper_id" class="hide" value="{$paper.paper_id}" />
 				</p>
 				<p>
 					<label for="total_score">满分：</label>
-					<input type="text" id="total_score" name="total_score" class="width-s non-empty num-range" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" id="total_score" name="total_score" class="width-s non-empty num-range" value="{$paper.total_score}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label for="total_mins">时间：</label>
-					<input type="text" id="total_mins" name="total_mins" class="width-s non-empty num-range" />分钟
+					<input type="text" id="total_mins" name="total_mins" class="width-s non-empty num-range" value="{$paper.total_mins}" />分钟
 				</p>
 				<p>
 					<label for="paper_desc" class="vertical-top">注意事项：</label>
-					<textarea id="paper_desc" name="paper_desc" class="width-l height-l non-empty"></textarea>
+					<textarea id="paper_desc" name="paper_desc" class="width-l height-l non-empty">{$paper.paper_desc}</textarea>
 				</p>
 			</div>
 		</section>
@@ -95,13 +96,13 @@
 			<table>
 				<tr>
 					<td>
-						<input id="back" type="button" value="返 回" class="footer-btn" />
+						<input id="cancel" type="button" value="取 消" class="footer-btn" />
 					</td>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td>
-						<input id="next" type="submit" name="submit" value="创建试题" class="footer-btn" />
+						<input id="finish" type="submit" value="确 定" class="footer-btn" />
 					</td>
 				</tr>
 			</table>

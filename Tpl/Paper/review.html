@@ -3,14 +3,28 @@
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <style>
+	.qTitle {
+		position: relative;
+	}
+	
+	#editPaperDiv {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+
 	#qTable {
 		border-collapse: collapse;
 		margin: 20px auto;
 	}
 	
 	#qTable th, #qTable td {
-		border: 1px dashed gray;
+		border: 1px solid gray;
 		padding: 2px 5px;
+	}
+	
+	.qName {
+		color:black;
 	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -18,8 +32,38 @@
 <script>
 	$(function(){
 		setSumScoreColor();
+		
+		setQuestionId();
+		
+		$('#editPaperBtn').click(function(){
+			window.location = "__URL__/edit/p/{$paper.paper_id}"
+		});
+		
+		$('#setBatchScore').click(function(){
+			var allOptionScore = $('#allOption').val();
+			var allInputScore = $('#allInput').val();
+			$('.qRow').each(function(){
+				var qTypeName = $.trim($(this).children('.qType').text());
+				if (qTypeName == '单选题' || qTypeName == '多选题') {
+					$(this).find('.qScore').val(allOptionScore);
+				} else if (qTypeName == '问答题') {
+					$(this).find('.qScore').val(allInputScore);
+				}
+			});
+		});
+		
+		$('.qReview').click(function(){	
+			alert($(this).siblings().html());
+			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/";
+		});
 	});
 	
+	function setQuestionId() {
+		var qId = 1;
+		$('.qId').each(function(){
+			$(this).text(qId++);
+		});
+	}
 	
 	function setSumScoreColor() {
 		if ($('#sumScore').text() == $('#totalScore').text()) {
@@ -62,34 +106,37 @@
 
 				<div class="qBody">
 					<h1 class="qTitle" style="text-align:center">
-						{$paper.paper_name}					
+						{$paper.paper_name}
+						<div id="editPaperDiv"><input id="editPaperBtn" type="button" value="编辑" /></div>
 					</h1>
 					<p class="width-l">
 						<strong>注意事项：</strong>{$paper.paper_desc}
 					</p>
 
 					<div>
-						<span style="margin-right: 20px">选择题 <input type="text" id="allOption" class="width-xs" />分</span>
-						<span style="margin-right: 20px">问答题 <input type="text" id="allInput" class="width-xs" />分</span>
-						<span style="margin-right: 20px;"><input id="setBatchScore" type="button" value="批量设置" class="width-s" /></span>
+						<span style="margin-right: 20px">选择题:每题 <input type="text" id="allOption" class="width-xs" />分</span>
+						<span style="margin-right: 20px">问答题:每题 <input type="text" id="allInput" class="width-xs" />分</span>
+						<span style="margin-right: 20px;"><input id="setBatchScore" type="button" value="批量设置" class="width-s" /></span>						
 					</div>
 				</div>
 				<table id="qTable" class="qBody width-xxl">
 					<tr>
+						<th>序号</th>
 						<th>考题</th>
 						<th>题型</th>
 						<th>分值</th>
-						<th>调序</th>
-						<th>查看&编辑</th>
-						<th>删除</th>
-						<th>插入</th>
+						<th></th>
 					</tr>
 					<volist name="question" id="q">
-						<tr>
+						<tr class="qRow">
 							<td>
-								{$q.question_name}
+								<span class="qId"></span>
+								<span class="qSeq hide">{$q.question_seq}</span>
 							</td>
 							<td>
+								<input type="text" value="{$q.question_name}" disabled="disabled" class="width-m qName" />
+							</td>
+							<td class="qType">
 								<if condition="$q.question_type eq 'radio'">
 									单选题
 								<elseif condition="$q.question_type eq 'checkbox'" />
@@ -101,15 +148,14 @@
 								</if>
 							</td>
 							<td>
-								<input type="input" name="score{$q.paper_question_id}" value="{$q.question_score}" class="width-xs" />
+								<input type="input" name="score{$q.paper_question_id}" value="{$q.question_score}" class="width-xs qScore" />
 							</td>
-							<td>
-							</td>
-							<td>
-							</td>
-							<td>
-							</td>
-							<td>
+							<td>								
+								<input type="button" value="查看&编辑" class="qReview" />
+								<input type="button" value="删除" />
+								<input type="button" value="插入" />
+								<input type="button" value="上移" />
+								<input type="button" value="下移" />
 							</td>
 						</tr>
 					</volist>

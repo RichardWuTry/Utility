@@ -58,5 +58,40 @@ class PaperAction extends Action {
 			$this->display();
 		}
 	}
+	
+	public function edit() {
+		if (!isset($_GET['p'])) {
+			$this->error('页面错误');
+		}
+
+		$paperId = $_GET['p'];
+		$ExamPaper = M('ExamPaper');
+		if ($paper = $ExamPaper
+					-> where("paper_id = $paperId")
+					-> field("paper_id, paper_name, total_score, total_mins, paper_desc")
+					-> find()) {
+			$this->assign('paper', $paper);
+			$this->display();		
+		} else {
+			$this->error('页面错误');
+		}
+	}
+	
+	public function updatePaper() {
+		if ($this->isPost()) {
+			$ExamPaper = D('ExamPaper');
+			if ($ExamPaper->create()) {
+				if ($ExamPaper->save() === false) {
+					$this->error('写入数据库错误');
+				} else {
+					$this->success();
+				}
+			} else {
+				$this->error($ExamPaper->getError());
+			}
+		} else {
+			$this->error('页面错误');
+		}
+	}
 }
 ?>
