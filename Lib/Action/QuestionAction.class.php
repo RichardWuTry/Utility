@@ -196,6 +196,10 @@ class QuestionAction extends Action {
 	}
 	
 	public function review() {
+		if (!isset($_GET['p']) || !isset($_GET['s'])) {
+			$this->error('页面错误');
+		}
+		
 		$QuestionNav = new QuestionNav($_GET['p'], $_GET['s'], 'review');
 		if ($question_id = $this->getQuestionId($QuestionNav->paper_id, $QuestionNav->currSeq)) {
 			$QuestionHead = M('QuestionHead');

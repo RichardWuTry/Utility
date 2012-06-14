@@ -57,8 +57,7 @@
 		});
 		
 		$('.qReview').click(function(){	
-			alert($(this).parentsUntil('td'));
-			//window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/";
+			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/" + $(this).parents('tr').find('.qSeq').text();
 		});
 	});
 	
