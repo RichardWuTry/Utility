@@ -30,9 +30,15 @@
 	.qName {
 		color:black;
 	}
+	
+	#helpMsg {
+		position:fixed;
+		z-index:2000;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
+<script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
 	$(function(){
 		setSumScoreColor();
@@ -43,21 +49,57 @@
 			window.location = "__URL__/edit/p/{$paper.paper_id}"
 		});
 		
-		$('#setBatchScore').click(function(){
+		$('#batchEditScore').click(function(){
 			var allOptionScore = $('#allOption').val();
 			var allInputScore = $('#allInput').val();
-			$('.qRow').each(function(){
-				var qTypeName = $.trim($(this).children('.qType').text());
-				if (qTypeName == '单选题' || qTypeName == '多选题') {
-					$(this).find('.qScore').val(allOptionScore);
-				} else if (qTypeName == '问答题') {
-					$(this).find('.qScore').val(allInputScore);
+			
+			if (allOptionScore != '') {
+				if (!validateNumber($('#allOption').get(0), 
+								$('#helpMsg').get(0), 
+								'请输入有效整数', 
+								'', 
+								1, 
+								{$paper.total_score}, 
+								true)){
+					promptMsg($('#helpMsg'));
+					return;
 				}
-			});
+			}
+			
+			$('.radio, .checkbox').val(allOptionScore);
+
+			$('.textarea').val(allInputScore);
+			//$('.qRow').each(function(){
+			//	var qTypeName = $.trim($(this).children('.qType').text());
+			//	if (qTypeName == '单选题' || qTypeName == '多选题') {
+			//		$(this).find('.qScore').val(allOptionScore);
+			//	} else if (qTypeName == '问答题') {
+			//		$(this).find('.qScore').val(allInputScore);
+			//	}
+			//});
 		});
 		
 		$('.qReview').click(function(){	
 			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/" + $(this).parents('tr').find('.qSeq').text();
+		});
+		
+		$('.qRemove').click(function(){
+			
+		});
+		
+		$('#qTable').on("change", ".qScore", function(){
+			var qScore = $(this).val();
+			var pqId = $(this).parents('tr').find('.pqId').text();
+			$.post(
+				"__URL__/updateScore/",
+				{paper_question_id: pqId, question_score: qScore},
+				showResponse,
+				"json"
+			);
+		});
+		
+		$('#browseAllQuestion').click(function(){
+			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/1";
 		});
 	});
 	
@@ -74,7 +116,33 @@
 		} else {
 			$('#sumScore').css('color', 'Orange');
 		}
+	}	
+
+	function centerAlignLeft(element) {
+		var dWidth = $(document).width();
+		var eWidth = $(element).width();
+		return (dWidth - eWidth)/2;
 	}
+		
+	function promptMsg(msgBox) {
+		var box = $(msgBox);
+		var left = centerAlignLeft(box);
+		box.css('left', left);
+		box.slideDown(function() {
+						setTimeout(function() { box.slideUp(); }, 
+						2000)});
+	}
+	
+	function showResponse(data) {
+		var msg = $('#helpMsg');
+		msg.html(data.info);
+		//var left = centerAlignLeft(msg);
+		//msg.css('left', left);
+		if (data.status == 0) {			
+			promptMsg(msg);
+		}
+	}
+	
 </script>	
 </head>
 <body>	
@@ -88,7 +156,7 @@
 					
 				</td>
 				<td>
-					各题合计<span id="sumScore">{$sumScore}</span>分/满分<span id="totalScore">{$paper.total_score}</span>分
+					各题合计<span id="sumScore">{$sumScore}</span>分/考卷<span id="totalScore">{$paper.total_score}</span>分
 				</td>
 				<td>
 					
@@ -119,7 +187,7 @@
 					<div>
 						<span style="margin-right: 20px">选择题:每题 <input type="text" id="allOption" class="width-xs" />分</span>
 						<span style="margin-right: 20px">问答题:每题 <input type="text" id="allInput" class="width-xs" />分</span>
-						<span style="margin-right: 20px;"><input id="setBatchScore" type="button" value="批量设置" class="width-s" /></span>						
+						<span style="margin-right: 20px;"><input id="batchEditScore" type="button" value="批量设置" class="width-s" /></span>						
 					</div>
 				</div>
 				<table id="qTable" class="width-xxl">
@@ -132,8 +200,9 @@
 					</tr>
 					<volist name="question" id="q">
 						<tr class="qRow">
-							<td>
+							<td>								
 								<span class="qId"></span>
+								<span class="pqId hide">{$q.paper_question_id}</span>
 								<span class="qSeq hide">{$q.question_seq}</span>
 							</td>
 							<td>
@@ -151,11 +220,11 @@
 								</if>
 							</td>
 							<td>
-								<input type="input" name="score{$q.paper_question_id}" value="{$q.question_score}" class="width-xs qScore" />
+								<input type="input" name="score_{$q.paper_question_id}" value="{$q.question_score}" class="width-xs qScore {$q.question_type}" />
 							</td>
 							<td>								
 								<input type="button" value="查看&编辑" class="qReview" />
-								<input type="button" value="删除" />
+								<input type="button" value="移除" class="qRemove" />
 								<input type="button" value="插入" />
 								<input type="button" value="上移" />
 								<input type="button" value="下移" />

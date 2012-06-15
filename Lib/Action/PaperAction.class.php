@@ -93,5 +93,22 @@ class PaperAction extends Action {
 			$this->error('页面错误');
 		}
 	}
+	
+	public function updateScore() {
+		if ($this->isPost()) {
+			$PaperQuestion = M('PaperQuestion');
+			$scoreData['paper_question_id'] = $_POST['paper_question_id'];
+			$scoreData['question_score'] = $_POST['question_score'];
+			if (false === $PaperQuestion->save($scoreData)) {
+				$this->error($PaperQuestion->getError());
+			} else {
+				$this->success();
+			}
+		}
+	}
+	
+	public function batchUpdateScore() {
+	
+	}
 }
 ?>

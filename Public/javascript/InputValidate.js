@@ -52,7 +52,7 @@ function validateRegEx(regex, input, helpText, helpMessage, errorImgHtml) {
 	}
 }
 
-function validateNumber(inputField, helpText, helpMessage, errorImgHtml, minValue, maxValue) {
+function validateNumber(inputField, helpText, helpMessage, errorImgHtml, minValue, maxValue, mustInt) {
 	var inputValue = inputField.value;
 	helpMessage = typeof helpMessage !== 'undefined' ? helpMessage : "请输入数值";
 	errorImgHtml = typeof errorImgHtml !== 'undefined' ? errorImgHtml : defaultErrorImgHtml;
@@ -69,6 +69,12 @@ function validateNumber(inputField, helpText, helpMessage, errorImgHtml, minValu
 			}
 			return false;
 		}
+	}
+	if (mustInt && parseInt(inputValue) != inputValue) {
+		if (helpText != null) {
+			helpText.innerHTML = errorImgHtml + helpMessage;
+		}
+		return false;
 	}
 	return true;	
 }
