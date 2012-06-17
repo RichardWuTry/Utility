@@ -108,7 +108,22 @@ class PaperAction extends Action {
 	}
 	
 	public function batchUpdateScore() {
-	
+		if ($this->isPost()) {
+			$batchOptionScore = $_POST['batchOptionScore'];
+			$batchInputScore = $_POST['batchInputScore'];
+			
+			$Model = M();
+			if (is_numeric($batchOptionScore)) {
+				$Model->query(){
+
+					
+				}
+			}
+			
+			if (is_numeric($batchInputScore)) {
+				$this->error('batchInputScore is not int');
+			}
+		}
 	}
 }
 ?>

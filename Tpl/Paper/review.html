@@ -53,6 +53,7 @@
 			var allOptionScore = $('#allOption').val();
 			var allInputScore = $('#allInput').val();
 			
+			var isValid = true;
 			if (allOptionScore != '') {
 				if (!validateNumber($('#allOption').get(0), 
 								$('#helpMsg').get(0), 
@@ -61,22 +62,36 @@
 								1, 
 								{$paper.total_score}, 
 								true)){
-					promptMsg($('#helpMsg'));
-					return;
+					isValid = false;
+				} else {
+					$('.radio, .checkbox').val(allOptionScore);
 				}
 			}
 			
-			$('.radio, .checkbox').val(allOptionScore);
-
-			$('.textarea').val(allInputScore);
-			//$('.qRow').each(function(){
-			//	var qTypeName = $.trim($(this).children('.qType').text());
-			//	if (qTypeName == '单选题' || qTypeName == '多选题') {
-			//		$(this).find('.qScore').val(allOptionScore);
-			//	} else if (qTypeName == '问答题') {
-			//		$(this).find('.qScore').val(allInputScore);
-			//	}
-			//});
+			if (isValid && allInputScore != '') {
+				if (!validateNumber($('#allInput').get(0), 
+								$('#helpMsg').get(0), 
+								'请输入有效整数', 
+								'', 
+								1, 
+								{$paper.total_score}, 
+								true)){
+					isValid = false;
+				} else {
+					$('.textarea').val(allInputScore);
+				}				
+			}
+			
+			if (!isValid) {
+				promptMsg($('#helpMsg'));
+			}
+			
+			$.post(
+				"__URL__/batchUpdateScore/",
+				{batchOptionScore: allOptionScore, batchInputScore: allInputScore},
+				showResponse,
+				"json"
+			);
 		});
 		
 		$('.qReview').click(function(){	
@@ -123,15 +138,7 @@
 		var eWidth = $(element).width();
 		return (dWidth - eWidth)/2;
 	}
-		
-	function promptMsg(msgBox) {
-		var box = $(msgBox);
-		var left = centerAlignLeft(box);
-		box.css('left', left);
-		box.slideDown(function() {
-						setTimeout(function() { box.slideUp(); }, 
-						2000)});
-	}
+
 	
 	function showResponse(data) {
 		var msg = $('#helpMsg');

@@ -44,3 +44,12 @@ function submitThisForm(elementId, formObj) {
 	
 	formObj.ajaxSubmit(ajaxOptions);
 }
+
+function promptMsg(msgBox) {
+	var box = $(msgBox);
+	var left = centerAlignLeft(box);
+	box.css('left', left);
+	box.slideDown(function() {
+					setTimeout(function() { box.slideUp(); }, 
+					2000)});
+}
