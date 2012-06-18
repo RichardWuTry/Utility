@@ -24,10 +24,6 @@
 		padding: 2px 5px;
 	}
 	
-	#qTable td {
-		text-align: left;
-	}
-	
 	.qName {
 		color:black;
 	}
@@ -115,7 +111,7 @@
 					var currTr = $(this).data('currTr');
 					$.post(
 						"__URL__/removeQuestion/",
-						{pqId: currTr.find('.qSeq').text()},
+						{pqId: currTr.find('.pqId').text()},
 						showResponse,
 						"json"
 					);
@@ -131,6 +127,28 @@
 		
 		$('.qRemove').click(function(){
 			$( "#removeConfirm" ).data('currTr', $(this).parents('tr')).dialog('open');
+		});
+		
+		$('.qUp, .qDown').click(function(){
+			$('.qReview, .qRemove, .qUp, .qDown, .qScore').attr('disabled', 'disabled');
+			$(this).removeAttr('disabled');
+			$(this).siblings('.qUp, .qDown').removeAttr('disabled');
+			
+			$(this).siblings('.qLocate').removeClass('hide');
+			$(this).siblings('.qReview, .qRemove').addClass('hide');
+			
+			var currTr = $(this).parents('tr');
+			if($(this).hasClass('qUp')) {				
+				var prevTr = currTr.prev('tr');
+				if (prevTr && !prevTr.hasClass('tHead')) {
+					prevTr.before(currTr);					
+				}
+			} else if ($(this).hasClass('qDown')) {
+				var nextTr = currTr.next('tr');
+				if (nextTr) {
+					nextTr.after(currTr);
+				}
+			}
 		});
 		
 		$('#qTable').on("change", ".qScore", function(){
@@ -245,7 +263,7 @@
 					</div>
 				</div>
 				<table id="qTable" class="width-xxl">
-					<tr>
+					<tr class="tHead">
 						<th>序号</th>
 						<th>考题</th>
 						<th>题型</th>
@@ -279,9 +297,9 @@
 							<td>								
 								<input type="button" value="查看&编辑" class="qReview" />
 								<input type="button" value="移除" class="qRemove" />
-								<input type="button" value="插入" />
-								<input type="button" value="上移" />
-								<input type="button" value="下移" />
+								<input type="button" value="确定" class="qLocate hide"/>
+								<input type="button" value="上移" class="qUp" />
+								<input type="button" value="下移" class="qDown" />
 							</td>
 						</tr>
 					</volist>

@@ -47,7 +47,9 @@ class PaperAction extends Action {
 											on
 												pq.question_id = qh.question_id
 										where
-											paper_id = $paperId")) {
+											paper_id = $paperId
+										order by
+											pq.question_seq")) {
 				foreach ($question as $row) {
 					$sumScore = $sumScore + $row['question_score'];
 				}							
@@ -158,12 +160,37 @@ class PaperAction extends Action {
 	public function removeQuestion() {
 		if ($this->isPost()) {
 			$pqId = $_POST['pqId'];
+			
+			$isSuccess = true;
 			$PaperQuestion = M('PaperQuestion');
-			if (false === $PaperQuestion
-						->where("paper_question_id = $pqId")
-						->delete()) {
+			$PaperQuestion->startTrans();
+			if (false === $PaperQuestion->execute("update
+													paper_question pq1,
+													paper_question pq2
+												set
+													pq2.question_seq = pq2.question_seq - 1
+												where
+													pq1.paper_question_id = $pqId
+													and
+													pq1.paper_id = pq2.paper_id
+													and
+													pq2.question_seq > pq1.question_seq")) {
+				$isSuccess = false;	
+			}
+			
+			if (isSuccess) {
+				if (false === $PaperQuestion
+							->where("paper_question_id = $pqId")
+							->delete()) {
+					$isSuccess = false;				
+				}
+			}
+
+			if (!isSuccess) {
+				$PaperQuestion->rollback();
 				$this->error($PaperQuestion->getError());
 			} else {
+				$PaperQuestion->commit();
 				$this->success('考题移除成功');
 			}
 			
