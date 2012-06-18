@@ -102,7 +102,7 @@ class PaperAction extends Action {
 			if (false === $PaperQuestion->save($scoreData)) {
 				$this->error($PaperQuestion->getError());
 			} else {
-				$this->success();
+				$this->success('分值保持成功');
 			}
 		}
 	}
@@ -111,18 +111,62 @@ class PaperAction extends Action {
 		if ($this->isPost()) {
 			$batchOptionScore = $_POST['batchOptionScore'];
 			$batchInputScore = $_POST['batchInputScore'];
+			$paperId = $_POST['paper_id'];
 			
+			$isSuccess = true;
 			$Model = M();
 			if (is_numeric($batchOptionScore)) {
-				$Model->query(){
-
-					
+				if(false === $Model->execute("update
+											  paper_question pq,
+											  question_head qh
+											set
+											  pq.question_score = $batchOptionScore
+											where
+											  pq.paper_id = $paperId
+											  and
+											  qh.question_type in ('radio', 'checkbox')
+											  and
+											  pq.question_id = qh.question_id")) {
+					$isSuccess = false;		
 				}
 			}
 			
-			if (is_numeric($batchInputScore)) {
-				$this->error('batchInputScore is not int');
+			if ($isSuccess && is_numeric($batchInputScore)) {
+				if(false === $Model->execute("update
+											  paper_question pq,
+											  question_head qh
+											set
+											  pq.question_score = $batchInputScore
+											where
+											  pq.paper_id = $paperId
+											  and
+											  qh.question_type in ('textarea')
+											  and
+											  pq.question_id = qh.question_id")) {
+					$isSuccess = false;											  
+				}
 			}
+			
+			if (!$isSuccess) {
+				$this->error('写入数据出错');
+			} else {
+				$this->success('分值保存成功');
+			}
+		}
+	}
+	
+	public function removeQuestion() {
+		if ($this->isPost()) {
+			$pqId = $_POST['pqId'];
+			$PaperQuestion = M('PaperQuestion');
+			if (false === $PaperQuestion
+						->where("paper_question_id = $pqId")
+						->delete()) {
+				$this->error($PaperQuestion->getError());
+			} else {
+				$this->success('考题移除成功');
+			}
+			
 		}
 	}
 }

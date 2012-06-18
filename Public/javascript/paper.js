@@ -45,10 +45,16 @@ function submitThisForm(elementId, formObj) {
 	formObj.ajaxSubmit(ajaxOptions);
 }
 
-function promptMsg(msgBox) {
+function promptMsg(msgBox, bgColor, fColor) {
 	var box = $(msgBox);
 	var left = centerAlignLeft(box);
 	box.css('left', left);
+	if (typeof bgColor !== 'undefined') {
+		box.css('background-color', bgColor);
+	}
+	if (typeof fColor !== 'undefined') {
+		box.css('color', fColor);
+	}
 	box.slideDown(function() {
 					setTimeout(function() { box.slideUp(); }, 
 					2000)});

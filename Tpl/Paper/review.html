@@ -1,5 +1,6 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>考卷总览</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.21/themes/redmond/jquery-ui.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <style>
@@ -35,13 +36,18 @@
 		position:fixed;
 		z-index:2000;
 	}
+	
+	span.ui-button-text {
+		font-size: 0.9em;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
 	$(function(){
-		setSumScoreColor();
+		setSumScore();
 		
 		setQuestionId();
 		
@@ -84,27 +90,53 @@
 			
 			if (!isValid) {
 				promptMsg($('#helpMsg'));
+			} else {
+				setSumScore();
+				var paperId = {$paper.paper_id};
+				$.post(
+					"__URL__/batchUpdateScore/",
+					{batchOptionScore: allOptionScore, batchInputScore: allInputScore, paper_id: paperId},
+					showResponse,
+					"json"
+				);
 			}
-			
-			$.post(
-				"__URL__/batchUpdateScore/",
-				{batchOptionScore: allOptionScore, batchInputScore: allInputScore},
-				showResponse,
-				"json"
-			);
 		});
 		
 		$('.qReview').click(function(){	
 			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/" + $(this).parents('tr').find('.qSeq').text();
 		});
 		
+		$( "#removeConfirm" ).dialog({
+			autoOpen: false,
+			resizable: false,
+			modal: true,
+			buttons: {
+				"确定": function() {
+					var currTr = $(this).data('currTr');
+					$.post(
+						"__URL__/removeQuestion/",
+						{pqId: currTr.find('.qSeq').text()},
+						showResponse,
+						"json"
+					);
+					currTr.remove();
+					setSumScore();
+					$( this ).dialog( "close" );
+				},
+				"取消": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		
 		$('.qRemove').click(function(){
-			
+			$( "#removeConfirm" ).data('currTr', $(this).parents('tr')).dialog('open');
 		});
 		
 		$('#qTable').on("change", ".qScore", function(){
 			var qScore = $(this).val();
 			var pqId = $(this).parents('tr').find('.pqId').text();
+			setSumScore();
 			$.post(
 				"__URL__/updateScore/",
 				{paper_question_id: pqId, question_score: qScore},
@@ -116,6 +148,10 @@
 		$('#browseAllQuestion').click(function(){
 			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/1";
 		});
+		
+		$('#addNew').click(function(){
+			window.location = "__APP__/Question/add/p/{$paper.paper_id}";
+		});
 	});
 	
 	function setQuestionId() {
@@ -125,8 +161,13 @@
 		});
 	}
 	
-	function setSumScoreColor() {
-		if ($('#sumScore').text() == $('#totalScore').text()) {
+	function setSumScore() {
+		var sumScore = 0;
+		$('.qScore').each(function(){
+			sumScore += Number($(this).val());
+		});
+		$('#sumScore').text(sumScore);
+		if (sumScore == Number({$paper.total_score})) {
 			$('#sumScore').css('color', $('#totalScore').css('color'));
 		} else {
 			$('#sumScore').css('color', 'Orange');
@@ -142,12 +183,14 @@
 	
 	function showResponse(data) {
 		var msg = $('#helpMsg');
-		msg.html(data.info);
-		//var left = centerAlignLeft(msg);
-		//msg.css('left', left);
-		if (data.status == 0) {			
-			promptMsg(msg);
-		}
+		if (data.info.length > 0) {
+			msg.html(data.info);
+			if (data.status == 0) {			
+				promptMsg(msg);
+			} else {
+				promptMsg(msg, 'lightgreen', 'green');
+			}
+		}		
 	}
 	
 </script>	
@@ -163,7 +206,7 @@
 					
 				</td>
 				<td>
-					各题合计<span id="sumScore">{$sumScore}</span>分/考卷<span id="totalScore">{$paper.total_score}</span>分
+					各题合计<span id="sumScore"></span>分/考卷<span id="totalScore">{$paper.total_score}</span>分
 				</td>
 				<td>
 					
@@ -178,6 +221,10 @@
 	<section id="content">
 	
 		<div id="main">
+			<div id="removeConfirm" title="确认移除" class="hide">
+				<p><span class="ui-icon ui-icon-alert" style="float:left; margin-right:10px;"></span>确定需要移除该问题吗？</p>
+			</div>
+			
 			<div>
 				<span id="helpMsg" class="hide"></span>
 			</div>
@@ -254,7 +301,7 @@
 					
 				</td>
 				<td>
-					<input id="saveAndBack" type="button" value="保存&返回" class="footer-btn" />
+					<input id="saveAndBack" type="button" value="返 回" class="footer-btn" />
 				</td>
 				<td>
 					
