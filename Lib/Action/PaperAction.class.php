@@ -196,5 +196,65 @@ class PaperAction extends Action {
 			
 		}
 	}
+	
+	public function alterSequence() {
+		if ($this->isPost()) {
+			$pqId = $_POST['paper_question_id'];
+			$paperId = $_POST['paper_id'];
+			$orgSeq = intval($_POST['orgSeq']);
+			$newSeq = intval($_POST['newSeq']);
+			
+			$PaperQuestion = M('PaperQuestion');
+			$PaperQuestion->startTrans();
+			$newSeqData['paper_question_id'] = $pqId;
+			$newSeqData['question_seq'] = $newSeq;
+			$isSuccess = true;
+			if (false === $PaperQuestion->save($newSeqData)) {
+				$isSuccess = false;			
+			}
+			
+			if ($isSuccess) {
+				if ($orgSeq < $newSeq) {
+					if (false === $PaperQuestion->execute("update
+															paper_question
+														set
+															question_seq = question_seq - 1
+														where
+															paper_id = $paperId
+															and
+															question_seq > $orgSeq
+															and
+															question_seq <= $newSeq
+															and
+															paper_question_id != $pqId")) {
+						$isSuccess = false;
+					}
+				} else if ($orgSeq > $newSeq) {
+					if (false === $PaperQuestion->execute("update
+															paper_question
+														set
+															question_seq = question_seq + 1
+														where
+															paper_id = $paperId
+															and
+															question_seq >= $newSeq
+															and
+															question_seq < $orgSeq
+															and
+															paper_question_id != $pqId")) {
+						$isSuccess = false;
+					}
+				}
+			}
+			
+			if (!$isSuccess) {
+				$PaperQuestion->rollback();
+				$this->error($PaperQuestion->getError());
+			} else {
+				$PaperQuestion->commit();
+				$this->success('新位置保存成功');			
+			}
+		}
+	}
 }
 ?>

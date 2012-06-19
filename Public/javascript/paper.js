@@ -59,3 +59,9 @@ function promptMsg(msgBox, bgColor, fColor) {
 					setTimeout(function() { box.slideUp(); }, 
 					2000)});
 }
+
+function centerAlignLeft(element) {
+	var dWidth = $(document).width();
+	var eWidth = $(element).width();
+	return (dWidth - eWidth)/2;
+}

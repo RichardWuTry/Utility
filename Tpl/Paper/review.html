@@ -36,6 +36,10 @@
 	span.ui-button-text {
 		font-size: 0.9em;
 	}
+	
+	td.qCtrl {
+		text-align: right;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
@@ -151,6 +155,27 @@
 			}
 		});
 		
+		$('.qLocate').click(function(){
+			setQuestionId();
+			$(this).addClass('hide');
+			$('.qReview, .qRemove, .qUp, .qDown, .qScore').removeAttr('disabled');
+			$(this).siblings('.qReview, .qRemove').removeClass('hide');
+			
+			var currTr = $(this).parents('tr');
+			var pqId = currTr.find('.pqId').text();
+			var qId = currTr.find('.qId').text();
+			var qSeq = currTr.find('.qSeq').text();
+			if (qId != qSeq) {
+				var paperId = {$paper.paper_id};
+				$.post(
+					"__URL__/alterSequence/",
+					{orgSeq: qSeq, newSeq: qId, paper_id: paperId, paper_question_id: pqId},
+					showResponse,
+					"json"
+				);
+			}
+		});
+		
 		$('#qTable').on("change", ".qScore", function(){
 			var qScore = $(this).val();
 			var pqId = $(this).parents('tr').find('.pqId').text();
@@ -169,6 +194,10 @@
 		
 		$('#addNew').click(function(){
 			window.location = "__APP__/Question/add/p/{$paper.paper_id}";
+		});
+		
+		$('#back').click(function(){
+			window.location = "__APP__/Exam/manage";
 		});
 	});
 	
@@ -192,13 +221,6 @@
 		}
 	}	
 
-	function centerAlignLeft(element) {
-		var dWidth = $(document).width();
-		var eWidth = $(element).width();
-		return (dWidth - eWidth)/2;
-	}
-
-	
 	function showResponse(data) {
 		var msg = $('#helpMsg');
 		if (data.info.length > 0) {
@@ -294,7 +316,7 @@
 							<td>
 								<input type="input" name="score_{$q.paper_question_id}" value="{$q.question_score}" class="width-xs qScore {$q.question_type}" />
 							</td>
-							<td>								
+							<td class="qCtrl">								
 								<input type="button" value="查看&编辑" class="qReview" />
 								<input type="button" value="移除" class="qRemove" />
 								<input type="button" value="确定" class="qLocate hide"/>
@@ -319,7 +341,7 @@
 					
 				</td>
 				<td>
-					<input id="saveAndBack" type="button" value="返 回" class="footer-btn" />
+					<input id="back" type="button" value="返 回" class="footer-btn" />
 				</td>
 				<td>
 					
