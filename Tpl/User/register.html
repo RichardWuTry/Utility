@@ -2,10 +2,40 @@
 <title>考评牛马</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <style>
-	#main {
-		padding: 20px;
-		margin: 20px auto;
+	body {
+		background: none repeat scroll 0 0 #5093B0;
+	}
+	
+	#content {
+	    margin: 0 auto;
+		padding: 40px 0;
+		width: 852px;
+	}
+	
+	.page-wrap {
+		background: none repeat scroll 0 0 #FFFFFF;
+		border: 1px solid #47819C;
+		border-radius: 10px 10px 10px 10px;
+		clear: both;
+		overflow: hidden;
+		position: relative;
+	}
+	
+	#main-left {
+		background: none repeat scroll 0 0 #E0ECF1;
+		border-bottom-left-radius: 10px;
+		border-top-left-radius: 10px;
+		float: left;
+		padding: 40px;
 		width: 400px;
+	}
+	
+	#main {
+		border-bottom-right-radius: 10px;
+		border-top-right-radius: 10px;
+		float: right;
+		padding: 40px 30px 20px;
+		width: 310px;
 	}
 	
 	h1 {
@@ -31,6 +61,10 @@
 		padding: 4px;
 	}
 	
+	input[name="verify"] {
+		width: 145px;
+	}
+	
 	input[type="submit"] {
 		background: #5093B0;
 		text-decoration: none;
@@ -47,49 +81,47 @@
 </style>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
-	<section id="main">		
-		<form>
-		<table>
-			<tr>
-				<td colspan="2"><h1>拥有考评牛马</h1></td>
-			</tr>
-			<tr>
-				<th>用户名</th>
-				<td>
-					<input type="text" name="username" />
-				</td>
-			</tr>
-			<tr>
-				<th>邮箱</th>
-				<td>
-					<input type="text" name="email" />
-				</td>
-			</tr>
-			<tr>
-				<th>密码</th>
-				<td>
-					<input type="password" name="password" />
-				</td>
-			</tr>
-			<tr>
-				<th>公司/组织</th>
-				<td>
-					<input type="text" name="organization" />
-				</td>
-			</tr>
-			<tr>
-				<th>验证码</th>
-				<td>
-					<input type="text" name="verify"/>&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="text-align:center;">
-					<input type="submit" id="submit" name="submit" value="注 册" />
-				</td>
-			</tr>
-		</table>
-		</form>
-	</section>
+	<div class="page-wrap">
+		<aside id="main-left">		
+		</aside>
+		<div id="main">		
+			<form>
+			<table>
+				<tr>
+					<td colspan="2"><h1>注 册</h1></td>
+				</tr>
+				<tr>
+					<th>姓名</th>
+					<td>
+						<input type="text" name="username" />
+					</td>
+				</tr>
+				<tr>
+					<th>邮箱</th>
+					<td>
+						<input type="text" name="email" />
+					</td>
+				</tr>
+				<tr>
+					<th>密码</th>
+					<td>
+						<input type="password" name="password" />
+					</td>
+				</tr>
+				<tr>
+					<th>验证</th>
+					<td>
+						<input type="text" name="verify"/>&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center;">
+						<input type="submit" id="submit" name="submit" value="注 册" />
+					</td>
+				</tr>
+			</table>
+			</form>
+		</div>
+	</div>
 </section>
 <include file="./Tpl/Public/footer_bodyend.html" />

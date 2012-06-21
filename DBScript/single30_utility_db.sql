@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 06 月 15 日 17:50
+-- 生成日期: 2012 年 06 月 21 日 17:29
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.5
 
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `option_detail` (
   `create_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modify_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`option_detail_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=95 ;
 
 --
 -- 转存表中的数据 `option_detail`
@@ -199,7 +199,17 @@ INSERT INTO `option_detail` (`option_detail_id`, `question_id`, `item_name`, `co
 (81, 18, 'z', 0, '2012-06-15 16:59:24', '2012-06-15 16:59:24'),
 (82, 18, 'z', 1, '2012-06-15 16:59:24', '2012-06-15 16:59:24'),
 (83, 18, 'z', 1, '2012-06-15 16:59:24', '2012-06-15 16:59:24'),
-(84, 18, 'z', 0, '2012-06-15 16:59:24', '2012-06-15 16:59:24');
+(84, 18, 'z', 0, '2012-06-15 16:59:24', '2012-06-15 16:59:24'),
+(85, 20, 'd', 0, '2012-06-18 11:13:31', '2012-06-18 11:13:31'),
+(86, 20, 'd', 1, '2012-06-18 11:13:31', '2012-06-18 11:13:31'),
+(87, 20, 'd', 0, '2012-06-18 11:13:31', '2012-06-18 11:13:31'),
+(88, 21, 't', 1, '2012-06-18 11:14:06', '2012-06-18 11:14:06'),
+(89, 21, 't', 1, '2012-06-18 11:14:06', '2012-06-18 11:14:06'),
+(90, 21, 't', 0, '2012-06-18 11:14:06', '2012-06-18 11:14:06'),
+(91, 22, 'z', 0, '2012-06-18 11:14:57', '2012-06-18 11:14:57'),
+(92, 22, 'z', 1, '2012-06-18 11:14:57', '2012-06-18 11:14:57'),
+(93, 22, 'z', 0, '2012-06-18 11:14:57', '2012-06-18 11:14:57'),
+(94, 22, 'z', 0, '2012-06-18 11:14:57', '2012-06-18 11:14:57');
 
 -- --------------------------------------------------------
 
@@ -216,23 +226,25 @@ CREATE TABLE IF NOT EXISTS `paper_question` (
   `create_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modify_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`paper_question_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- 转存表中的数据 `paper_question`
 --
 
 INSERT INTO `paper_question` (`paper_question_id`, `paper_id`, `question_id`, `question_seq`, `question_score`, `create_at`, `modify_at`) VALUES
-(1, 1, 10, 1, 0, '2012-06-05 13:58:52', '2012-06-05 13:58:52'),
-(2, 1, 11, 2, 0, '2012-06-05 16:28:24', '2012-06-05 16:28:24'),
-(3, 1, 12, 3, 0, '2012-06-15 11:22:15', '2012-06-15 11:22:15'),
-(4, 1, 13, 4, 5, '2012-06-15 11:22:27', '2012-06-15 16:42:36'),
-(5, 1, 14, 5, 6, '2012-06-15 11:22:39', '2012-06-15 16:42:46'),
-(6, 1, 15, 6, 0, '2012-06-15 11:22:51', '2012-06-15 11:22:51'),
-(7, 1, 16, 7, 0, '2012-06-15 11:23:01', '2012-06-15 11:23:01'),
-(8, 1, 17, 8, 0, '2012-06-15 11:23:09', '2012-06-15 11:23:09'),
-(9, 1, 18, 9, 0, '2012-06-15 16:59:24', '2012-06-15 16:59:24'),
-(10, 1, 19, 10, 0, '2012-06-15 16:59:33', '2012-06-15 16:59:33');
+(1, 1, 10, 1, 6, '2012-06-05 13:58:52', '2012-06-19 09:29:45'),
+(2, 1, 11, 3, 12, '2012-06-05 16:28:24', '2012-06-19 11:17:41'),
+(3, 1, 12, 9, 6, '2012-06-15 11:22:15', '2012-06-19 11:17:41'),
+(4, 1, 13, 5, 6, '2012-06-15 11:22:27', '2012-06-19 11:17:41'),
+(5, 1, 14, 6, 6, '2012-06-15 11:22:39', '2012-06-19 11:17:41'),
+(6, 1, 15, 8, 6, '2012-06-15 11:22:51', '2012-06-19 11:17:41'),
+(7, 1, 16, 4, 6, '2012-06-15 11:23:01', '2012-06-19 11:17:41'),
+(8, 1, 17, 10, 6, '2012-06-15 11:23:09', '2012-06-19 11:17:41'),
+(9, 1, 18, 7, 6, '2012-06-15 16:59:24', '2012-06-19 11:17:41'),
+(11, 1, 20, 11, 6, '2012-06-18 11:13:31', '2012-06-19 11:17:41'),
+(12, 1, 21, 2, 6, '2012-06-18 11:14:06', '2012-06-19 11:17:41'),
+(13, 1, 22, 12, 6, '2012-06-18 11:14:57', '2012-06-19 09:29:45');
 
 -- --------------------------------------------------------
 
@@ -247,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `question_head` (
   `create_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modify_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`question_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- 转存表中的数据 `question_head`
@@ -272,4 +284,30 @@ INSERT INTO `question_head` (`question_id`, `question_name`, `question_type`, `c
 (16, 'p', 'radio', '2012-06-15 11:23:01', '2012-06-15 11:23:01'),
 (17, 'w', 'radio', '2012-06-15 11:23:09', '2012-06-15 11:23:09'),
 (18, 'z', 'checkbox', '2012-06-15 16:59:24', '2012-06-15 16:59:24'),
-(19, 'y', 'textarea', '2012-06-15 16:59:33', '2012-06-15 16:59:33');
+(19, 'y', 'textarea', '2012-06-15 16:59:33', '2012-06-15 16:59:33'),
+(20, 'd', 'radio', '2012-06-18 11:13:31', '2012-06-18 11:13:31'),
+(21, 't', 'checkbox', '2012-06-18 11:14:06', '2012-06-18 11:14:06'),
+(22, 'z', 'radio', '2012-06-18 11:14:57', '2012-06-18 11:14:57');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(20) NOT NULL,
+  `password` char(40) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `create_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modify_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- 转存表中的数据 `user`
+--
+
