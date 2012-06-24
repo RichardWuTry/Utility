@@ -4,6 +4,10 @@ class UserAction extends Action {
 		$this->display();
 	}
 	
+	public function addUser() {
+		
+	}
+	
 	public function login() {
 		$this->display();
 	}

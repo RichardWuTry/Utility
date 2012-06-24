@@ -1,126 +1,108 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>考评牛马</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/user.css" />
 <style>
-	body {
-		background: none repeat scroll 0 0 #5093B0;
-	}
-	
-	#content {
-	    margin: 0 auto;
-		padding: 40px 0;
-		width: 852px;
-	}
-	
-	.page-wrap {
-		background: none repeat scroll 0 0 #FFFFFF;
-		border: 1px solid #47819C;
-		border-radius: 10px 10px 10px 10px;
-		clear: both;
-		overflow: hidden;
-		position: relative;
-	}
-	
-	#main-left {
-		background: none repeat scroll 0 0 #E0ECF1;
-		border-bottom-left-radius: 10px;
-		border-top-left-radius: 10px;
-		float: left;
-		padding: 40px;
-		width: 400px;
-	}
-	
-	#main {
-		border-bottom-right-radius: 10px;
-		border-top-right-radius: 10px;
-		float: right;
-		padding: 40px 30px 20px;
-		width: 310px;
-	}
-	
-	h1 {
-		color:#223f4a;
-		text-align:center;
-		font-size:24px;
-	}
-	
-	th {
-		text-align: right;
-		padding-right: 10px;
-		color: #5093B0;
-		font-size: 16px;
-		line-height: 30px;
-	}
-	
-	input {
-		outline: none;
-		border: 1px solid #C0D8E2;
-		margin: 0px;
-		height: 20px;
-		width: 200px;
-		padding: 4px;
-	}
-	
-	input[name="verify"] {
-		width: 145px;
-	}
-	
-	input[type="submit"] {
-		background: #5093B0;
-		text-decoration: none;
-		color: white;
-		font-size: 18px;
-		padding: 5px 10px;
-		border: none;
-		height: 35px;
-		width: 61px;
-		margin-top: 10px;
-	}
-	
-	
 </style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script>
+	function showResponse(data) {
+		if (data.status == 0) {
+			$('#helpMsg').html(data.info).show();
+		} else {
+			$('#helpMsg').html('注册成功').css('background-color', 'lightgreen').css('color', 'green').show();
+			var url = " ";			
+			setTimeout('window.location="' + url + '"', 2000 );
+		}
+	}
+	
+	$(function(){
+		$("form").ajaxForm({
+			success: showResponse,
+			dataType: 'json'
+		});
+	
+		$("form").submit(function() {
+			var isValid = true;
+			var helpMsg = $("#helpMsg");
+			
+			$('.non-empty').each(function(){
+				var label = $(this).parent().siblings("th:first").text();
+				isValid = validateNonEmpty(this, helpMsg[0], label + ' 不能为空', '');
+				return isValid;
+			});
+			
+			if (isValid) {
+				isValid = validateEmail($('.email')[0], helpMsg[0], '请输入有效的邮箱', '');
+			}			
+			
+			if (!isValid) {
+				helpMsg.show();
+			} else {
+				helpMsg.hide();
+			}
+			
+			return isValid;
+		});
+	});
+</script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
+	<div class="slogan">
+		<img src="__PUBLIC__/images/slogan1.png" alt="考评牛马" />
+	</div>
 	<div class="page-wrap">
-		<aside id="main-left">		
+		<aside id="main-left">
+			<img src="__PUBLIC__/images/sketch_map.png" alt="考评牛马示意图" />
 		</aside>
 		<div id="main">		
-			<form>
-			<table>
-				<tr>
-					<td colspan="2"><h1>注 册</h1></td>
-				</tr>
-				<tr>
-					<th>姓名</th>
-					<td>
-						<input type="text" name="username" />
-					</td>
-				</tr>
-				<tr>
-					<th>邮箱</th>
-					<td>
-						<input type="text" name="email" />
-					</td>
-				</tr>
-				<tr>
-					<th>密码</th>
-					<td>
-						<input type="password" name="password" />
-					</td>
-				</tr>
-				<tr>
-					<th>验证</th>
-					<td>
-						<input type="text" name="verify"/>&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="text-align:center;">
-						<input type="submit" id="submit" name="submit" value="注 册" />
-					</td>
-				</tr>
-			</table>
+			<form method="post" action="__URL__/addUser">
+				<table>
+					<tr>
+						<td colspan="2">
+							<h1>注 册</h1>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="helpMsg-wrap"><span id="helpMsg" class="hide smaller"></span></div>
+						</td>
+					</tr>
+					<tr>
+						<th>姓名</th>
+						<td>
+							<input type="text" name="user_name" class="non-empty" />
+						</td>
+					</tr>
+					<tr>
+						<th>邮箱</th>
+						<td>
+							<input type="text" name="email" class="non-empty email" />
+						</td>
+					</tr>
+					<tr>
+						<th>密码</th>
+						<td>
+							<input type="password" name="password" class="non-empty" />
+						</td>
+					</tr>
+					<tr>
+						<th>验证</th>
+						<td>
+							<input type="text" name="verify" class="non-empty"/>&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align:center;">
+							<input type="submit" id="submit" name="submit" value="注 册" />
+						</td>
+				</table>
 			</form>
+			<div class="addit-links">
+				<div class="addit-nav smaller">已经有帐号了？<a href="__URL__/login">登录</a></div>
+				<div class="addit-nav smaller">没有收到激活邮件？<a href="">点击此处</a></div>
+			</div>
 		</div>
 	</div>
 </section>

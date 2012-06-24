@@ -34,12 +34,6 @@ input, textarea, select {
 	padding: 4px;
 }
 
-#helpMsg {
-	padding: 6px 15px;
-	background-color: #FFE6E6;
-	color: #FF0000;
-}
-
 header table, footer table {
 	width: 100%;		
 	height: 100%;

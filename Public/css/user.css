@@ -1,0 +1,110 @@
+html, body, table, textarea, div, span, pre, input, aside, section, nav, header, footer {
+	font-size: 16px;
+}
+
+.smaller {
+	font-size: 14px;
+}
+
+body {
+	background: none repeat scroll 0 0 #5093B0;
+}
+
+#content {
+	margin: 0 auto;
+	padding: 40px 0;
+	width: 852px;
+}
+
+.slogan {
+	padding: 0px 30px 10px;
+}
+
+.page-wrap {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #47819C;
+	border-radius: 10px 10px 10px 10px;
+	clear: both;
+	overflow: hidden;
+	position: relative;
+}
+
+#main-left {
+	background: none repeat scroll 0 0 #E0ECF1;
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+	float: left;
+	padding: 40px;
+	width: 400px;
+}
+
+#main-left img {
+	padding: 20px 0px 60px;
+}
+
+#main {
+	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	float: right;
+	padding: 0px 30px 20px;
+	width: 310px;
+}
+
+#main table {
+	text-align: center;
+	margin: 0 auto;
+}
+
+h1 {
+	color:#223f4a;
+	text-align:center;
+}
+
+th {
+	text-align: right;
+	padding-right: 10px;
+	color: #5093B0;
+	line-height: 30px;
+}
+
+input {
+	outline: none;
+	border: 1px solid #C0D8E2;
+	margin: 0px;
+	height: 20px;
+	width: 200px;
+	padding: 4px;
+}
+
+input[name="verify"] {
+	width: 145px;
+}
+
+input[type="submit"] {
+	background: #5093B0;
+	text-decoration: none;
+	color: white;
+	padding: 5px 10px;
+	border: none;
+	height: 35px;
+	width: 61px;
+	margin-top: 10px;
+}
+
+.addit-links {
+	padding-top: 30px;
+	text-align: center;
+}
+
+.addit-nav {
+	color: #9DBFD2;
+	text-align: center;
+}
+
+.addit-nav a {
+	color: #376179;
+}
+
+.helpMsg-wrap {
+	padding-bottom: 10px;
+}

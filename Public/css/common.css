@@ -45,6 +45,16 @@ input[type='button'], input[type='submit'], input[type='reset'] {
 	cursor: pointer;
 }
 
+a {
+	text-decoration: none;
+}
+
+#helpMsg {
+	padding: 6px 15px;
+	background-color: #FFE6E6;
+	color: #FF0000;
+}
+
 
 
 
