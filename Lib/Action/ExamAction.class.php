@@ -1,7 +1,11 @@
 <?php
 class ExamAction extends Action {
 	public function manage() {
-		$this->display();
+		if (!isLogin()) {
+			redirect_to(__APP__.'/User/login/');
+		} else {
+			$this->display();
+		}
 	}
 }
 ?>

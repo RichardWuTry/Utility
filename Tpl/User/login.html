@@ -23,17 +23,16 @@
 			var helpMsg = $("#helpMsg");
 			
 			$('.non-empty').each(function(){
-				var label = $(this).parent().siblings("th:first").text();
-				isValid = validateNonEmpty(this, helpMsg[0], label + ' 不能为空', '');
+				isValid = validateNonEmpty(this, helpMsg[0], '邮箱或密码错误', '');
 				return isValid;
 			});
 			
 			if (isValid) {
-				isValid = validateLength(6, 12, $('.pwd')[0], helpMsg[0], '密码有效长度为6~12位', '');
+				isValid = validateLength(6, 12, $('.pwd')[0], helpMsg[0], '邮箱或密码错误', '');
 			}
 			
 			if (isValid) {
-				isValid = validateEmail($('.email')[0], helpMsg[0], '请输入有效的邮箱', '');
+				isValid = validateEmail($('.email')[0], helpMsg[0], '邮箱或密码错误', '');
 			}			
 			
 			if (!isValid) {
@@ -60,22 +59,16 @@
 			<img src="__PUBLIC__/images/sketch_map.png" alt="考评牛马示意图" />
 		</aside>
 		<div id="main">		
-			<form method="post" action="__URL__/addUser">
+			<form method="post" action="__URL__/loginUser">
 				<table>
 					<tr>
 						<td colspan="2">
-							<h1>注 册</h1>
+							<h1>登 录</h1>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
 							<div class="helpMsg-wrap"><span id="helpMsg" class="hide smaller"></span></div>
-						</td>
-					</tr>
-					<tr>
-						<th>姓名</th>
-						<td>
-							<input type="text" name="user_name" class="non-empty" />
 						</td>
 					</tr>
 					<tr>
@@ -91,20 +84,23 @@
 						</td>
 					</tr>
 					<tr>
-						<th>验证</th>
-						<td>
-							<input type="text" name="verify" class="non-empty"/>&nbsp;<img id="verifyImg" src="__URL__/showVerifyImage/" alt="Verify Image" />
-						</td>
-					</tr>
-					<tr>
 						<td colspan="2" style="text-align:center;">
-							<input type="submit" id="submit" name="submit" value="注 册" />
+							<input type="submit" id="submit" name="submit" value="登 录" />
 						</td>
-					</tr>
+					<tr>
 				</table>
 			</form>
-			<div class="addit-links">
-				<div class="addit-nav smaller">已经有帐号了？<a href="__URL__/login">登录</a></div>
+			<div class="sepa-wrap">
+				<div class="sepa-line"></div>
+				<div class="sepa-value">OR</div>
+				<div class="sepa-line"></div>
+			</div>
+			<div>
+				<div class="addit-nav smaller">还没有注册？</div>
+				<div class="btn-wrap"><a href="__URL__/register" class="btn">立刻注册</a></div>
+			</div>
+			<div class="addit-links">				
+				<div class="addit-nav smaller">不记得密码了？<a href="">找回密码</a></div>
 			</div>
 		</div>
 	</div>

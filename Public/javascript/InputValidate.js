@@ -89,13 +89,14 @@ function validateNonEmpty(inputField, helpText, helpMessage, errorImgHtml) {
 		errorImgHtml);
 }
 
-function validateLength(minLength, maxLength, inputField, helpText, errorImgHtml) {
+function validateLength(minLength, maxLength, inputField, helpText, helpMessage, errorImgHtml) {
 	// See if the input value contains at least minLength but no more than maxLength characters
+	var defaultHelpMessage = "Please enter a value " + minLength + " to " + maxLength +
+		" characters in length.";
+	helpMessage = typeof helpMessage !== 'undefined' ? helpMessage : defaultHelpMessage;
+	
 	return validateRegEx(new RegExp("^.{" + minLength + "," + maxLength + "}$"),
-		inputField.value, helpText,
-		"Please enter a value " + minLength + " to " + maxLength +
-		" characters in length.",
-		errorImgHtml);
+		inputField.value, helpText,	helpMessage, errorImgHtml);
 }
 
 function validateZipCode(inputField, helpText, errorImgHtml) {
