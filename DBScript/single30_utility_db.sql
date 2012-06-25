@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 06 月 21 日 17:29
+-- 生成日期: 2012 年 06 月 25 日 17:34
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.5
 
@@ -300,14 +300,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_name` varchar(20) NOT NULL,
   `password` char(40) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
   `create_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modify_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `user`
 --
 
+INSERT INTO `user` (`user_id`, `user_name`, `password`, `email`, `is_active`, `create_at`, `modify_at`) VALUES
+(3, 'Richard', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'shadow_wu82@163.com', 0, '2012-06-25 16:29:26', '2012-06-25 16:29:26');
