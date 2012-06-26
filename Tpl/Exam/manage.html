@@ -6,6 +6,18 @@
 		background-color: #E3EDF2;
 	}
 	
+	.main-wrap {
+		padding-top: 10px;
+		clear: both;
+	}
+	
+	.logo {
+		background-color: #262626;
+		text-align: center;
+		margin-bottom: 20px;
+		padding: 20px 0px;
+	}
+	
 	nav {
 		background-color: #262626;	
 		width: 220px;
@@ -34,25 +46,25 @@
 		border-top: 1px solid #292929;
 	}
 	
-	nav a.examManage {
-		background-position: 3px -489px;
+	nav a.paperManage {
+		background-position: 3px -89px;
 	}
 	
-	nav a.itemManage {
-		background-position: 3px -89px;
+	nav a.examMarking {
+		background-position: 3px -489px;
 	}
 	
 	nav a.teamShare {
 		background-position: 3px -689px;
 	}
-
-	nav a.examManage.selected, nav a.examManage.hover, .main-title.examManage {
-		background-position: 3px -389px;
+	
+	nav a.paperManage.selected, nav a.paperManage.hover, .main-title.paperManage {
+		background-position: 3px 11px;
 		background-color: #202020;
 	}
 	
-	nav a.itemManage.selected, nav a.itemManage.hover {
-		background-position: 3px 11px;
+	nav a.examMarking.selected, nav a.examMarking.hover {		
+		background-position: 3px -389px;
 		background-color: #202020;
 	}
 	
@@ -66,6 +78,7 @@
 		width: 720px;
 		height: 600px;
 		float: left;
+		background: none repeat scroll 0 0 #E9E9E9;
 	}
 	
 	.main-title {
@@ -94,6 +107,48 @@
 		padding: 6px 15px;
 		background-color: #E3EDF2;
 	}
+	
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+	
+	ul li {
+		list-style: none outside none;
+	}
+	
+	.head-panel {
+		float: right;
+	}
+	
+	.head-panel-item {
+	    background: none repeat scroll 0 0 #333333;
+		border-radius: 0 0 4px 4px;
+		display: inline-block;
+		float: left;
+		height: 30px;
+		margin-left: 10px;
+		position: relative;
+	}
+	
+	.head-panel-item span, .head-panel-item a {
+		color: #CACACA;
+		display: block;
+		line-height: 18px;
+		padding: 5px 20px;
+	}
+	
+	.main-content {
+		padding: 10px 15px;
+	}
+	
+	span.warn {
+		display: inline-block;
+		background-color: #FFE6E6;
+		width: 90px;
+		height: 30px;
+		vertical-align: middle;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script>
@@ -105,22 +160,42 @@
 			function(){
 				$(this).removeClass('hover');
 			}
-		);		
+		);
 	});
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
-	<aside>
-		<nav class="radius">
-			<a href="/" class="top examManage selected">考试安排</a>
-			<a href="/" class="middle itemManage">题库管理</a>
-			<a href="/" class="bottom teamShare">共享协作</a>
-		</nav>
-	</aside>
-	<div id="main">
-		<header class="main-title examManage">考试安排</header>
-		<div class="main-ctrl examManage">
-			<a href="__APP__/Paper/create" class="one-edge-shadow">创建考卷</a>			
+	<ul class="head-panel">
+		<li class="head-panel-item">
+			<span>{$user_name}</span>
+		</li>
+		<li class="head-panel-item">
+			<a href="__APP__/User/logout/" class="logout">注销</a>
+		</li>	
+	</ul>
+	<div class="main-wrap">
+		<aside>
+			<div class="logo radius">
+				<img alt="考评牛马" src="/Utility/Public/images/slogan1.png" width="185px">
+			</div>
+			<nav class="radius">
+				<a href="/" class="top paperManage selected top-radius">考卷管理</a>
+				<a href="/" class="middle examMarking">考试阅卷</a>
+				<a href="/" class="bottom teamShare bottom-radius">共享协作</a>
+			</nav>
+		</aside>
+		<div id="main">
+			<header class="main-title paperManage">考卷管理</header>
+			<div class="main-ctrl">
+				<a href="__APP__/Paper/create" class="one-edge-shadow">创建考卷</a>			
+			</div>
+			<div class="main-content">
+				<div>
+					<span class="warn"></span> <span>表示该考卷总分未正确分配到各题，无法安排考试</span>
+				</div>
+				<table>
+				</table>
+			</div>
 		</div>
 	</div>
 </section>

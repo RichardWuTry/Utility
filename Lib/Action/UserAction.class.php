@@ -50,6 +50,11 @@ class UserAction extends Action {
 		}
 	}
 	
+	public function logout() {
+		clearSessionCookie();
+		redirect_to(__APP__.'/User/login/');
+	}
+	
 	public function showVerifyImage() {
 		verify();
 	}

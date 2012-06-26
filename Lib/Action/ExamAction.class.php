@@ -4,6 +4,8 @@ class ExamAction extends Action {
 		if (!isLogin()) {
 			redirect_to(__APP__.'/User/login/');
 		} else {
+			
+			$this->assign('user_name', $_SESSION['user_name']);
 			$this->display();
 		}
 	}
