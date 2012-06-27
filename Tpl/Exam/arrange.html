@@ -1,0 +1,217 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考评牛马</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.21/themes/redmond/jquery-ui.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/exam.css" />
+<style>
+	.main-title.paperManage {
+		background-position: 3px 11px;
+		background-color: #202020;
+	}
+
+	.paper-info{
+		padding-bottom: 5px;
+	}
+	
+	.paper-info span {
+		padding-right: 10px;
+	}
+	
+	.main-ctrl div, .main-ctrl span{
+		font-size: 15px;
+	}
+	
+	div.ctrl-btn {
+		margin-top: 10px;
+	}
+	
+	div.ctrl-btn input {
+		background-color: #E3EDF2;
+		font-size: 15px;
+		padding: 6px 15px;
+		border: none;
+	}
+	
+	input, textarea, select {
+		outline: none;
+		border: 1px solid #C0D8E2;
+		margin: 0px;
+		padding: 4px;
+	}
+	
+	.datepicker {
+		width: 100px;
+	}
+	
+	.hour, .minute {
+		width: 50px;
+	}
+	
+	table.window-period {
+		width: 500px;
+	}
+	
+	table.window-period th, table.window-period td{
+		border: none;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+<script src="http://jquery-ui.googlecode.com/svn/trunk/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+<script>
+	$(function(){
+		$('nav a').hover(
+			function(){
+				$(this).addClass('hover');
+			},
+			function(){
+				$(this).removeClass('hover');
+			}
+		);
+		
+		$('.datepicker').datepicker({ minDate: 0});
+		
+		$('#arrangeExam').click(function(){
+			var helpMsg = $('#helpMsg');
+			var isValid = true;
+			helpMsg.hide();
+			
+			//检查输入框不能为空
+			
+			$('.hour').each(function(){
+				if (isNaN($(this).val())) {
+					isValid = false;
+					return false;
+				} else {
+					var hour = parseInt($(this).val());
+					var fHour = parseFloat($(this).val());
+					if (hour < 0 || hour > 23 || hour != fHour) {
+						isValid = false;
+						return false;
+					}
+				}
+			});
+			
+			if (!isValid) {
+				helpMsg.text('小时有效值为0~23的整数').show();
+				return;
+			}
+			
+			$('.minute').each(function(){
+				if (isNaN($(this).val())) {
+					isValid = false;
+					return false;
+				} else {
+					var minute = parseInt($(this).val());
+					var fMinute = parseFloat($(this).val());
+					alert(fMinute);
+					if (minute < 0 || minute > 59 || minute != fMinute) {
+						isValid = false;
+						return false;
+					}
+				}
+			});
+			
+			if (!isValid) {
+				helpMsg.text('分钟有效值为0~59的整数').show();
+				return;
+			}
+			
+			if ($('#openDate') > $('#closeDate')) {
+				helpMsg.text('开始日期不能晚于截止日期').show();
+				return;
+			}
+		});
+	});
+</script>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<section id="content">
+	<ul class="head-panel">
+		<li class="head-panel-item">
+			<span>{$user_name}</span>
+		</li>
+		<li class="head-panel-item">
+			<a href="__APP__/User/logout/" class="logout">注销</a>
+		</li>	
+	</ul>
+	<div class="main-wrap">
+		<aside>
+			<div class="logo radius">
+				<img alt="考评牛马" src="/Utility/Public/images/slogan1.png" width="185px">
+			</div>
+			<nav class="radius">
+				<a href="__URL__/Exam/manage" class="top paperManage selected top-radius">考卷管理</a>
+				<a href="/" class="middle examMarking">考试阅卷</a>
+				<a href="/" class="bottom teamShare bottom-radius">共享协作</a>
+			</nav>
+		</aside>
+		<div id="main">
+			<header class="main-title paperManage">考卷管理</header>
+			<div class="main-ctrl">
+				<div class="paper-info">
+					<span><strong>{$paper['paper_name']}</strong></span>
+					<span>（共{$paper['question_count']}题，时长{$paper['total_mins']}分钟）</span>
+				</div>
+				<table class="window-period">
+					<tr>
+						<th rowspan="2" class="left">开放考试时间</th>
+						<td class="left">
+							从 <input type="text" class="datepicker" id="openDate" />日
+							<input type="text" class="hour" id="openHour" />时
+							<input type="text" class="minute" id="openMinute" />分
+						</td>
+					</tr>
+					<tr>
+						<td class="left">
+							至 <input type="text" class="datepicker" id="closeDate" />日
+							<input type="text" class="hour" id="closeHour" />时
+							<input type="text" class="minute" id="closeMinute" />分
+						</td>
+					</tr>
+				</table>
+				<div class="ctrl-btn">
+					<input type="button" id="arrangeExam" value="确 定" class="one-edge-shadow"/>
+					<a href="__URL__/manage" class="one-edge-shadow">返 回</a>
+					<span id="helpMsg" class="hide"></span>
+				</div>
+			</div>
+			<div class="main-content">
+				<div>
+					<span class="warn"></span> <span>表示该考卷总分未正确分配到各题，无法安排考试</span>
+				</div>
+				<table class="papers">
+					<tr>
+						<th>考卷名称</th>
+						<th>总题数</th>
+						<th>满分</th>
+						<th>总时长</th>
+						<th></th>
+					</tr>
+					<volist name="papers" id="p">
+						<tr <if condition="$p.is_score_balance eq 0">class="warn"</if>>
+							<td>
+								{$p.paper_name}
+							</td>
+							<td class="center">
+								{$p.question_count}
+							</td>
+							<td class="center">
+								{$p.total_score}
+							</td>
+							<td class="right">
+								{$p.total_mins}分钟
+							</td>
+							<td class="right ctrl">
+								<if condition="$p.is_score_balance eq 1">
+									<a href="__URL__/arrange/p/{$p.paper_id}">安排考试</a>
+								</if>
+								<a href="__APP__/Paper/review/p/{$p.paper_id}">编辑</a>
+							</td>
+						</tr>
+					</volist>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />

@@ -1,5 +1,12 @@
 <?php
-class QuestionAction extends Action {	
+class QuestionAction extends Action {
+	function __construct() {
+		parent::__construct();
+		if (!isLogin()) {
+			redirect_to(__APP__.'/User/login/');
+		}
+	}
+	
 	public function add() {
 		// $paper_id = isset($_GET['p']) ? $_GET['p'] : 0;
 		

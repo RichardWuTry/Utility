@@ -1,0 +1,167 @@
+table {
+	margin-top: 10px;
+	background-color: #FFFFFF;
+	border-collapse: collapse;
+	width: 690px;
+}
+
+th, td {
+	font-size: 15px;
+	border: 1px solid gray;
+	padding: 5px 5px;
+}
+
+.ctrl a {
+	border: 1px solid #C0D8E2;
+	margin: 0;
+	outline: medium none;
+	background-color:#F0F0F0;
+	padding: 3px 5px;
+}
+
+body {
+	background-color: #E3EDF2;
+}
+
+.main-wrap {
+	padding-top: 10px;
+	clear: both;
+}
+
+.logo {
+	background-color: #262626;
+	text-align: center;
+	margin-bottom: 20px;
+	padding: 20px 0px;
+}
+
+nav {
+	background-color: #262626;	
+	width: 220px;
+}
+
+nav a {
+	margin: 0px;
+	display: block;
+	padding: 10px 10px 10px 46px;
+	font-size: 15px;
+	text-decoration: none;
+	color: #CACACA;
+	background: url("../images/nav_icons.png") no-repeat scroll 0 0 transparent;
+}
+
+nav a.top {
+	border-bottom: 1px solid #202020;
+}
+
+nav a.middle {
+	border-bottom: 1px solid #202020;
+	border-top: 1px solid #292929;
+}
+
+nav a.bottom {
+	border-top: 1px solid #292929;
+}
+
+nav a.paperManage {
+	background-position: 3px -89px;
+}
+
+nav a.examMarking {
+	background-position: 3px -489px;
+}
+
+nav a.teamShare {
+	background-position: 3px -689px;
+}
+
+nav a.paperManage.selected, nav a.paperManage.hover{
+	background-position: 3px 11px;
+	background-color: #202020;
+}
+
+nav a.examMarking.selected, nav a.examMarking.hover {		
+	background-position: 3px -389px;
+	background-color: #202020;
+}
+
+nav a.teamShare.selected, nav a.teamShare.hover {
+	background-position: 3px -589px;
+	background-color: #202020;
+}
+
+#main {
+	margin-left: 20px;
+	width: 720px;
+	height: 600px;
+	float: left;
+	background: none repeat scroll 0 0 #E9E9E9;
+}
+
+.main-title {
+	background: url("../images/nav_icons.png") no-repeat scroll 0 0 #262626;
+	border-bottom: 5px solid #5093B0;
+	border-radius: 4px 4px 0 0;
+	padding: 10px 42px;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.main-ctrl {
+	background: none no-repeat scroll 0 0 #FFFFFF;
+	border-bottom: 1px solid #DDDDDD;
+	padding: 6px 15px;
+}
+
+.main-ctrl {
+	padding: 20px 15px;
+}
+
+.main-ctrl a {
+	text-decoration: none;
+	font-size: 15px;
+	padding: 6px 15px;
+	background-color: #E3EDF2;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+ul li {
+	list-style: none outside none;
+}
+
+.head-panel {
+	float: right;
+}
+
+.head-panel-item {
+	background: none repeat scroll 0 0 #333333;
+	border-radius: 0 0 4px 4px;
+	display: inline-block;
+	float: left;
+	height: 30px;
+	margin-left: 10px;
+	position: relative;
+}
+
+.head-panel-item span, .head-panel-item a {
+	color: #CACACA;
+	display: block;
+	line-height: 18px;
+	padding: 5px 20px;
+}
+
+.main-content {
+	padding: 10px 15px;
+}
+
+span.warn {
+	display: inline-block;
+	width: 90px;
+	height: 30px;
+	vertical-align: middle;
+}

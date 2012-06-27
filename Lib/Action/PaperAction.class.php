@@ -1,5 +1,12 @@
 <?php
 class PaperAction extends Action {
+	function __construct() {
+		parent::__construct();
+		if (!isLogin()) {
+			redirect_to(__APP__.'/User/login/');
+		}
+	}
+
 	public function create() {
 		$this->display();
 	}
@@ -8,9 +15,26 @@ class PaperAction extends Action {
 		if (isset($_POST['submit'])) {
 			$ExamPaper = D('ExamPaper');
 			if ($ExamPaper->create()) {
+				$isSuccess = true;
+				$ExamPaper->startTrans();
 				if ($paperId = $ExamPaper->add()) {
+					$UserPaper = M('UserPaper');
+					$userPaperData['user_id'] = $_SESSION['user_id'];
+					$userPaperData['paper_id'] = $paperId;
+					$userPaperData['authority'] = 'w';
+					$userPaperData['create_at'] = date("Y-m-d H:i:s");
+					if (false === $UserPaper->add($userPaperData)) {
+						$isSuccess = false;
+					}
+				} else {
+					$isSuccess = false;					
+				}
+				
+				if ($isSuccess) {
+					$ExamPaper->commit();
 					$this->success($paperId);
 				} else {
+					$ExamPaper->rollback();
 					$this->error('写入数据库错误');
 				}
 			} else {

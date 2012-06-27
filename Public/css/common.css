@@ -63,6 +63,7 @@ input[type='button'], input[type='submit'], input[type='reset'] {
 
 a {
 	text-decoration: none;
+	color: #000000;
 }
 
 #helpMsg {
@@ -71,6 +72,21 @@ a {
 	color: #FF0000;
 }
 
+.warn {
+	background-color: #FFE6E6;		
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.left {
+	text-align: left;
+}
 
 
 

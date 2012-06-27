@@ -1,153 +1,11 @@
 <include file="./Tpl/Public/headstart.html" />
-<title>考评木马</title>
+<title>考评牛马</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/exam.css" />
 <style>
-	body {
-		background-color: #E3EDF2;
-	}
-	
-	.main-wrap {
-		padding-top: 10px;
-		clear: both;
-	}
-	
-	.logo {
-		background-color: #262626;
-		text-align: center;
-		margin-bottom: 20px;
-		padding: 20px 0px;
-	}
-	
-	nav {
-		background-color: #262626;	
-		width: 220px;
-	}
-	
-	nav a {
-		margin: 0px;
-		display: block;
-		padding: 10px 10px 10px 46px;
-		font-size: 15px;
-		text-decoration: none;
-		color: #CACACA;
-		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 transparent;
-	}
-	
-	nav a.top {
-		border-bottom: 1px solid #202020;
-	}
-	
-	nav a.middle {
-		border-bottom: 1px solid #202020;
-		border-top: 1px solid #292929;
-	}
-	
-	nav a.bottom {
-		border-top: 1px solid #292929;
-	}
-	
-	nav a.paperManage {
-		background-position: 3px -89px;
-	}
-	
-	nav a.examMarking {
-		background-position: 3px -489px;
-	}
-	
-	nav a.teamShare {
-		background-position: 3px -689px;
-	}
-	
-	nav a.paperManage.selected, nav a.paperManage.hover, .main-title.paperManage {
+	.main-title.paperManage {
 		background-position: 3px 11px;
 		background-color: #202020;
-	}
-	
-	nav a.examMarking.selected, nav a.examMarking.hover {		
-		background-position: 3px -389px;
-		background-color: #202020;
-	}
-	
-	nav a.teamShare.selected, nav a.teamShare.hover {
-		background-position: 3px -589px;
-		background-color: #202020;
-	}
-	
-	#main {
-		margin-left: 20px;
-		width: 720px;
-		height: 600px;
-		float: left;
-		background: none repeat scroll 0 0 #E9E9E9;
-	}
-	
-	.main-title {
-		background: url("__PUBLIC__/images/nav_icons.png") no-repeat scroll 0 0 #262626;
-		border-bottom: 5px solid #5093B0;
-		border-radius: 4px 4px 0 0;
-		padding: 10px 42px;
-		color: #FFFFFF;
-		font-weight: bold;
-		font-size: 16px;
-	}
-	
-	.main-ctrl {
-		background: none no-repeat scroll 0 0 #FFFFFF;
-		border-bottom: 1px solid #DDDDDD;
-		padding: 6px 15px;
-	}
-	
-	.main-ctrl {
-		padding: 20px 15px;
-	}
-	
-	.main-ctrl a {
-		text-decoration: none;
-		font-size: 15px;
-		padding: 6px 15px;
-		background-color: #E3EDF2;
-	}
-	
-	ul {
-		margin: 0;
-		padding: 0;
-	}
-	
-	ul li {
-		list-style: none outside none;
-	}
-	
-	.head-panel {
-		float: right;
-	}
-	
-	.head-panel-item {
-	    background: none repeat scroll 0 0 #333333;
-		border-radius: 0 0 4px 4px;
-		display: inline-block;
-		float: left;
-		height: 30px;
-		margin-left: 10px;
-		position: relative;
-	}
-	
-	.head-panel-item span, .head-panel-item a {
-		color: #CACACA;
-		display: block;
-		line-height: 18px;
-		padding: 5px 20px;
-	}
-	
-	.main-content {
-		padding: 10px 15px;
-	}
-	
-	span.warn {
-		display: inline-block;
-		background-color: #FFE6E6;
-		width: 90px;
-		height: 30px;
-		vertical-align: middle;
 	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -179,7 +37,7 @@
 				<img alt="考评牛马" src="/Utility/Public/images/slogan1.png" width="185px">
 			</div>
 			<nav class="radius">
-				<a href="/" class="top paperManage selected top-radius">考卷管理</a>
+				<a href="__URL__/Exam/manage" class="top paperManage selected top-radius">考卷管理</a>
 				<a href="/" class="middle examMarking">考试阅卷</a>
 				<a href="/" class="bottom teamShare bottom-radius">共享协作</a>
 			</nav>
@@ -193,7 +51,36 @@
 				<div>
 					<span class="warn"></span> <span>表示该考卷总分未正确分配到各题，无法安排考试</span>
 				</div>
-				<table>
+				<table class="papers">
+					<tr>
+						<th>考卷名称</th>
+						<th>总题数</th>
+						<th>满分</th>
+						<th>总时长</th>
+						<th></th>
+					</tr>
+					<volist name="papers" id="p">
+						<tr <if condition="$p.is_score_balance eq 0">class="warn"</if>>
+							<td>
+								{$p.paper_name}
+							</td>
+							<td class="center">
+								{$p.question_count}
+							</td>
+							<td class="center">
+								{$p.total_score}
+							</td>
+							<td class="right">
+								{$p.total_mins}分钟
+							</td>
+							<td class="right ctrl">
+								<if condition="$p.is_score_balance eq 1">
+									<a href="__URL__/arrange/p/{$p.paper_id}">安排考试</a>
+								</if>
+								<a href="__APP__/Paper/review/p/{$p.paper_id}">编辑</a>
+							</td>
+						</tr>
+					</volist>
 				</table>
 			</div>
 		</div>
