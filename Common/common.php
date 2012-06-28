@@ -52,5 +52,36 @@ function isLogin() {
 	}
 }
 
+function encryptNumToAlphabet($numStr)
+{
+	$output = "";
+	$NumMapping = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	for ($i = 0; $i < strlen($numStr); $i++) {
+		$char = $numStr[$i];
+		if (is_numeric($char)) {
+			$output .= $NumMapping[intval($char)];
+		} else {
+			$output .= $char;
+		}		
+	}
+	return $output;
+}
+
+function decryptAlphabetToNum($alphabetStr)
+{
+	$output = "";
+	$Alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	$Alphabets .= strtolower($Alphabets);
+	for ($i = 0; $i < strlen($alphabetStr); $i++) {
+		$char = $alphabetStr[$i];
+		if (false === strrpos($Alphabets, $char)) {
+			$output .= $char;
+		} else {
+			$output .= strval(ord($char) - ord('A'));
+		}		
+	}		
+	
+	return $output;
+}
 
 ?>
