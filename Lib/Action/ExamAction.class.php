@@ -85,6 +85,7 @@ class ExamAction extends Action {
 			$this->assign('paper', $papers[0]);
 			$this->assign('user_name', $_SESSION['user_name']);
 			$this->assign('user_id', $userId);
+			$this->assign('serverName', $_SERVER["SERVER_NAME"]);
 			$this->display();
 		} else {
 			redirect_to(__URL__.'/manage/');
@@ -132,10 +133,6 @@ class ExamAction extends Action {
 		$beginStr = substr($shaStr, 7, 10);
 		$endStr = substr($shaStr, 23, 10);
 		return $beginStr.$secretExamId.$endStr;
-	}
-	
-	private function parseLink() {
-	
 	}
 	
 	private function encryptExamId($examId) {

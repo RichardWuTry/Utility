@@ -21,7 +21,7 @@
 		font-size: 15px;
 	}
 	
-	div.ctrl-btn-wrap {
+	div.ctrl-btn-wrap, div.new_link {
 		margin-top: 10px;
 	}
 	
@@ -53,6 +53,14 @@
 	
 	table.window-period th, table.window-period td{
 		border: none;
+	}
+	
+	table.papers .copy_text {
+		width: 390px;
+	}
+	
+	div.new_link .copy_text {
+		width: 680px;
 	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -150,6 +158,10 @@
 				"json"
 			);
 		});
+		
+		$('input.copy_text').click(function(){
+			$(this).select();
+		});
 	});
 	
 	function showResponse(data) {
@@ -159,10 +171,10 @@
 		} else {			
 			showBox(msg.text('成功安排考试，发送链接给应试者，并告知开放时段'), 'lightgreen', 'green');
 			
-			var url = "http:/__APP__/Exam/attend/token/" + data.info;
-			var newDiv = $('<div>').append($('<input>').css('width', '600px').attr('id', 'newlink').val(url)).css('padding-top', '15px');
-			$('.ctrl-btn').remove();
-			$('.ctrl-btn-wrap').after(newDiv);
+			var url = "http://{$serverName}__APP__/Examinee/attend/token/" + data.info;
+			$('.ctrl-btn').hide();
+			$('div.new_link .copy_text').val(url);
+			$('div.new_link').show();
 		}
 	}
 	
@@ -189,7 +201,7 @@
 				<img alt="考评牛马" src="/Utility/Public/images/slogan1.png" width="185px">
 			</div>
 			<nav class="radius">
-				<a href="__URL__/Exam/manage" class="top paperManage selected top-radius">考卷管理</a>
+				<a href="__URL__/manage" class="top paperManage selected top-radius">考卷管理</a>
 				<a href="/" class="middle examMarking">考试阅卷</a>
 				<a href="/" class="bottom teamShare bottom-radius">共享协作</a>
 			</nav>
@@ -223,6 +235,9 @@
 					<a href="__URL__/manage" class="one-edge-shadow ctrl-btn">返 回</a>
 					<span id="helpMsg" class="hide"></span>
 				</div>
+				<div class="new_link hide">
+					<input type="text" class="copy_text" />
+				</div>
 			</div>
 			<div class="main-content">
 				<div>
@@ -233,21 +248,17 @@
 						<th>起始日期</th>
 						<th>截止日期</th>
 						<th>链接</th>
-						<th>操作</th>
 					</tr>
 					<volist name="exams" id="e">
 						<tr>
 							<td>
-								{$e.open_datetime}
+								{$e.open_datetime|substr=0, 16}
 							</td>
 							<td>
-								{$e.close_datetime}
+								{$e.close_datetime|substr=0, 16}
 							</td>
 							<td>
-								<input value="http:/__APP__/Exam/attend/token/{$e.link}" />
-							</td>
-							<td class="right ctrl">
-								<a href="__APP__/Paper/review/p/{$p.paper_id}">复制</a>
+								<input value="http://{$serverName}__APP__/Examinee/attend/token/{$e.link}" class="copy_text" />
 							</td>
 						</tr>
 					</volist>

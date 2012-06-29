@@ -55,7 +55,7 @@ function isLogin() {
 function encryptNumToAlphabet($numStr)
 {
 	$output = "";
-	$NumMapping = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	$NumMapping = "abcdefghijklmnopqrstuvwxyz";
 	for ($i = 0; $i < strlen($numStr); $i++) {
 		$char = $numStr[$i];
 		if (is_numeric($char)) {
@@ -69,15 +69,15 @@ function encryptNumToAlphabet($numStr)
 
 function decryptAlphabetToNum($alphabetStr)
 {
+	$alphabetStr = strtolower($alphabetStr);
 	$output = "";
-	$Alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	$Alphabets .= strtolower($Alphabets);
+	$Alphabets = "abcdefghijklmnopqrstuvwxyz";
 	for ($i = 0; $i < strlen($alphabetStr); $i++) {
 		$char = $alphabetStr[$i];
 		if (false === strrpos($Alphabets, $char)) {
 			$output .= $char;
 		} else {
-			$output .= strval(ord($char) - ord('A'));
+			$output .= strval(ord($char) - ord('a'));
 		}		
 	}		
 	
