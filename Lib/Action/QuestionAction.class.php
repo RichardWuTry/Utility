@@ -3,7 +3,7 @@ class QuestionAction extends Action {
 	function __construct() {
 		parent::__construct();
 		if (!isLogin()) {
-			redirect_to(__APP__.'/User/login/');
+			redirect(__APP__.'/User/login/');
 		}
 	}
 	
@@ -98,7 +98,7 @@ class QuestionAction extends Action {
 				$this->error($QuestionHead->getError());
 			}
 		} else {
-			redirect_to(__APP__.'/Paper/create');
+			redirect(__APP__.'/Paper/create');
 		}		
 	}
 	

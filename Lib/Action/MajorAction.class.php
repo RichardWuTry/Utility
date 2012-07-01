@@ -45,7 +45,7 @@ class MajorAction extends Action {
 				$this->error($MajorResearch->getError());
 			}
 		} else {
-			redirect_to(__URL__.'/research');
+			redirect(__URL__.'/research');
 		}
 	}
 	
@@ -135,7 +135,7 @@ class MajorAction extends Action {
 			
 			$this->display();
 		} else {
-			redirect_to(__URL__.'/research');
+			redirect(__URL__.'/research');
 		}
 		
 	}

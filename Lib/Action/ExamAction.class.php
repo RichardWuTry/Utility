@@ -3,7 +3,7 @@ class ExamAction extends Action {
 	function __construct() {
 		parent::__construct();
 		if (!isLogin()) {
-			redirect_to(__APP__.'/User/login/');
+			redirect(__APP__.'/User/login/');
 		}
 	}
 	
@@ -51,7 +51,7 @@ class ExamAction extends Action {
 	
 	public function arrange() {
 		if (!isset($_GET['p'])) {
-			redirect_to(__URL__.'/manage/');
+			redirect(__URL__.'/manage/');
 		}
 		
 		$paperId = $_GET['p'];
@@ -88,7 +88,7 @@ class ExamAction extends Action {
 			$this->assign('serverName', $_SERVER["SERVER_NAME"]);
 			$this->display();
 		} else {
-			redirect_to(__URL__.'/manage/');
+			redirect(__URL__.'/manage/');
 		}
 	}
 	

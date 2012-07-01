@@ -3,7 +3,7 @@ class PaperAction extends Action {
 	function __construct() {
 		parent::__construct();
 		if (!isLogin()) {
-			redirect_to(__APP__.'/User/login/');
+			redirect(__APP__.'/User/login/');
 		}
 	}
 
@@ -41,7 +41,7 @@ class PaperAction extends Action {
 				$this->error($ExamPaper->getError());
 			}
 		} else {
-			redirect_to(__URL__.'/create');
+			redirect(__URL__.'/create');
 		}
 	}
 	
