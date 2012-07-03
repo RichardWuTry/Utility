@@ -5,27 +5,11 @@
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <style>
 	.qTitle {
-		position: relative;
-	}
-	
-	#editPaperDiv {
-		position: absolute;
-		top: 10px;
-		right: 10px;
+		background-color: #FFFFFF;
 	}
 
-	#qTable {
-		border-collapse: collapse;
-		margin: 20px auto;
-	}
-	
-	#qTable th, #qTable td {
-		border: 1px solid gray;
-		padding: 2px 5px;
-	}
-	
-	.qName {
-		color:black;
+	.qBody {
+		margin-top: 30px;
 	}
 	
 	#helpMsg {
@@ -33,214 +17,57 @@
 		z-index:2000;
 	}
 	
-	span.ui-button-text {
-		font-size: 0.9em;
-	}
-	
-	td.qCtrl {
-		text-align: right;
+	form {
+		height: 100%;
 	}
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
+	var msg;
+
 	$(function(){
-		setSumScore();
-		
-		setQuestionId();
-		
-		$('#editPaperBtn').click(function(){
-			window.location = "__URL__/edit/p/{$paper.paper_id}"
-		});
-		
-		$('#batchEditScore').click(function(){
-			var allOptionScore = $('#allOption').val();
-			var allInputScore = $('#allInput').val();
-			
-			var isValid = true;
-			if (allOptionScore != '') {
-				if (!validateNumber($('#allOption').get(0), 
-								$('#helpMsg').get(0), 
-								'请输入有效整数', 
-								'', 
-								1, 
-								{$paper.total_score}, 
-								true)){
-					isValid = false;
-				} else {
-					$('.radio, .checkbox').val(allOptionScore);
-				}
-			}
-			
-			if (isValid && allInputScore != '') {
-				if (!validateNumber($('#allInput').get(0), 
-								$('#helpMsg').get(0), 
-								'请输入有效整数', 
-								'', 
-								1, 
-								{$paper.total_score}, 
-								true)){
-					isValid = false;
-				} else {
-					$('.textarea').val(allInputScore);
-				}				
-			}
-			
-			if (!isValid) {
-				promptMsg($('#helpMsg'));
-			} else {
-				setSumScore();
-				var paperId = {$paper.paper_id};
-				$.post(
-					"__URL__/batchUpdateScore/",
-					{batchOptionScore: allOptionScore, batchInputScore: allInputScore, paper_id: paperId},
-					showResponse,
-					"json"
-				);
-			}
-		});
-		
-		$('.qReview').click(function(){	
-			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/" + $(this).parents('tr').find('.qSeq').text();
-		});
-		
-		$( "#removeConfirm" ).dialog({
-			autoOpen: false,
-			resizable: false,
-			modal: true,
-			buttons: {
-				"确定": function() {
-					var currTr = $(this).data('currTr');
-					$.post(
-						"__URL__/removeQuestion/",
-						{pqId: currTr.find('.pqId').text()},
-						showResponse,
-						"json"
-					);
-					currTr.remove();
-					setSumScore();
-					$( this ).dialog( "close" );
-				},
-				"取消": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
-		
-		$('.qRemove').click(function(){
-			$( "#removeConfirm" ).data('currTr', $(this).parents('tr')).dialog('open');
-		});
-		
-		$('.qUp, .qDown').click(function(){
-			$('.qReview, .qRemove, .qUp, .qDown, .qScore').attr('disabled', 'disabled');
-			$(this).removeAttr('disabled');
-			$(this).siblings('.qUp, .qDown').removeAttr('disabled');
-			
-			$(this).siblings('.qLocate').removeClass('hide');
-			$(this).siblings('.qReview, .qRemove').addClass('hide');
-			
-			var currTr = $(this).parents('tr');
-			if($(this).hasClass('qUp')) {				
-				var prevTr = currTr.prev('tr');
-				if (prevTr && !prevTr.hasClass('tHead')) {
-					prevTr.before(currTr);					
-				}
-			} else if ($(this).hasClass('qDown')) {
-				var nextTr = currTr.next('tr');
-				if (nextTr) {
-					nextTr.after(currTr);
-				}
-			}
-		});
-		
-		$('.qLocate').click(function(){
-			setQuestionId();
-			$(this).addClass('hide');
-			$('.qReview, .qRemove, .qUp, .qDown, .qScore').removeAttr('disabled');
-			$(this).siblings('.qReview, .qRemove').removeClass('hide');
-			
-			var currTr = $(this).parents('tr');
-			var pqId = currTr.find('.pqId').text();
-			var qId = currTr.find('.qId').text();
-			var qSeq = currTr.find('.qSeq').text();
-			if (qId != qSeq) {
-				var paperId = {$paper.paper_id};
-				$.post(
-					"__URL__/alterSequence/",
-					{orgSeq: qSeq, newSeq: qId, paper_id: paperId, paper_question_id: pqId},
-					showResponse,
-					"json"
-				);
-			}
-		});
-		
-		$('#qTable').on("change", ".qScore", function(){
-			var qScore = $(this).val();
-			var pqId = $(this).parents('tr').find('.pqId').text();
-			setSumScore();
-			$.post(
-				"__URL__/updateScore/",
-				{paper_question_id: pqId, question_score: qScore},
-				showResponse,
-				"json"
-			);
-		});
-		
-		$('#browseAllQuestion').click(function(){
-			window.location = "__APP__/Question/review/p/{$paper.paper_id}/s/1";
-		});
-		
-		$('#addNew').click(function(){
-			window.location = "__APP__/Question/add/p/{$paper.paper_id}";
-		});
-		
-		$('#back').click(function(){
-			window.location = "__APP__/Exam/manage";
-		});
+		msg = $('#helpMsg');
+	
+		$('#attendForm').ajaxForm({
+			beforeSubmit: checkForm,
+			success: showResponse,
+			dataType: 'json'
+		});	
 	});
 	
-	function setQuestionId() {
-		var qId = 1;
-		$('.qId').each(function(){
-			$(this).text(qId++);
+	function checkForm() {
+		var isValid;
+		$('.non-empty').each(function(){
+			isValid = validateNonEmpty(this, msg[0], $(this).attr('title') + ' 不能为空', '');
+			return isValid;
 		});
+		
+		if (!isValid) {
+			promptMsg(msg);
+		}
+		return isValid;
 	}
 	
-	function setSumScore() {
-		var sumScore = 0;
-		$('.qScore').each(function(){
-			sumScore += Number($(this).val());
-		});
-		$('#sumScore').text(sumScore);
-		if (sumScore == Number({$paper.total_score})) {
-			$('#sumScore').css('color', $('#totalScore').css('color'));
-		} else {
-			$('#sumScore').css('color', 'Orange');
-		}
-	}	
-
 	function showResponse(data) {
-		var msg = $('#helpMsg');
-		if (data.info.length > 0) {
-			msg.html(data.info);
-			if (data.status == 0) {			
-				promptMsg(msg);
-			} else {
-				promptMsg(msg, 'lightgreen', 'green');
-			}
-		}		
+		if (data.status == 0) {			
+			promptMsg(msg.text(data.info));
+		} else {
+			window.location = "__URL__/answer/"
+		}
 	}
 	
 </script>	
 </head>
-<body>	
+<body>
+	<form method="post" action="__URL__/addAttendHead" id="attendForm">
 	<header>
 		<table>
 			<tr>
 				<td>
-					共{$question|count}题
+					共{$qCount}题
 				</td>
 				<td>
 					
@@ -257,14 +84,8 @@
 			</tr>
 		</table>
 	</header>
-
-	<section id="content">
-	
+	<section id="content">	
 		<div id="main">
-			<div id="removeConfirm" title="确认移除" class="hide">
-				<p><span class="ui-icon ui-icon-alert" style="float:left; margin-right:10px;"></span>确定需要移除该问题吗？</p>
-			</div>
-			
 			<div>
 				<span id="helpMsg" class="hide"></span>
 			</div>
@@ -272,87 +93,44 @@
 				<div class="qBody">
 					<h1 class="qTitle" style="text-align:center">
 						{$paper.paper_name}
-						<div id="editPaperDiv"><input id="editPaperBtn" type="button" value="编辑" /></div>
 					</h1>
-					<p class="width-l">
+					<p class="width-xl">
 						<strong>注意事项：</strong>{$paper.paper_desc}
 					</p>
-
-					<div>
-						<span style="margin-right: 20px">选择题:每题 <input type="text" id="allOption" class="width-xs" />分</span>
-						<span style="margin-right: 20px">问答题:每题 <input type="text" id="allInput" class="width-xs" />分</span>
-						<span style="margin-right: 20px;"><input id="batchEditScore" type="button" value="批量设置" class="width-s" /></span>						
+					<div style="text-align:center; margin-top:40px;">
+						<label style="margin-right:10px;">姓名：<input title="姓名" type="text" name="examinee_name" class="non-empty" /></label>
+						<label style="margin-right:10px;">手机：<input title="手机" type="text" name="mobile" class="non-empty" /></label>
+						<label>身份证：<input title="身份证" type="text" name="id_card" class="non-empty" /></label>
 					</div>
-				</div>
-				<table id="qTable" class="width-xxl">
-					<tr class="tHead">
-						<th>序号</th>
-						<th>考题</th>
-						<th>题型</th>
-						<th>分值</th>
-						<th></th>
-					</tr>
-					<volist name="question" id="q">
-						<tr class="qRow">
-							<td>								
-								<span class="qId"></span>
-								<span class="pqId hide">{$q.paper_question_id}</span>
-								<span class="qSeq hide">{$q.question_seq}</span>
-							</td>
-							<td>
-								<input type="text" value="{$q.question_name}" disabled="disabled" class="width-m qName" />
-							</td>
-							<td class="qType">
-								<if condition="$q.question_type eq 'radio'">
-									单选题
-								<elseif condition="$q.question_type eq 'checkbox'" />
-									多选题
-								<elseif condition="$q.question_type eq 'textarea'" />
-									问答题
-								<else />
-									其他
-								</if>
-							</td>
-							<td>
-								<input type="input" name="score_{$q.paper_question_id}" value="{$q.question_score}" class="width-xs qScore {$q.question_type}" />
-							</td>
-							<td class="qCtrl">								
-								<input type="button" value="查看&编辑" class="qReview" />
-								<input type="button" value="移除" class="qRemove" />
-								<input type="button" value="确定" class="qLocate hide"/>
-								<input type="button" value="上移" class="qUp" />
-								<input type="button" value="下移" class="qDown" />
-							</td>
-						</tr>
-					</volist>
-				</table>
+					<div class="hide">
+						<input type="text" name="exam_id" value="{$examId}" />
+					</div>
+				</div>			
 				
-				
-		</div>
-	
+		</div>	
 	</section>
 	<footer>
 		<table>
 			<tr>
 				<td>
-					<input id="browseAllQuestion" type="button" value="浏览考题" class="footer-btn" />
+					
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					<input id="back" type="button" value="返 回" class="footer-btn" />
+					<input id="begin" type="submit" value="开始考试" class="footer-btn" />
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					<input id="addNew" type="button" value="添加新题" class="footer-btn" />
+				
 				</td>
 			</tr>
 		</table>
 	</footer>
-
+	</form>
 </body>
 </html>	
 </body>
