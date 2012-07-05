@@ -1,50 +1,49 @@
 <include file="./Tpl/Public/headstart.html" />
-<title>第题</title>
+<title>第{$qSeq}题</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
+<style>
+	form {
+		height: 100%;
+	}
+</style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script>
+	var msg;
+	
 	$(function() {	
+		msg = $('#helpMsg');
+	
 		//垂直对齐各元素
 		valignMainDiv();		
 		
-		<if condition="$QuestionNav:prevSeq neq '0'">
-			//上一题
-			$('#prev').click(function(){
-				window.location = "__URL__/review/p/{$QuestionNav:paper_id}/s/{$QuestionNav:prevSeq}";
-			});
-		</if>
-				
-		//修改
-		$('#edit').click(function() {
-			window.location = "__URL__/edit/q/{$question_head.question_id}/p/{$QuestionNav:paper_id}/s/{$QuestionNav:currSeq}";
+		$('#mark').click(function(){
+			var markInput = $('input[name="is_mark"]');
+			if (markInput.val() == '1') {
+				markInput.val(0);
+				$(this).val('标 记');
+			} else {
+				markInput.val(1);
+				$(this).val('去除标记');
+				promptMsg(msg.text('标记成功'), 'lightgreen', 'green');
+			}
 		});
 		
-		//完成
-		$('#finish').click(function(){			
-			window.location = "__APP__/Paper/review/p/{$QuestionNav:paper_id}";
-		});
-			
-		//下一题
-		$('#next').click(function() {
-			<if condition="$QuestionNav:nextSeq neq '0'">
-				window.location = "__URL__/review/p/{$QuestionNav:paper_id}/s/{$QuestionNav:nextSeq}";
-			<else />
-				window.location = "__URL__/add/p/{$QuestionNav:paper_id}";
-			</if>
-		});
+		$('#prev, #finish, #next').click(function(){
+			$("#submit_btn").val($(this).attr('id'));
+			$('#addAttendDetail').submit();
+		})
 	});
 </script>	
 </head>
-<body>	
+<body>
+	<form method="post" action="__URL__/addAttendDetail" id="addAttendDetail">
 	<header>
 		<table>
 			<tr>
 				<td>
-					<if condition="$QuestionNav:paper_id neq '0'">
-						第{$QuestionNav:currSeq}题 / 共{$QuestionNav:totalQ}题
-					</if>				
+					第{$qSeq}题 / 共{$total_question_count}题
 				</td>
 				<td>
 					
@@ -62,8 +61,7 @@
 		</table>
 	</header>
 
-	<section id="content">
-	
+	<section id="content">	
 		<div id="main">
 			<div>
 				<span id="helpMsg" class="hide"></span>
@@ -73,53 +71,65 @@
 					<p class="width-l qTitle">
 						{$question_head.question_name}
 					</p>
+					<div class="hide">
+						<input type="text" name="question_type" value="{$question_head.question_type}" />
+						<input type="text" name="is_mark" value="{$is_mark}" />
+						<input type="text" id="submit_btn" name="submit_btn" value="" />
+					</div>
 					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">					
 						<ul class="option">
 							<volist name="option_detail" id="item">
 								<li>
-									<label><input type="{$question_head.question_type}" />{$item.item_name}</label>
+									<label>
+										<if condition="$item.cust_value eq 1">
+											<input type="{$question_head.question_type}" name="option[]" value="{$item.option_detail_id}" checked="checked" />{$item.item_name}
+										<else />
+											<input type="{$question_head.question_type}" name="option[]" value="{$item.option_detail_id}" />{$item.item_name}
+										</if>										
+									</label>
 								</li>
 							</volist>							
 						</ul>
 					</if>
 					<if condition="$question_head.question_type eq 'textarea'">
 						<p class="input">
-							<textarea id="input_area" rows="{$input_detail.row_count}" class="width-xl"></textarea>
+							<textarea id="input_area" rows="{$input_detail.row_count}" name="examinee_answer" class="width-xl">{$input_detail.cust_value}</textarea>
 						</p>
 					</if>
 				</div>
 			</div>
-		</div>
-	
+		</div>	
 	</section>
 	<footer>
 		<table>
 			<tr>
 				<td>
-					<if condition="$QuestionNav:prevSeq neq '0'">
+					<if condition="$qSeq neq '1'">
 						<input id="prev" type="button" value="上一题" class="footer-btn" />
 					</if>
 				</td>
 				<td>
-					<input id="edit" type="button" value="修 改" class="footer-btn" />
+					<if condition="$is_mark eq 1">
+						<input id="mark" type="button" value="去除标记" class="footer-btn" />
+					<else />
+						<input id="mark" type="button" value="标 记" class="footer-btn" />
+					</if>
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					<input id="finish" type="button" value="返 回" class="footer-btn" />
+					<input id="finish" type="button" value="完 成" class="footer-btn" />
 				</td>
 				<td>
-					<if condition="$QuestionNav:nextSeq neq '0'">
+					<if condition="$qSeq neq '$total_question_count'">
 						<input id="next" type="button" value="下一题" class="footer-btn" />
-					<else />
-						<input id="next" type="button" value="添加新题" class="footer-btn" />
 					</if>
 				</td>
 			</tr>
 		</table>
 	</footer>
-
+	</form>
 </body>
 </html>	
 </body>
