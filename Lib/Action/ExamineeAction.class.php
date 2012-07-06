@@ -41,6 +41,7 @@ class ExamineeAction extends Action {
 								->order('question_seq')
 								->select()) {
 					$_SESSION['questions'] = $questions;
+					$_SESSION['total_mins'] = $paper['total_mins'];
 					$this->assign('qCount', count($questions));
 					$this->assign('paper', $paper);
 					$this->assign('examId', $examId);
@@ -66,6 +67,9 @@ class ExamineeAction extends Action {
 			$AttendHead = D('AttendHead');
 			if ($AttendHead->create()) {
 				if ($attendId = $AttendHead->add()) {
+					$closeTime = new DateTime(date('Y-m-d H:i:s', time()));
+					$closeTime->add(new DateInterval('PT'.$_SESSION['total_mins'].'M'));
+					$_SESSION['closeTime'] = $closeTime;
 					$_SESSION['attendId'] = $attendId;
 					$_SESSION['qSeq'] = 1;
 					$this->success();
@@ -81,7 +85,8 @@ class ExamineeAction extends Action {
 	private function isAnsSessionValid() {
 		if (empty($_SESSION['attendId'])
 			|| empty($_SESSION['qSeq'])
-			|| empty($_SESSION['questions'])) {
+			|| empty($_SESSION['questions'])
+			|| empty($_SESSION['closeTime'])) {
 			return false;
 		} else {
 			return true;
@@ -92,6 +97,15 @@ class ExamineeAction extends Action {
 		if (!$this->isAnsSessionValid()) {
 			$this->error('页面错误');
 		}
+		
+		$closeTime = $_SESSION['closeTime'];
+		$currTime = new DateTime(date('Y-m-d H:i:s', time()));
+		if ($closeTime <= $currTime) {
+			redirect(__URL__.'/finish');
+		}
+		
+		$leftTime = $closeTime->diff($currTime);
+		$this->assign('leftTime', $leftTime->format('%H : %I'));
 		
 		$attend_id = $_SESSION['attendId'];
 		$qSeq = $_SESSION['qSeq'];
@@ -161,6 +175,7 @@ class ExamineeAction extends Action {
 			$this->assign('total_question_count', count($questions));
 			$this->assign('question_head', $question_head);
 			$this->assign('is_mark', $is_mark);
+			$this->assign('question_score', $question_score);
 			
 			$this->display();
 		} else {
@@ -229,12 +244,16 @@ class ExamineeAction extends Action {
 					redirect(__URL__.'/answer');
 				}
 			} else if ($target == 'next') {
-				if ($qSeq + 1 < count($questions)) {
+				if ($qSeq + 1 <= count($questions)) {
 					$_SESSION['qSeq'] = $qSeq + 1;
 					redirect(__URL__.'/answer');
 				}
 			}
 		}
+	}
+	
+	public function review() {
+		
 	}
 }
 ?>
