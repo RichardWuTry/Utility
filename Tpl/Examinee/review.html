@@ -1,0 +1,193 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>答卷总览</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
+<style>
+	#qTable {
+		border-collapse: collapse;
+		margin: 20px auto;
+		width: 700px;
+	}
+	
+	#qTable th, #qTable td {
+		border: 1px solid gray;
+		padding: 2px 5px;
+	}
+	
+	#helpMsg {
+		position:fixed;
+		z-index:2000;
+	}
+	
+	span.ui-button-text {
+		font-size: 0.9em;
+	}
+
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/paper.js"></script>
+<script>
+	$(function(){
+		$('#browseAll').click(function(){
+			$.post(
+				"__URL__/browse/",
+				{qGrp: 'all', qId: 0},
+				showResponse,
+				"json"				
+			);
+		});
+		
+		$('#browseMark').click(function(){
+			$.post(
+				"__URL__/browse/",
+				{qGrp: 'mark', qId: 0},
+				showResponse,
+				"json"
+			);
+		});
+		
+		$('#browseUnanswer').click(function(){
+			$.post(
+				"__URL__/browse/",
+				{qGrp: 'unanswer', qId: 0},
+				showResponse,
+				"json"
+			);
+		});
+		
+		$('.qView').click(function(){
+			var id = parseInt($(this).parent().siblings('.qSeq:first').text())-1;
+			$.post(
+				"__URL__/browse/",
+				{qGrp: 'all', qId: id},
+				showResponse,
+				"json"
+			);
+		});
+	});
+	
+	function showResponse(data) {
+		var msg = $('#helpMsg');
+		if (data.status == 0) {
+			msg.html(data.info);
+			promptMsg(msg);
+		} else {
+			window.location = "__URL__/answer";
+		}
+	}
+	
+</script>	
+</head>
+<body>	
+	<header>
+		<table>
+			<tr>
+				<td>
+					共 <strong>{$totalCount}</strong> 题
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					还剩 <strong id="leftTime">{$leftTime}</strong>
+				</td>
+			</tr>
+		</table>
+	</header>
+
+	<section id="content">
+	
+		<div id="main">
+			<div>
+				<span id="helpMsg" class="hide"></span>
+			</div>
+
+			<div class="qBody">
+				<h1 style="text-align:center">
+					{$paper.paper_name}						
+				</h1>
+				<p class="width-l">
+					<strong>注意事项：</strong>{$paper.paper_desc}
+				</p>
+			</div>
+			<table id="qTable" class="width-xxl">
+				<tr class="tHead">
+					<th>序号</th>
+					<th>题型</th>
+					<th>分值</th>
+					<th>标记</th>
+					<th>状态</th>
+					<th></th>
+				</tr>
+				<volist name="attend_detail" id="q">
+					<tr class="qRow">
+						<td class="qSeq">
+							{$q.question_seq}
+						</td>
+						<td class="qType">
+							<if condition="$q.question_type eq 'radio'">
+								单选题
+							<elseif condition="$q.question_type eq 'checkbox'" />
+								多选题
+							<elseif condition="$q.question_type eq 'textarea'" />
+								问答题
+							<else />
+								其他
+							</if>
+						</td>
+						<td>
+							{$q.question_score}
+						</td>
+						<td>
+							<if condition="$q.is_mark eq '1'">
+								标记
+							</if>
+						</td>
+						<td>
+							<if condition="$q.examinee_answer eq ''">
+								未答
+							</if>
+						</td>
+						<td>								
+							<input type="button" value="查看" class="qView" />
+						</td>
+					</tr>
+				</volist>
+			</table>
+				
+				
+		</div>
+	
+	</section>
+	<footer>
+		<table>
+			<tr>
+				<td>
+					<input id="browseUnanswer" type="button" value="浏览未答" class="footer-btn" />
+				</td>
+				<td>
+					<input id="browseMark" type="button" value="浏览标记" class="footer-btn" />
+				</td>
+				<td>
+
+				</td>
+				<td>
+					<input id="browseAll" type="button" value="浏览所有" class="footer-btn" />
+				</td>
+				<td>
+					<input id="finish" type="button" value="交 卷" class="footer-btn" />
+				</td>
+			</tr>
+		</table>
+	</footer>
+
+</body>
+</html>	
+</body>
+</html>

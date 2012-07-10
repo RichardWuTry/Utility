@@ -1,5 +1,5 @@
 <include file="./Tpl/Public/headstart.html" />
-<title>第{$qSeq}题</title>
+<title>第{$paper_question.question_seq}题</title>
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <style>
@@ -44,19 +44,19 @@
 		<table>
 			<tr>
 				<td>
-					第{$qSeq}题 / 共{$total_question_count}题
+					第<strong>{$paper_question.question_seq}</strong>题 / 共<strong>{$totalCount}</strong>题
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					该题{$question_score}分
+					该题<strong>{$paper_question.question_score}</strong>分
 				</td>
 				<td>
 					
 				</td>
 				<td>
-					剩余时间 <strong id="leftTime">{$leftTime}</strong>
+					还剩 <strong id="leftTime">{$leftTime}</strong>
 				</td>
 			</tr>
 		</table>
@@ -73,8 +73,9 @@
 						{$question_head.question_name}
 					</p>
 					<div class="hide">
+						<input type="text" name="attend_detail_id" value="{$attend_detail.attend_detail_id}" />
+						<input type="text" name="is_mark" value="{$attend_detail.is_mark}" />						
 						<input type="text" name="question_type" value="{$question_head.question_type}" />
-						<input type="text" name="is_mark" value="{$is_mark}" />
 						<input type="text" id="submit_btn" name="submit_btn" value="" />
 					</div>
 					<if condition="($question_head.question_type eq 'radio') OR ($question_head.question_type eq 'checkbox')">					
@@ -105,12 +106,12 @@
 		<table>
 			<tr>
 				<td>
-					<if condition="$qSeq neq '1'">
+					<if condition="$qId gt 0">
 						<input id="prev" type="button" value="上一题" class="footer-btn" />
 					</if>
 				</td>
 				<td>
-					<if condition="$is_mark eq 1">
+					<if condition="$attend_detail.is_mark eq 1">
 						<input id="mark" type="button" value="去除标记" class="footer-btn" />
 					<else />
 						<input id="mark" type="button" value="标 记" class="footer-btn" />
@@ -123,7 +124,7 @@
 					<input id="finish" type="button" value="完 成" class="footer-btn" />
 				</td>
 				<td>
-					<if condition="$qSeq neq $total_question_count">
+					<if condition="$qId lt ($browseCount - 1)">
 						<input id="next" type="button" value="下一题" class="footer-btn" />
 					</if>
 				</td>
