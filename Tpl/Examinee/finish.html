@@ -1,0 +1,96 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>交 卷</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
+<style>
+	#qTable {
+		border-collapse: collapse;
+		margin: 20px auto;
+		width: 700px;
+	}
+	
+	#qTable th, #qTable td {
+		border: 1px solid gray;
+		padding: 2px 5px;
+	}
+	
+	#helpMsg {
+		position:fixed;
+		z-index:2000;
+	}
+	
+	span.ui-button-text {
+		font-size: 0.9em;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/paper.js"></script>
+</head>
+<body>	
+	<header>
+		<table>
+			<tr>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+		</table>
+	</header>
+
+	<section id="content">
+	
+		<div id="main">
+			<div>
+				<span id="helpMsg" class="hide"></span>
+			</div>
+
+			<div class="qBody">
+				<h1 style="text-align:center; margin-top: 200px;">
+					<if condition="$isSuccess eq 1">
+						成功提交试卷，请关闭浏览器
+					<else />
+						提交试卷出错，请联系考试组织方
+					</if>
+				</h1>
+			</div>			
+		</div>
+	
+	</section>
+	<footer>
+		<table>
+			<tr>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+				<td>
+
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+		</table>
+	</footer>
+
+</body>
+</html>	
+</body>
+</html>

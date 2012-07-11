@@ -5,6 +5,8 @@ class ExamineeAction extends Action {
 			$this->error('页面错误');
 		}
 		
+		// $this->clearSession();
+		
 		$token = $_GET['token'];
 		$examId = $this->parseExamId($token);
 		$Exam = M('Exam');
@@ -34,12 +36,28 @@ class ExamineeAction extends Action {
 						->field('paper_id, paper_name, total_score, total_mins, paper_desc')
 						->find()) {
 				//存储考卷问题到Session中
-				$PaperQuestion = M('PaperQuestion');
-				if ($questions = $PaperQuestion
-								->where("paper_id = $paperId")
-								->field('question_id, question_seq, question_score')
-								->order('question_seq')
-								->select()) {
+				$Model = M();
+				if ($questions = $Model->query("select
+													pq.question_id,
+													pq.question_seq,
+													pq.question_score,
+													case when qh.question_type in ('radio', 'checkbox') then 0 else null end as examinee_score
+												from
+													paper_question pq
+													join
+													question_head qh
+													on
+														pq.question_id = qh.question_id
+												where
+													pq.paper_id = $paperId
+												order by
+													pq.question_seq")) {
+				// $PaperQuestion = M('PaperQuestion');
+				// if ($questions = $PaperQuestion
+								// ->where("paper_id = $paperId")
+								// ->field('question_id, question_seq, question_score')
+								// ->order('question_seq')
+								// ->select()) {
 					$_SESSION['questions'] = $questions;
 					$_SESSION['total_mins'] = $paper['total_mins'];
 					$totalCount = count($questions);
@@ -69,6 +87,8 @@ class ExamineeAction extends Action {
 			&& !empty($_SESSION['questions'])) {
 			$AttendHead = D('AttendHead');
 			if ($AttendHead->create()) {
+				//初始化not_finish_score
+				$AttendHead->not_finish_score = $this->getNotFinishScoreFlag($_SESSION['questions']);
 				//事务开始
 				$isSuccess = true;
 				$AttendHead->startTrans();
@@ -99,6 +119,15 @@ class ExamineeAction extends Action {
 				$this->error($AttendHead->getError());
 			}
 		}
+	}
+	
+	private function getNotFinishScoreFlag($questions) {
+		foreach($questions as $q) {
+			if ($q['examinee_score'] === null) {
+				return 1;
+			}
+		}
+		return 0;
 	}
 	
 	private function initAttendDetail($attendId, $questions) {
@@ -240,10 +269,12 @@ class ExamineeAction extends Action {
 				$examinee_answer = '';
 			}
 			
-			if (!empty($expect_answer) && $expect_answer == $examinee_answer) {
-				$examinee_score = $questions[$qId]['question_score'];
-			} else {
-				$examinee_score = 0;
+			if (!empty($expect_answer)) {
+				if ($expect_answer == $examinee_answer) {
+					$data['examinee_score'] = $questions[$qId]['question_score'];
+				} else {
+					$data['examinee_score'] = 0;
+				}
 			}
 			$target = $_POST['submit_btn'];
 			
@@ -251,7 +282,7 @@ class ExamineeAction extends Action {
 			//$data['question_type'] = $_POST['question_type'];
 			$data['expect_answer'] = $expect_answer;
 			$data['examinee_answer'] = $examinee_answer;
-			$data['examinee_score'] = $examinee_score;
+			//$data['examinee_score'] = $examinee_score;
 			$data['is_mark'] = $_POST['is_mark'];			
 			
 			$AttendDetail = M('AttendDetail');
@@ -362,6 +393,32 @@ class ExamineeAction extends Action {
 			
 			$this->success();
 		}
+	}
+	
+	public function finish() {
+		if ($this->isAnsSessionValid()) {
+			$attendId = $_SESSION['attendId'];
+			$data['finish_at'] = date("Y-m-d H:i:s");
+			
+			$AttendHead = M('AttendHead');
+			if ($AttendHead
+				->where("attend_id = $attendId and finish_at = '0000-00-00 00:00:00'")
+				->save($data)) {
+				$this->assign('isSuccess', 1);
+			} else {
+				$this->assign('isSuccess', 0);
+			}
+			$this->clearSession();
+			$this->display();
+		}
+	}
+	
+	private function clearSession() {
+		$_SESSION = array();
+		if (isset($_COOKIE[session_name()])) {
+			setcookie(session_name(), '', time() - 3600, '/');
+		}
+		session_destroy();
 	}
 }
 ?>

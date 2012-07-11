@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/exam.css" />
 <style>
-	.main-title.paperManage {
-		background-position: 3px 11px;
+	.main-title.examMarking {
+		background-position: 3px -389px;
 		background-color: #202020;
 	}
 </style>
@@ -37,47 +37,53 @@
 				<img alt="考评牛马" src="/Utility/Public/images/slogan1.png" width="185px">
 			</div>
 			<nav class="radius">
-				<a href="__URL__/manage" class="top paperManage selected top-radius">考卷管理</a>
-				<a href="__URL__/review" class="middle examMarking">考试阅卷</a>
+				<a href="__URL__/manage" class="top paperManage top-radius">考卷管理</a>
+				<a href="__URL__/review" class="middle examMarking selected">考试阅卷</a>
 				<a href="__URL__/manage" class="bottom teamShare bottom-radius">共享协作</a>
 			</nav>
 		</aside>
 		<div id="main">
-			<header class="main-title paperManage">考卷管理</header>
+			<header class="main-title examMarking">考试阅卷</header>
 			<div class="main-ctrl">
-				<a href="__APP__/Paper/create" class="one-edge-shadow">创建考卷</a>			
+					
 			</div>
 			<div class="main-content">
 				<div>
-					<span class="warn"></span> <span>表示该考卷总分未正确分配到各题，无法安排考试</span>
+					<span class="highlight"></span> <span>该答卷未完成评分</span>
 				</div>
 				<table class="papers">
 					<tr>
-						<th>考卷名称</th>
-						<th>总题数</th>
-						<th>满分</th>
-						<th>总时长</th>
+						<th>姓名</th>
+						<th>手机</th>
+						<th>身份证</th>
+						<th>客观分</th>
+						<th>主观分</th>
+						<th>总分</th>
 						<th></th>
 					</tr>
-					<volist name="papers" id="p">
-						<tr <if condition="$p.is_score_balance eq 0">class="warn"</if>>
+					<volist name="examinees" id="e">
+						<tr <if condition="$e.not_finish_score gt 0">class="highlight"</if>>
 							<td>
-								{$p.paper_name}
+								{$e.examinee_name}
 							</td>
 							<td class="center">
-								{$p.question_count}
+								{$e.mobile}
 							</td>
 							<td class="center">
-								{$p.total_score}
+								{$e.id_card}
 							</td>
 							<td class="right">
-								{$p.total_mins}分钟
+								{$e.obj_score}
+							</td>
+							<td class="right">
+								{$e.subj_score}
+							</td>
+							<td class="right">
+								{$e.total_score}
 							</td>
 							<td class="right ctrl">
-								<if condition="$p.is_score_balance eq 1">
-									<a href="__URL__/arrange/p/{$p.paper_id}">安排考试</a>
-								</if>
-								<a href="__APP__/Paper/review/p/{$p.paper_id}">编辑</a>
+								<a href="">阅所有</a>
+								<a href="">阅未答</a>
 							</td>
 						</tr>
 					</volist>
