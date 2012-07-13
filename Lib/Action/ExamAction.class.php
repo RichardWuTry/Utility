@@ -190,7 +190,7 @@ class ExamAction extends Action {
 		
 		$Model = M();
 		$examinees = $Model->query("select
-									ah.examinee_id,
+									ah.attend_id,
 									ah.examinee_name,
 									ah.mobile,
 									ah.id_card,
@@ -217,13 +217,84 @@ class ExamAction extends Action {
 									and
 									e.user_id = $userId
 								group by
-									ah.examinee_id,
+									ah.attend_id,
 									ah.examinee_name,
 									ah.mobile,
 									ah.id_card");
 		$this->assign('examinees', $examinees);
 		$this->assign('user_name', $_SESSION['user_name']);
 		
+		$this->display();
+	}
+	
+	public function marking() {
+		$attendId = $_GET['a'];
+		$userId = $_SESSION['user_id'];
+		
+		$Model = M();
+		if ($paper = $Model->query("select
+									p.paper_name
+								from
+									attend_head ah
+									join
+									exam e
+									on
+										ah.exam_id = e.exam_id
+									join
+									exam_paper p
+									on
+										e.paper_id = p.paper_id
+								where
+									ah.attend_id = $attendId
+									and
+									e.user_id = $userId
+								limit 1")) {
+			if ($questions = $Model->query("select
+												ad.attend_detail_id,
+												examinee_answer,
+												examinee_score,
+												qh.question_name,
+												qh.question_type,
+												qh.question_id
+											from
+												attend_detail ad
+												join
+												question_head qh
+												on
+													ad.question_id = qh.question_id
+											where
+												ad.attend_id = $attendId")) {
+				for ($i = 0; $i < count($questions); $i++) {
+					if ($questions[$i]['question_type'] == 'radio'
+						|| $questions[$i]['question_type'] == 'checkbox') {
+						
+						$qId = $questions[$i]['question_id'];
+						$options = $Model->query("select
+													option_detail_id,
+													item_name,
+													0 examinee_value
+												from
+													option_detail
+												where
+													question_id = $qId");
+						//解析用户答案
+						if (!empty($questions[$i]['examinee_answer'])) {
+							$ansArr = explode(',', rtrim($questions[$i]['examinee_answer'], ','));
+							for ($j = 0; $j < count(options); $j++) {
+								if (in_array(options[$j]['option_detail_id'], $ansArr)) {
+									options[$j]['examinee_value'] = 1;
+								}
+							}							
+						}						
+						$questions[$i]['options'] = $options;
+					}
+				}				
+				$this->assign('paper_name', $paper[0]['paper_name']);
+				$this->assign('questions', $questions);
+			}			
+		}	
+		
+		$this->assign('user_name', $_SESSION['user_name']);		
 		$this->display();
 	}
 }

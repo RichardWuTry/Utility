@@ -43,7 +43,7 @@
 			</nav>
 		</aside>
 		<div id="main">
-			<header class="main-title examMarking">考试阅卷</header>
+			<header class="main-title examMarking">考试阅卷 - 答卷列表</header>
 			<div class="main-ctrl">
 					
 			</div>
@@ -82,8 +82,7 @@
 								{$e.total_score}
 							</td>
 							<td class="right ctrl">
-								<a href="">阅所有</a>
-								<a href="">阅未答</a>
+								<a href="__URL__/marking/a/{$e.attend_id}">阅卷评分</a>
 							</td>
 						</tr>
 					</volist>
