@@ -228,12 +228,14 @@ class ExamAction extends Action {
 	}
 	
 	public function marking() {
-		$attendId = $_GET['a'];
+		$attendId = $_GET['aid'];
 		$userId = $_SESSION['user_id'];
 		
 		$Model = M();
 		if ($paper = $Model->query("select
-									p.paper_name
+									p.paper_name,
+									e.exam_id,
+									ah.attend_id
 								from
 									attend_head ah
 									join
@@ -251,8 +253,9 @@ class ExamAction extends Action {
 								limit 1")) {
 			if ($questions = $Model->query("select
 												ad.attend_detail_id,
-												examinee_answer,
-												examinee_score,
+												ad.examinee_answer,
+												ad.examinee_score,
+												ad.question_score,
 												qh.question_name,
 												qh.question_type,
 												qh.question_id
@@ -280,22 +283,52 @@ class ExamAction extends Action {
 						//解析用户答案
 						if (!empty($questions[$i]['examinee_answer'])) {
 							$ansArr = explode(',', rtrim($questions[$i]['examinee_answer'], ','));
-							for ($j = 0; $j < count(options); $j++) {
-								if (in_array(options[$j]['option_detail_id'], $ansArr)) {
-									options[$j]['examinee_value'] = 1;
+							for ($j = 0; $j < count($options); $j++) {
+								if (in_array($options[$j]['option_detail_id'], $ansArr)) {
+									$options[$j]['examinee_value'] = 1;
 								}
 							}							
 						}						
 						$questions[$i]['options'] = $options;
 					}
-				}				
+				}
 				$this->assign('paper_name', $paper[0]['paper_name']);
+				$this->assign('exam_id', $paper[0]['exam_id']);
+				$this->assign('attend_id', $paper[0]['attend_id']);
 				$this->assign('questions', $questions);
 			}			
 		}	
 		
 		$this->assign('user_name', $_SESSION['user_name']);		
 		$this->display();
+	}
+	
+	public function updateExamineeScore() {
+		if ($this->isPost()) {
+			$AttendDetail = D('AttendDetail');
+			if ($AttendDetail->create()) {
+				if ($AttendDetail->save()) {
+					$attendId = $_POST['attend_id'];
+					if ($AttendDetail
+							->where("attend_id = $attendId and examinee_score is null")
+							->find()) {
+						//不做任何事
+					} else {
+						$AttendHead = M('AttendHead');
+						$data['attend_id'] = $attendId;
+						$data['not_finish_score'] = 0;
+						$AttendHead->save($data);
+					}					
+					
+					$this->success('得分保存成功');
+				} else {
+					$this->error('得分保存失败');
+				}
+			} else {
+				$this->error($AttendDetail->getError());
+			}
+		
+		}
 	}
 }
 ?>

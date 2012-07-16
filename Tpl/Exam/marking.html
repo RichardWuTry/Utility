@@ -1,0 +1,161 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考评牛马</title>
+<link rel="stylesheet" href="__PUBLIC__/css/common.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/exam.css" />
+<style>
+	.main-title.examMarking {
+		background-position: 3px -389px;
+		background-color: #202020;
+	}
+	
+	.qList div, .qList strong {
+		font-size: 15px;
+	}
+	
+	div.pName {
+		margin: 10px 0;
+		font-size: 16px;
+	}
+	
+	.qList div.question {
+		border: 1px dotted #000000;
+		margin: 5px 0;
+		padding: 10px;
+	}
+	
+	input, textarea, select {
+		outline: none;
+		border: 1px solid #C0D8E2;
+		margin: 0px;
+		padding: 4px;
+	}
+	
+	#helpMsg {
+		position:fixed;
+		z-index:2000;
+		background-color: #FFE6E6;
+		color: #FF0000;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/jqTools.js"></script>
+<script>
+	var helpBox;
+
+	$(function(){
+		helpBox = $('#helpMsg');
+		
+		$('nav a').hover(
+			function(){
+				$(this).addClass('hover');
+			},
+			function(){
+				$(this).removeClass('hover');
+			}
+		);
+		
+		$('.examinee_score').change(function(){
+			var inputScore = $(this).val();			
+			if (isNaN(inputScore) || parseInt(inputScore) < 0 || inputScore == '') {
+				helpBox.text("得分输入有误");
+				slideBox(helpBox, 2000, null, null);
+			} else {
+				var attendDetailId = $(this).attr('name');
+				var examineeScore = $(this).val();
+				var attendId = {$attend_id};
+				$.post(
+					"__URL__/updateExamineeScore/",
+					{attend_detail_id: attendDetailId, examinee_score: examineeScore, attend_id: attendId},
+					showResponse,
+					"json"
+				);
+			}
+		});
+	});
+	
+	function showResponse(data) {
+		if (data.status == 0) {
+			slideBox(helpBox.text(data.info), 2000, null, null);
+		} else {
+			slideBox(helpBox.text(data.info), 2000, 'lightgreen', 'green');
+		}
+	}
+</script>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<section id="content">
+	<div style="text-align:center">
+		<span id="helpMsg" class="hide"></span>
+	</div>
+	<ul class="head-panel">
+		<li class="head-panel-item">
+			<span>{$user_name}</span>
+		</li>
+		<li class="head-panel-item">
+			<a href="__APP__/User/logout/" class="logout">注销</a>
+		</li>	
+	</ul>
+	<div class="main-wrap">
+		<aside>
+			<div class="logo radius">
+				<img alt="考评牛马" src="/Utility/Public/images/slogan1.png" width="185px">
+			</div>
+			<nav class="radius">
+				<a href="__URL__/manage" class="top paperManage top-radius">考卷管理</a>
+				<a href="__URL__/review" class="middle examMarking selected">考试阅卷</a>
+				<a href="__URL__/manage" class="bottom teamShare bottom-radius">共享协作</a>
+			</nav>
+		</aside>
+		<div id="main">
+			<header class="main-title examMarking">考试阅卷 - 答卷列表 - 阅卷评分</header>
+			<div class="main-ctrl">
+				<a href="__URL__/answers/e/{$exam_id}" class="one-edge-shadow">返回答卷列表</a>
+			</div>
+			<div class="main-content">				
+				<div>
+					<span class="highlight"></span> <span>未评分的试题</span>
+				</div>
+				<div class="qList">
+					<div class="pName"><strong>考试：{$paper_name}</strong></div>
+					<volist name="questions" id="q">
+						<div <if condition="$q.examinee_score eq ''">class="question highlight"<else />class="question"</if>>
+							<div><strong>{$q.question_name}</strong></div>
+							<div>----------应试者答案----------</div>
+							<div>
+							<if condition="$q.question_type eq 'textarea'">
+								<if condition="$q.examinee_answer eq ''">
+									空
+								<else />
+									{$q.examinee_answer}
+								</if>
+							<else />
+								<ul class="option">
+									<volist name="q.options" id="o">
+										<li>
+											<label>
+												<if condition="$o.examinee_value eq 1">
+													<input type="{$q.question_type}" checked="checked" disabled="disabled" /> {$o.item_name}
+												<else />
+													<input type="{$q.question_type}" disabled="disabled" /> {$o.item_name}
+												</if>
+											</label>
+										</li>
+									</volist>
+								</ul>
+							</if>
+							</div>
+							<div>--------------------------------</div>
+							<div>
+								<label>
+									得分：
+									<input type="text" class="examinee_score" name="{$q.attend_detail_id}" value="{$q.examinee_score}" style="width:40px;text-align:right;" />
+									（{$q.question_score}分）
+								</label>
+							</div>
+						</div>
+					</volist>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />

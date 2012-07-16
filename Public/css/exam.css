@@ -93,7 +93,7 @@ nav a.teamShare.selected, nav a.teamShare.hover {
 #main {
 	margin-left: 20px;
 	width: 720px;
-	height: 600px;
+	min-height: 600px;
 	float: left;
 	background: none repeat scroll 0 0 #E9E9E9;
 }
