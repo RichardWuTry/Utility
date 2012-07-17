@@ -18,7 +18,7 @@
 		valignMainDiv();
 		
 		//改变 选项数
-		$('#item_num').change(function(){
+		$('.qBody').on('change', '#item_num', function(){
 			var itemNumDdl = document.getElementById('item_num');
 			var selectNum = itemNumDdl[itemNumDdl.selectedIndex].value;
 			var itemCnt = $('ul.option li').length;

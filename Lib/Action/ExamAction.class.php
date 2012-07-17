@@ -29,7 +29,7 @@ class ExamAction extends Action {
 						user_paper u
 						on
 							p.paper_id = u.paper_id
-						join
+						left join
 						paper_question q
 						on
 							p.paper_id = q.paper_id
@@ -177,10 +177,9 @@ class ExamAction extends Action {
 									  e.close_datetime
 									order by
 									  e.close_datetime desc")) {
-			$this->assign('exams', $exams);
-			$this->assign('user_name', $_SESSION['user_name']);
+			$this->assign('exams', $exams);			
 		}	
-		
+		$this->assign('user_name', $_SESSION['user_name']);
 		$this->display();
 	}
 	

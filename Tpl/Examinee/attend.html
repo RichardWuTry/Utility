@@ -25,10 +25,16 @@
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script src="__PUBLIC__/javascript/browserDetect.js"></script>
 <script>
 	var msg;
 
 	$(function(){
+		if (BrowserDetect.browser == 'Explorer' 
+				&& parseInt(BrowserDetect.version) < 9) {
+			window.location = "__APP__";
+		}
+	
 		msg = $('#helpMsg');
 	
 		$('#attendForm').ajaxForm({

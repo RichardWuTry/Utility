@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>考评牛马</title>
+	<script src="__PUBLIC__/javascript/browserDetect.js"></script>
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script>
+		$(function(){
+			if (BrowserDetect.browser == 'Explorer' 
+				&& parseInt(BrowserDetect.version) < 9) {
+				$('#msg').text("浏览器版本太低。若您已使用IE9，请关闭兼容模式，或选用Chrome，FireFox，Safari浏览器，并重新打开原先链接。");
+			} else {
+				window.location = "__APP__/Exam/manage";
+			}
+		});
+	</script>
 </head>
 <body>
-	__PUBLIC__
-	{$publicpath}
+	<h1 style="margin:200px;" id="msg"></h1>
 </body>
 </html>
