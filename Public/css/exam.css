@@ -93,9 +93,13 @@ nav a.teamShare.selected, nav a.teamShare.hover {
 #main {
 	margin-left: 20px;
 	width: 720px;
-	min-height: 600px;
+
 	float: left;
+}
+
+#main-content {
 	background: none repeat scroll 0 0 #E9E9E9;
+	min-height: 600px;
 }
 
 .main-title {
@@ -164,4 +168,26 @@ span.warn, span.highlight {
 	width: 90px;
 	height: 30px;
 	vertical-align: middle;
+}
+
+div.footer-wrap {
+	background: none repeat scroll 0 0 #373738;
+    border-radius: 4px 4px 4px 4px;
+    clear: both;
+    color: #AAAAAA;
+    margin: 15px 0;
+    overflow: hidden;
+    padding: 10px 15px;
+}
+
+div.footer-wrap div {
+	font-size: 12px;
+}
+
+div.footer-wrap .footer-left {
+    float: left;
+}
+
+div.footer-wrap .footer-right {
+    float: right;
 }

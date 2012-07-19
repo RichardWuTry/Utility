@@ -38,50 +38,60 @@
 			</div>
 			<nav class="radius">
 				<a href="__URL__/manage" class="top paperManage selected top-radius">考卷管理</a>
-				<a href="__URL__/review" class="middle examMarking">考试阅卷</a>
-				<a href="__URL__/manage" class="bottom teamShare bottom-radius">共享协作</a>
+				<a href="__URL__/review" class="middle examMarking bottom-radius">考试阅卷</a>
+				<a href="__URL__/manage" class="bottom teamShare bottom-radius hide">共享协作</a>
 			</nav>
 		</aside>
 		<div id="main">
-			<header class="main-title paperManage">考卷管理</header>
-			<div class="main-ctrl">
-				<a href="__APP__/Paper/create" class="one-edge-shadow">创建考卷</a>			
-			</div>
-			<div class="main-content">
-				<div>
-					<span class="warn"></span> <span>表示该考卷总分未正确分配到各题，无法安排考试</span>
+			<div id="main-content" class="bottom-radius">
+				<header class="main-title paperManage">考卷管理</header>
+				<div class="main-ctrl">
+					<a href="__APP__/Paper/create" class="one-edge-shadow">创建考卷</a>			
 				</div>
-				<table class="papers">
-					<tr>
-						<th>考卷名称</th>
-						<th>总题数</th>
-						<th>满分</th>
-						<th>总时长</th>
-						<th></th>
-					</tr>
-					<volist name="papers" id="p">
-						<tr <if condition="$p.is_score_balance eq 0">class="warn"</if>>
-							<td>
-								{$p.paper_name}
-							</td>
-							<td class="center">
-								{$p.question_count}
-							</td>
-							<td class="center">
-								{$p.total_score}
-							</td>
-							<td class="right">
-								{$p.total_mins}分钟
-							</td>
-							<td class="right ctrl">
-								<if condition="$p.is_score_balance eq 1">
-									<a href="__URL__/arrange/p/{$p.paper_id}">安排考试</a>
-								</if>
-								<a href="__APP__/Paper/review/p/{$p.paper_id}">编辑</a>
-							</td>
+				<div class="main-content">
+					<div>
+						<span class="warn"></span> <span>表示该考卷总分未正确分配到各题，无法安排考试</span>
+					</div>
+					<table class="papers">
+						<tr>
+							<th>考卷名称</th>
+							<th>总题数</th>
+							<th>满分</th>
+							<th>总时长</th>
+							<th></th>
 						</tr>
-					</volist>
-				</table>
+						<volist name="papers" id="p">
+							<tr <if condition="$p.is_score_balance eq 0">class="warn"</if>>
+								<td>
+									{$p.paper_name}
+								</td>
+								<td class="center">
+									{$p.question_count}
+								</td>
+								<td class="center">
+									{$p.total_score}
+								</td>
+								<td class="right">
+									{$p.total_mins}分钟
+								</td>
+								<td class="right ctrl">
+									<if condition="$p.is_score_balance eq 1">
+										<a href="__URL__/arrange/p/{$p.paper_id}">安排考试</a>
+									</if>
+									<a href="__APP__/Paper/review/p/{$p.paper_id}">编辑</a>
+								</td>
+							</tr>
+						</volist>
+					</table>
+				</div>
+			</div>
+			<div class="footer-wrap">
+				<div class="footer-left">&copy; 知行思新 All rights reserved.</div>
+				<div class="footer-right">
+					大树
+					&nbsp;|&nbsp;
+					关注你的成长
+				</div>
 			</div>
 		</div>
 	</div>

@@ -101,60 +101,70 @@
 			</div>
 			<nav class="radius">
 				<a href="__URL__/manage" class="top paperManage top-radius">考卷管理</a>
-				<a href="__URL__/review" class="middle examMarking selected">考试阅卷</a>
-				<a href="__URL__/manage" class="bottom teamShare bottom-radius">共享协作</a>
+				<a href="__URL__/review" class="middle examMarking selected bottom-radius">考试阅卷</a>
+				<a href="__URL__/manage" class="bottom teamShare bottom-radius hide">共享协作</a>
 			</nav>
 		</aside>
 		<div id="main">
-			<header class="main-title examMarking">考试阅卷 - 答卷列表 - 阅卷评分</header>
-			<div class="main-ctrl">
-				<a href="__URL__/answers/e/{$exam_id}" class="one-edge-shadow">返回答卷列表</a>
-			</div>
-			<div class="main-content">				
-				<div>
-					<span class="highlight"></span> <span>未评分的试题</span>
+			<div id="main-content" class="bottom-radius">			
+				<header class="main-title examMarking">考试阅卷 - 答卷列表 - 阅卷评分</header>
+				<div class="main-ctrl">
+					<a href="__URL__/answers/e/{$exam_id}" class="one-edge-shadow">返回答卷列表</a>
 				</div>
-				<div class="qList">
-					<div class="pName"><strong>考试：{$paper_name}</strong></div>
-					<volist name="questions" id="q">
-						<div <if condition="$q.examinee_score eq ''">class="question highlight"<else />class="question"</if>>
-							<div><strong>{$q.question_name}</strong></div>
-							<div>----------应试者答案----------</div>
-							<div>
-							<if condition="$q.question_type eq 'textarea'">
-								<if condition="$q.examinee_answer eq ''">
-									空
+				<div class="main-content">				
+					<div>
+						<span class="highlight"></span> <span>未评分的试题</span>
+					</div>
+					<div class="qList">
+						<div class="pName"><strong>考试：{$paper_name}</strong></div>
+						<volist name="questions" id="q">
+							<div <if condition="$q.examinee_score eq ''">class="question highlight"<else />class="question"</if>>
+								<div><strong>{$q.question_name}</strong></div>
+								<div>----------应试者答案----------</div>
+								<div>
+								<if condition="$q.question_type eq 'textarea'">
+									<if condition="$q.examinee_answer eq ''">
+										空
+									<else />
+										{$q.examinee_answer}
+									</if>
 								<else />
-									{$q.examinee_answer}
+									<ul class="option">
+										<volist name="q.options" id="o">
+											<li>
+												<label>
+													<if condition="$o.examinee_value eq 1">
+														<input type="{$q.question_type}" checked="checked" disabled="disabled" /> {$o.item_name}
+													<else />
+														<input type="{$q.question_type}" disabled="disabled" /> {$o.item_name}
+													</if>
+												</label>
+											</li>
+										</volist>
+									</ul>
 								</if>
-							<else />
-								<ul class="option">
-									<volist name="q.options" id="o">
-										<li>
-											<label>
-												<if condition="$o.examinee_value eq 1">
-													<input type="{$q.question_type}" checked="checked" disabled="disabled" /> {$o.item_name}
-												<else />
-													<input type="{$q.question_type}" disabled="disabled" /> {$o.item_name}
-												</if>
-											</label>
-										</li>
-									</volist>
-								</ul>
-							</if>
+								</div>
+								<div>--------------------------------</div>
+								<div>
+									<label>
+										得分：
+										<input type="text" class="examinee_score" name="{$q.attend_detail_id}" value="{$q.examinee_score}" style="width:40px;text-align:right;" />
+										（{$q.question_score}分）
+									</label>
+								</div>
 							</div>
-							<div>--------------------------------</div>
-							<div>
-								<label>
-									得分：
-									<input type="text" class="examinee_score" name="{$q.attend_detail_id}" value="{$q.examinee_score}" style="width:40px;text-align:right;" />
-									（{$q.question_score}分）
-								</label>
-							</div>
-						</div>
-					</volist>
+						</volist>
+					</div>
 				</div>
 			</div>
+			<div class="footer-wrap">
+				<div class="footer-left">&copy; 知行思新 All rights reserved.</div>
+				<div class="footer-right">
+					大树
+					&nbsp;|&nbsp;
+					关注你的成长
+				</div>
+			</div>					
 		</div>
 	</div>
 </section>

@@ -202,68 +202,78 @@
 			</div>
 			<nav class="radius">
 				<a href="__URL__/manage" class="top paperManage selected top-radius">考卷管理</a>
-				<a href="__URL__/review" class="middle examMarking">考试阅卷</a>
-				<a href="__URL__/manage" class="bottom teamShare bottom-radius">共享协作</a>
+				<a href="__URL__/review" class="middle examMarking bottom-radius">考试阅卷</a>
+				<a href="__URL__/manage" class="bottom teamShare bottom-radius hide">共享协作</a>
 			</nav>
 		</aside>
 		<div id="main">
-			<header class="main-title paperManage">考卷管理 - 安排考试</header>
-			<div class="main-ctrl">
-				<div class="paper-info">
-					<span><strong>{$paper['paper_name']}</strong></span>
-					<span>（共{$paper['question_count']}题，时长{$paper['total_mins']}分钟）</span>
-				</div>
-				<table class="window-period">
-					<tr>
-						<th rowspan="2" class="left">开放考试时间</th>
-						<td class="left">
-							从 <input type="text" class="datepicker non-empty" id="openDate" />日
-							<input type="text" class="hour non-empty" id="openHour" maxlength="2" value="00" />时
-							<input type="text" class="minute non-empty" id="openMinute" maxlength="2" value="00" />分
-						</td>
-					</tr>
-					<tr>
-						<td class="left">
-							至 <input type="text" class="datepicker non-empty" id="closeDate" />日
-							<input type="text" class="hour non-empty" id="closeHour" maxlength="2" value="00"/>时
-							<input type="text" class="minute non-empty" id="closeMinute" maxlength="2" value="00"/>分
-						</td>
-					</tr>
-				</table>
-				<div class="ctrl-btn-wrap">
-					<input type="button" id="arrangeExam" value="确 定" class="one-edge-shadow ctrl-btn"/>
-					<a href="__URL__/manage" class="one-edge-shadow ctrl-btn">返 回</a>
-					<span id="helpMsg" class="hide"></span>
-				</div>
-				<div class="new_link hide">
-					<input type="text" class="copy_text" />
-				</div>
-			</div>
-			<div class="main-content">
-				<div>
-					<strong>该考卷现开放的考试：</strong>
-				</div>
-				<table class="papers">
-					<tr>
-						<th>起始日期</th>
-						<th>截止日期</th>
-						<th>链接</th>
-					</tr>
-					<volist name="exams" id="e">
+			<div id="main-content" class="bottom-radius">		
+				<header class="main-title paperManage">考卷管理 - 安排考试</header>
+				<div class="main-ctrl">
+					<div class="paper-info">
+						<span><strong>{$paper['paper_name']}</strong></span>
+						<span>（共{$paper['question_count']}题，时长{$paper['total_mins']}分钟）</span>
+					</div>
+					<table class="window-period">
 						<tr>
-							<td>
-								{$e.open_datetime|substr=0, 16}
-							</td>
-							<td>
-								{$e.close_datetime|substr=0, 16}
-							</td>
-							<td>
-								<input value="http://{$serverName}__APP__/Examinee/attend/token/{$e.link}" class="copy_text" />
+							<th rowspan="2" class="left">开放考试时间</th>
+							<td class="left">
+								从 <input type="text" class="datepicker non-empty" id="openDate" />日
+								<input type="text" class="hour non-empty" id="openHour" maxlength="2" value="00" />时
+								<input type="text" class="minute non-empty" id="openMinute" maxlength="2" value="00" />分
 							</td>
 						</tr>
-					</volist>
-				</table>
+						<tr>
+							<td class="left">
+								至 <input type="text" class="datepicker non-empty" id="closeDate" />日
+								<input type="text" class="hour non-empty" id="closeHour" maxlength="2" value="00"/>时
+								<input type="text" class="minute non-empty" id="closeMinute" maxlength="2" value="00"/>分
+							</td>
+						</tr>
+					</table>
+					<div class="ctrl-btn-wrap">
+						<input type="button" id="arrangeExam" value="确 定" class="one-edge-shadow ctrl-btn"/>
+						<a href="__URL__/manage" class="one-edge-shadow ctrl-btn">返 回</a>
+						<span id="helpMsg" class="hide"></span>
+					</div>
+					<div class="new_link hide">
+						<input type="text" class="copy_text" />
+					</div>
+				</div>
+				<div class="main-content">
+					<div>
+						<strong>该考卷现开放的考试：</strong>
+					</div>
+					<table class="papers">
+						<tr>
+							<th>起始日期</th>
+							<th>截止日期</th>
+							<th>链接</th>
+						</tr>
+						<volist name="exams" id="e">
+							<tr>
+								<td>
+									{$e.open_datetime|substr=0, 16}
+								</td>
+								<td>
+									{$e.close_datetime|substr=0, 16}
+								</td>
+								<td>
+									<input value="http://{$serverName}__APP__/Examinee/attend/token/{$e.link}" class="copy_text" />
+								</td>
+							</tr>
+						</volist>
+					</table>
+				</div>
 			</div>
+			<div class="footer-wrap">
+				<div class="footer-left">&copy; 知行思新 All rights reserved.</div>
+				<div class="footer-right">
+					大树
+					&nbsp;|&nbsp;
+					关注你的成长
+				</div>
+			</div>				
 		</div>
 	</div>
 </section>
