@@ -96,8 +96,9 @@ class ExamineeAction extends Action {
 				if ($attendId = $AttendHead->add()) {
 					//插入attend detail
 					if ($this->initAttendDetail($attendId, $_SESSION['questions'])) {
-						$closeTime = new DateTime(date('Y-m-d H:i:s', time()));
-						$closeTime->add(new DateInterval('PT'.$_SESSION['total_mins'].'M'));
+						//$closeTime = new DateTime(date('Y-m-d H:i:s', time()));
+						//$closeTime->add(new DateInterval('PT'.$_SESSION['total_mins'].'M'));
+						$closeTime = time() + intval($_SESSION['total_mins'])*60;
 						$_SESSION['closeTime'] = $closeTime;
 						$_SESSION['attendId'] = $attendId;
 						$_SESSION['qId'] = 0;
@@ -157,8 +158,10 @@ class ExamineeAction extends Action {
 	
 	private function getLeftTime() {
 		$closeTime = $_SESSION['closeTime'];
-		$currTime = new DateTime(date('Y-m-d H:i:s', time()));
-		return $closeTime->diff($currTime);
+		//$currTime = new DateTime(date('Y-m-d H:i:s', time()));
+		//return $closeTime->diff($currTime);
+		$currTime = time();
+		return $closeTime - $currTime;
 	}
 	
 	public function answer() {
@@ -174,7 +177,9 @@ class ExamineeAction extends Action {
 			redirect(__URL__.'/finish');
 		}		
 		// $leftTime = $closeTime->diff($currTime);
-		$this->assign('leftTime', $leftTime->format('%h小时 %i分钟'));
+		//$this->assign('leftTime', $leftTime->format('%h小时 %i分钟'));
+		date_default_timezone_set('UTC');
+		$this->assign('leftTime', date("H小时 i分钟", $leftTime));
 		
 		//2. 取得attend_id, qId, questions, paper_question, question_id
 		$attend_id = $_SESSION['attendId'];
@@ -314,7 +319,9 @@ class ExamineeAction extends Action {
 		if ($leftTime <= 0) {
 			redirect(__URL__.'/finish');
 		}		
-		$this->assign('leftTime', $leftTime->format('%h小时 %i分钟'));
+		//$this->assign('leftTime', $leftTime->format('%h小时 %i分钟'));
+		date_default_timezone_set('UTC');
+		$this->assign('leftTime', date("H小时 i分钟", $leftTime));
 		
 		//2. 获得考卷头信息
 		$attendId = $_SESSION['attendId'];

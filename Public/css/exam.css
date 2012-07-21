@@ -127,6 +127,8 @@ nav a.teamShare.selected, nav a.teamShare.hover {
 	font-size: 15px;
 	padding: 6px 15px;
 	background-color: #E3EDF2;
+	border: 1px solid #E3EDF2;
+	margin-left: 5px;
 }
 
 ul {
