@@ -17,8 +17,9 @@ class UserAction extends Action {
 				}				
 				
 				$User->password = sha1($User->password);
+				$username = $User->user_name;
 				if($user_id = $User->add()) {
-					setSessionCookie($user_id, $User->user_name);
+					setSessionCookie($user_id, $username);
 					$this->success('注册成功');
 				} else {
 					$this->error('保存失败');
