@@ -126,7 +126,7 @@
 									<if condition="$q.examinee_answer eq ''">
 										空
 									<else />
-										{$q.examinee_answer}
+										{$q.examinee_answer|str_replace=' ','&nbsp;',###|nl2br}
 									</if>
 								<else />
 									<ul class="option">

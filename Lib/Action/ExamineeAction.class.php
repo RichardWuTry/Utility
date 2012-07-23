@@ -376,17 +376,25 @@ class ExamineeAction extends Action {
 			
 			$AttendDetail = M('AttendDetail');
 			if ($qGrp == 'mark') {
-				$questions = $AttendDetail
+				if ($questions = $AttendDetail
 							->where("attend_id = $attendId and is_mark = 1")
 							->order("question_seq")
 							->field("question_id, question_seq, question_score")
-							->select();
+							->select()) {
+							
+				} else {
+					$this->error('无标记试题');
+				}
 			} else if ($qGrp == 'unanswer') {
-				$questions = $AttendDetail
+				if ($questions = $AttendDetail
 							->where("attend_id = $attendId and examinee_answer = ''")
 							->order("question_seq")
 							->field("question_id, question_seq, question_score")
-							->select();
+							->select()) {
+							
+				} else {
+					$this->error('无未答试题');
+				}
 			} else {
 				$questions = $AttendDetail
 							->where("attend_id = $attendId")

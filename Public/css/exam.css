@@ -13,7 +13,7 @@ th, td {
 
 .ctrl a {
 	border: 1px solid #C0D8E2;
-	margin: 0;
+	margin: 0 1px;
 	outline: medium none;
 	background-color:#F0F0F0;
 	padding: 3px 5px;
