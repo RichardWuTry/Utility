@@ -11,6 +11,8 @@
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script>
 	$(function(){
+		setExamineeId();
+		
 		$('nav a').hover(
 			function(){
 				$(this).addClass('hover');
@@ -20,6 +22,13 @@
 			}
 		);
 	});
+	
+	function setExamineeId() {
+		var eId = 1;
+		$('.eId').each(function(){
+			$(this).text(eId++);
+		});
+	}
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
@@ -54,6 +63,7 @@
 					</div>
 					<table class="papers">
 						<tr>
+							<th></th>
 							<th>姓名</th>
 							<th>手机</th>
 							<th>身份证</th>
@@ -64,6 +74,7 @@
 						</tr>
 						<volist name="examinees" id="e">
 							<tr <if condition="$e.not_finish_score gt 0">class="highlight"</if>>
+								<td class="eId"></td>
 								<td>
 									{$e.examinee_name}
 								</td>

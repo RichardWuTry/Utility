@@ -50,7 +50,11 @@
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script src="__PUBLIC__/javascript/InputValidate.js"></script>
 <script>
+	var msg;
+
 	$(function(){
+		msg = $('#helpMsg');
+	
 		setSumScore();
 		
 		setQuestionId();
@@ -111,6 +115,8 @@
 		});
 		
 		$( "#removeConfirm" ).dialog({
+			show: { effect: 'drop', direction: "up" },
+			hide: { effect: 'drop', direction: "up" },
 			autoOpen: false,
 			resizable: false,
 			modal: true,
@@ -138,25 +144,39 @@
 		});
 		
 		$('.qUp, .qDown').click(function(){
-			$('.qReview, .qRemove, .qUp, .qDown, .qScore').attr('disabled', 'disabled');
-			$(this).removeAttr('disabled');
-			$(this).siblings('.qUp, .qDown').removeAttr('disabled');
-			
-			$(this).siblings('.qLocate').removeClass('hide');
-			$(this).siblings('.qReview, .qRemove').addClass('hide');
-			
-			var currTr = $(this).parents('tr');
-			if($(this).hasClass('qUp')) {				
-				var prevTr = currTr.prev('tr');
-				if (prevTr && !prevTr.hasClass('tHead')) {
-					prevTr.before(currTr);					
-				}
-			} else if ($(this).hasClass('qDown')) {
-				var nextTr = currTr.next('tr');
-				if (nextTr) {
-					nextTr.after(currTr);
+			var canChangeLocate = true;
+			if ($('.qId').size() <= 1) {
+				canChangeLocate = false;
+			} else {			
+				var currTr = $(this).parents('tr');
+				if($(this).hasClass('qUp')) {				
+					var prevTr = currTr.prev('tr');
+					if (prevTr.length > 0 && !prevTr.hasClass('tHead')) {
+						prevTr.before(currTr);					
+					} else {
+						canChangeLocate = false;
+					}
+				} else if ($(this).hasClass('qDown')) {
+					var nextTr = currTr.next('tr');
+					if (nextTr.length > 0) {
+						nextTr.after(currTr);
+					} else {
+						canChangeLocate = false;
+					}
 				}
 			}
+			
+			if (canChangeLocate) {
+				$('.qReview, .qRemove, .qUp, .qDown, .qScore').attr('disabled', 'disabled');
+				$(this).removeAttr('disabled');
+				$(this).siblings('.qUp, .qDown').removeAttr('disabled');
+				
+				$(this).siblings('.qLocate').removeClass('hide');
+				$(this).siblings('.qReview, .qRemove').addClass('hide');
+			} else {
+				msg.text('无法调整位置');
+				promptMsg(msg, '#FFE6E6', '#FF0000');
+			}			
 		});
 		
 		$('.qLocate').click(function(){
@@ -226,11 +246,11 @@
 	}	
 
 	function showResponse(data) {
-		var msg = $('#helpMsg');
+		//var msg = $('#helpMsg');
 		if (data.info.length > 0) {
 			msg.html(data.info);
 			if (data.status == 0) {			
-				promptMsg(msg);
+				promptMsg(msg, '#FFE6E6', '#FF0000');
 			} else {
 				promptMsg(msg, 'lightgreen', 'green');
 			}
