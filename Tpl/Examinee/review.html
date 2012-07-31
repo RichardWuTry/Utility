@@ -1,5 +1,6 @@
 <include file="./Tpl/Public/headstart.html" />
 <title>答卷总览</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.21/themes/redmond/jquery-ui.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/common.css" />
 <link rel="stylesheet" href="__PUBLIC__/css/paper.css" />
 <style>
@@ -25,6 +26,7 @@
 
 </style>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
 <script src="__PUBLIC__/javascript/paper.js"></script>
 <script>
 	$(function(){
@@ -66,7 +68,28 @@
 		});
 		
 		$('#finish').click(function(){
-			window.location = "__URL__/finish/";
+			if ($('.unanswer').length > 0) {
+				$( "#finishConfirm" ).dialog('open');
+			} else {
+				window.location = "__URL__/finish/";
+			}			
+		});
+		
+		$( "#finishConfirm" ).dialog({
+			show: { effect: 'drop', direction: "up" },
+			hide: { effect: 'drop', direction: "up" },
+			autoOpen: false,
+			resizable: false,
+			modal: true,
+			buttons: {
+				"确定": function() {
+					window.location = "__URL__/finish/";
+					$( this ).dialog( "close" );
+				},
+				"取消": function() {
+					$( this ).dialog( "close" );
+				}
+			}
 		});
 	});
 	
@@ -110,6 +133,9 @@
 		<div id="main">
 			<div>
 				<span id="helpMsg" class="hide"></span>
+			</div>
+			<div id="finishConfirm" title="确认交卷" class="hide">
+				<p><span class="ui-icon ui-icon-alert" style="float:left; margin-right:10px;"></span>您还有考题未答，确定交卷吗？</p>
 			</div>
 
 			<div class="qBody">
@@ -155,7 +181,7 @@
 						</td>
 						<td>
 							<if condition="$q.examinee_answer eq ''">
-								未答
+								<span class="unanswer">未答</span>
 							</if>
 						</td>
 						<td>								

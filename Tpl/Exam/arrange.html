@@ -57,7 +57,7 @@
 	}
 	
 	table.papers .copy_text {
-		width: 390px;
+		width: 365px;
 	}
 	
 	div.new_link .copy_text {
@@ -71,6 +71,8 @@
 <script src="__PUBLIC__/javascript/jqTools.js"></script>
 <script>
 	$(function(){
+		setExamId();
+	
 		$('nav a').hover(
 			function(){
 				$(this).addClass('hover');
@@ -185,6 +187,13 @@
 		}
 		return numStr;
 	}
+
+	function setExamId() {
+		var eId = 1;
+		$('.eId').each(function(){
+			$(this).text(eId++);
+		});
+	}
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
@@ -247,12 +256,14 @@
 					</div>
 					<table class="papers">
 						<tr>
+							<th></th>
 							<th>起始日期</th>
 							<th>截止日期</th>
 							<th>链接</th>
 						</tr>
 						<volist name="exams" id="e">
 							<tr>
+								<td class="eId" style="font-weight:bold;"></td>
 								<td>
 									{$e.open_datetime|substr=0, 16}
 								</td>

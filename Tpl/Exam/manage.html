@@ -11,6 +11,8 @@
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script>
 	$(function(){
+		setPaperId();
+	
 		$('nav a').hover(
 			function(){
 				$(this).addClass('hover');
@@ -20,6 +22,13 @@
 			}
 		);
 	});
+	
+	function setPaperId() {
+		var pId = 1;
+		$('.pId').each(function(){
+			$(this).text(pId++);
+		});
+	}
 </script>
 <include file="./Tpl/Public/headend_bodystart_banner.html" />
 <section id="content">
@@ -54,6 +63,7 @@
 					</div>
 					<table class="papers">
 						<tr>
+							<th></th>
 							<th>考卷名称</th>
 							<th>总题数</th>
 							<th>满分</th>
@@ -62,6 +72,7 @@
 						</tr>
 						<volist name="papers" id="p">
 							<tr <if condition="$p.is_score_balance eq 0">class="warn"</if>>
+								<td class="pId" style="font-weight:bold;"></td>
 								<td>
 									{$p.paper_name}
 								</td>

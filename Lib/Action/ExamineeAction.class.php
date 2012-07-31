@@ -23,8 +23,9 @@ class ExamineeAction extends Action {
 			
 			//验证考试是否开放
 			$today = date("Y-m-d H:i:s");
-			if ($today < $currExam['open_datetime']) {
-				$this->error('考试还未开放，请确认开考时间');
+			$openDateTime = $currExam['open_datetime'];
+			if ($today < $openDateTime) {
+				$this->error("考试还未开放，请于'".$openDateTime."'后登录");
 			} else if ($today > $currExam['close_datetime']) {
 				$this->error('考试已关闭');
 			}
