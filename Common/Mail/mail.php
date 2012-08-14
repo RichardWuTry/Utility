@@ -1,7 +1,7 @@
 <?php
 	function sendMail($addressArray, $subject, $body)
 	{
-		require_once LIBRARY_PATH.'/phpmailer/class.phpmailer.php';
+		require_once '/phpmailer/class.phpmailer.php';
 		
 		$mail = new PHPMailer();
 

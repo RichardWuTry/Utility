@@ -59,5 +59,9 @@ class UserAction extends Action {
 	public function showVerifyImage() {
 		verify();
 	}
+	
+	public function forgotPassword() {
+		$this->display();
+	}
 }
 ?>
