@@ -63,5 +63,46 @@ class UserAction extends Action {
 	public function forgotPassword() {
 		$this->display();
 	}
+	
+	public function newPasswordEmail() {
+		if ($this->isPost()) {
+			$email = $_POST['email'];
+			$User = M('User');
+			if ($currUser = $User
+							->where("email = '$email'")
+							->field("user_id, user_name")
+							->find()) {
+				$token = encryptId($currUser['user_id']);				
+				
+				$subject = '[考评牛马] 重置密码';
+				$body = $this->prepareEmailBody($currUser['user_name'], $token);
+				require_once COMMON_PATH.'/Mail/mail.php';
+				if (sendMail(array($email), $subject, $body)) {
+					$this->success('几分钟后，您将收到重置密码的电子邮件');
+				} else {
+					$this->error('重置密码邮件发送失败');
+				}
+			} else {
+				$this->error('该邮箱没有找到');
+			}
+		}
+	}
+	
+	private function prepareEmailBody($userName, $token) {
+		$serverName = $_SERVER["SERVER_NAME"];
+		$index_page_link = "http://$serverName".__APP__;
+		$reset_password_link = "http://$serverName".__URL__."/resetPassword/$token/";
+		
+		$body = file_get_contents(TMPL_PATH.'/User/newPasswordEmail.html');
+		$body = mb_eregi_replace('{index_page}', $index_page_link, $body);
+		$body = mb_eregi_replace('{user_name}', $userName, $body);		
+		$body = mb_eregi_replace('{reset_password_link}', $reset_password_link, $body);
+		
+		return $body;
+	}
+	
+	public function resetPassword() {
+	
+	}
 }
 ?>

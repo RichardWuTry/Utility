@@ -21,5 +21,13 @@ return array(
 	
 	'TMPL_EXCEPTION_FILE' 	=> APP_PATH.'/Tpl/Public/exception.php',
 	'TMPL_ACTION_ERROR'		=> APP_PATH.'/Tpl/Public/exception.php',
+	
+	/* 邮件服务器设置 */
+	'MAIL_HOST'				=> 'mail.1singlestep.com',
+	'MAIL_PORT'				=> 2626,
+	'MAIL_LOGINNAME'		=> 'ox@1singlestep.com',
+	'MAIL_PASSWORD'			=> 'BaoChangJi1',
+	'MAIL_REPLAY_ADDRESS'	=> 'ox@1singlestep.com',
+	'MAIL_FROM_NAME'		=> '知行思新',
 );
 ?>
