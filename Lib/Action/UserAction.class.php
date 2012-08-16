@@ -91,7 +91,7 @@ class UserAction extends Action {
 	private function prepareEmailBody($userName, $token) {
 		$serverName = $_SERVER["SERVER_NAME"];
 		$index_page_link = "http://$serverName".__APP__;
-		$reset_password_link = "http://$serverName".__URL__."/resetPassword/$token/";
+		$reset_password_link = "http://$serverName".__URL__."/resetPassword/token/$token/";
 		
 		$body = file_get_contents(TMPL_PATH.'/User/newPasswordEmail.html');
 		$body = mb_eregi_replace('{index_page}', $index_page_link, $body);
@@ -102,7 +102,39 @@ class UserAction extends Action {
 	}
 	
 	public function resetPassword() {
+		if ($token = $_GET['token']) {
+			if ($id = decryptToken($token)) {
+				$_SESSION['id'] = $id;				
+				$this->display();
+			} else {
+				redirect(__APP__);
+			}
+		} else {
+			redirect(__APP__);
+		}
+	}
 	
+	public function savePassword() {
+		if ($this->isPost() && !empty($_SESSION['id'])) {
+			$user_id = $_SESSION['id'];
+			$email = $_POST['email'];
+			$data['password'] = sha1($_POST['password']);
+			
+			$User = M('User');
+			if ($User->where("user_id = $user_id and email = '$email'")
+					->save($data)) {
+				$currUser = $User->where("user_id = $user_id")
+								->field("user_id, user_name")
+								->find();
+				setSessionCookie($currUser['user_id'], $currUser['user_name']);				
+				unset($_SESSION['id']);
+				$this->success();
+			} else {
+				$this->error('请输入原始注册邮箱');
+			}
+		} else {
+			redirect(__APP__);
+		}
 	}
 }
 ?>
