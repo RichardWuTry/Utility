@@ -118,15 +118,18 @@ class UserAction extends Action {
 		if ($this->isPost() && !empty($_SESSION['id'])) {
 			$user_id = $_SESSION['id'];
 			$email = $_POST['email'];
-			$data['password'] = sha1($_POST['password']);
+			$newPassword = sha1($_POST['password']);
 			
 			$User = M('User');
-			if ($User->where("user_id = $user_id and email = '$email'")
-					->save($data)) {
-				$currUser = $User->where("user_id = $user_id")
-								->field("user_id, user_name")
-								->find();
-				setSessionCookie($currUser['user_id'], $currUser['user_name']);				
+			if ($currUser = $User->where("user_id = $user_id and email = '$email'")
+								->field("user_name, password")
+								->find()) {
+				if ($newPassword != $currUser['password']) {
+					$data['user_id'] = $user_id;
+					$data['password'] = $newPassword;
+					$User->save($data);
+				}
+				setSessionCookie($user_id, $currUser['user_name']);
 				unset($_SESSION['id']);
 				$this->success();
 			} else {
