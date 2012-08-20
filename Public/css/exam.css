@@ -176,14 +176,15 @@ div.footer-wrap {
 	background: none repeat scroll 0 0 #373738;
     border-radius: 4px 4px 4px 4px;
     clear: both;
-    color: #AAAAAA;
+
     margin: 15px 0;
     overflow: hidden;
     padding: 10px 15px;
 }
 
-div.footer-wrap div {
+div.footer-wrap div, div.footer-wrap a {
 	font-size: 12px;
+    color: #AAAAAA;	
 }
 
 div.footer-wrap .footer-left {

@@ -1,0 +1,183 @@
+<include file="./Tpl/Public/headstart.html" />
+<title>考评牛马</title>
+<style>
+	html, body, textarea, div, span, pre, input, aside, section, nav, header, footer, form {
+		font: 15px/1.4 "Microsoft Yahei","微软雅黑","Helvetica Neue",Arial,"Liberation Sans",FreeSans,sans-serif;
+		margin: 0;
+		padding: 0;
+	}
+	
+	section {
+		margin:0 auto; 
+		width: 550px;
+	}
+	
+	h1 {
+		text-align:center; 
+		padding:80px 0 20px; 
+		border-bottom:1px solid #E7E7E7;
+		margin-bottom: 7px;
+	}
+	
+	h2 {		
+		font-size: 18px;
+	}
+	
+	div.line {
+		margin: 10px 0;
+	}
+	
+	span.title {
+		vertical-align: top;
+		font-weight: bold;
+	}
+
+	input[type='text'], textarea {
+		outline: none;
+		border: 1px solid #C0D8E2;
+		margin: 0;
+		padding: 4px;
+		width: 450px;
+	}
+	
+	textarea {
+		height: 100px;
+	}
+	
+	input[type='button'], input[type='submit'] {
+		cursor: pointer;
+		background: #5093B0;
+		text-decoration: none;
+		color: white;
+		padding: 4px 10px;
+		border: none;
+		height: 35px;
+		width: 70px;
+		margin: 0 5px 20px 0;
+	}
+	
+	#helpMsgWrapper {
+		height: 12px;
+		text-align: center;
+	}
+	
+	#helpMsg {
+		display: none; 
+		font-size: 14px;
+		padding: 6px 15px;
+		background-color: #FFE6E6;
+		color: #FF0000;
+	}
+	
+	.about-footer  div{
+		color: #CCCCCC;
+		font-size: 12px;
+	}
+	
+	.footer-left {
+		float: left;
+	}
+	
+	.footer-right {
+		float: right;
+	}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="__PUBLIC__/javascript/InputValidate.js"></script>
+<script>
+	var helpMsg;
+
+	window.onload = function() {
+		helpMsg = $('#helpMsg');
+	
+		document.getElementById('content').focus();
+		
+		document.getElementById('back').onclick = function() {
+			window.location = "__APP__/Exam/manage/";
+		};
+		
+		document.getElementById('addContactUs').onsubmit = function() {
+			helpMsg.css({'background-color':'#FFE6E6', 'color':'#FF0000'}).hide();
+			var isFormValid = true;
+			if (!validateNonEmpty(document.getElementById('contact_name'),
+								document.getElementById('helpMsg'),
+								'姓名不能为空',
+								'')) {
+				isFormValid = false;					
+			}
+			
+			if (isFormValid) {
+				if (!validateEmail(document.getElementById('email'),
+								document.getElementById('helpMsg'),
+								'邮箱输入不正确',
+								'')) {
+					isFormValid = false;
+				}
+			}
+			
+			if (isFormValid) {
+				if (!validateNonEmpty(document.getElementById('content'),
+								document.getElementById('helpMsg'),
+								'留言不能为空',
+								'')) {
+					isFormValid = false;					
+				}
+			}
+			
+			if (!isFormValid) {
+				helpMsg.show();
+			} else {
+				helpMsg.html('正在提交中...').css({'background-color':'lightgreen', 'color':'green'}).show();
+			}
+
+			return isFormValid;
+		};
+	}
+</script>
+<include file="./Tpl/Public/headend_bodystart_banner.html" />
+<section>
+	<h1>
+		<a href="__APP__">
+			<img alt="考评牛马" src=""/>
+		</a>
+	</h1>
+	<div id="helpMsgWrapper">
+		<span id="helpMsg"></span>
+	</div>
+	<h2>
+		感谢您给我们留言，让我们能做得更好！
+	</h2>
+	<div>
+		<form id="addContactUs" action="__URL__/addContactUs" method="post">
+			<div class="line">
+				<span class="title">您的姓名：</span>
+				<span>
+					<input type="text" name="contact_name" id="contact_name" value="{$user_name}" />
+				</span>
+			</div>
+			<div class="line">
+				<span class="title">联系邮箱：</span>
+				<span>
+					<input type="text" name="email" id="email" value="{$email}" />
+				</span>
+			</div>
+			<div class="line">
+				<span class="title">留言内容：</span>
+				<span>
+					<textarea name="content" id="content"></textarea>
+				</span>
+			</div>
+			<div class="line ctrl">
+				<input type="submit" value="提 交" />
+				<input type="button" id="back" value="返 回" />
+			</div>		
+		</form>
+	</div>
+	<div class="about-footer">
+		<div class="footer-left">&copy; 知行思新 All rights reserved.</div>
+		<div class="footer-right">
+			大树 关注你的成长
+		</div>
+	</div>
+</section>
+<include file="./Tpl/Public/footer_bodyend.html" />
