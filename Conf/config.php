@@ -1,5 +1,6 @@
 <?php
 if (!defined('THINK_PATH')) exit();
+define('SESSION_COOKIE_PATH', '/Utility/');
 return array(
 	/* 数据库设置 */
     'DB_TYPE'               => 'mysql',     // 数据库类型
@@ -29,5 +30,7 @@ return array(
 	'MAIL_PASSWORD'			=> 'BaoChangJi1',
 	'MAIL_REPLAY_ADDRESS'	=> 'ox@1singlestep.com',
 	'MAIL_FROM_NAME'		=> '知行思新',
+	
+	'SESSION_OPTIONS'       => array('path'=>SESSION_COOKIE_PATH),		
 );
 ?>

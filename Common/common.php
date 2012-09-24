@@ -18,8 +18,8 @@ function verify() {
 function setSessionCookie($user_id, $user_name) {
 	$_SESSION['user_id'] = $user_id;
 	$_SESSION['user_name'] = $user_name;
-	setcookie('user_id', $user_id, time() + (60 * 60 * 24 * 30), '/');
-	setcookie('user_name', $user_name, time() + (60 * 60 * 24 * 30), '/');
+	setcookie('user_id', $user_id, time() + (60 * 60 * 24 * 30), SESSION_COOKIE_PATH);
+	setcookie('user_name', $user_name, time() + (60 * 60 * 24 * 30), SESSION_COOKIE_PATH);
 }
 
 function clearSessionCookie() {
@@ -28,14 +28,14 @@ function clearSessionCookie() {
 		$_SESSION = array();
 		// 删除session cookie
 		if (isset($_COOKIE[session_name()])) {
-		  setcookie(session_name(), '', time() - 3600, '/');
+		  setcookie(session_name(), '', time() - 3600, SESSION_COOKIE_PATH);
 		}
 		// 销毁session
 		session_destroy();
 	}
 	// 删除user_id和username cookies
-	setcookie('user_id', '', time() - 3600, '/');
-	setcookie('user_name', '', time() - 3600, '/');
+	setcookie('user_id', '', time() - 3600, SESSION_COOKIE_PATH);
+	setcookie('user_name', '', time() - 3600, SESSION_COOKIE_PATH);
 }
 
 function isLogin() {
