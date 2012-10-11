@@ -10,14 +10,17 @@
 	</style>
 </head>
 <body>
-	<h1 style="margin:200px;text-align:center;" id="msg">
-	<?php 
-		if(isset($error) && is_string($error)) {
-			echo $error;
-		} else {
-			echo "抱歉，您访问的页面不存在 :-(";
-		}
-	?>
-	</h1>
+	<div style="margin:60px auto;text-align:center;">
+		<div style="margin-bottom:140px;"><img src="/Utility/Public/images/slogan2.png"></div>
+		<h1 id="msg">
+		<?php 
+			if(isset($error) && is_string($error)) {
+				echo $error;
+			} else {
+				echo "抱歉，您访问的页面不存在 :-(";
+			}
+		?>
+		</h1>
+	</div>
 </body>
 </html>

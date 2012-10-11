@@ -68,7 +68,12 @@
 			var allInputScore = $('#allInput').val();
 			
 			var isValid = true;
-			if (allOptionScore != '') {
+			if (allOptionScore == '' && allInputScore == '') {
+				$('#helpMsg').text('请输入有效整数');
+				isValid = false;
+			}
+			
+			if (isValid && allOptionScore != '') {
 				if (!validateNumber($('#allOption').get(0), 
 								$('#helpMsg').get(0), 
 								'请输入有效整数', 
@@ -97,7 +102,7 @@
 			}
 			
 			if (!isValid) {
-				promptMsg($('#helpMsg'));
+				promptMsg($('#helpMsg'), '#FFE6E6', '#FF0000');
 			} else {
 				setSumScore();
 				var paperId = {$paper.paper_id};
@@ -202,14 +207,24 @@
 		
 		$('#qTable').on("change", ".qScore", function(){
 			var qScore = $(this).val();
-			var pqId = $(this).parents('tr').find('.pqId').text();
-			setSumScore();
-			$.post(
-				"__URL__/updateScore/",
-				{paper_question_id: pqId, question_score: qScore},
-				showResponse,
-				"json"
-			);
+			if (validateNumber($(this).get(0), 
+								$('#helpMsg').get(0), 
+								'请输入有效整数', 
+								'', 
+								0, 
+								{$paper.total_score}, 
+								true)){
+				var pqId = $(this).parents('tr').find('.pqId').text();
+				setSumScore();
+				$.post(
+					"__URL__/updateScore/",
+					{paper_question_id: pqId, question_score: qScore},
+					showResponse,
+					"json"
+				);				
+			} else {
+				promptMsg($('#helpMsg'), '#FFE6E6', '#FF0000');
+			}
 		});
 		
 		$('#browseAllQuestion').click(function(){

@@ -47,7 +47,7 @@ class PaperAction extends Action {
 	
 	public function review() {
 		if (!isset($_GET['p'])) {
-			$this->error('页面错误');
+			$this->error();
 		}
 		
 		$paperId = $_GET['p'];
@@ -87,7 +87,7 @@ class PaperAction extends Action {
 	
 	public function edit() {
 		if (!isset($_GET['p'])) {
-			$this->error('页面错误');
+			$this->error();
 		}
 
 		$paperId = $_GET['p'];
@@ -99,7 +99,7 @@ class PaperAction extends Action {
 			$this->assign('paper', $paper);
 			$this->display();		
 		} else {
-			$this->error('页面错误');
+			$this->error();
 		}
 	}
 	
@@ -116,7 +116,7 @@ class PaperAction extends Action {
 				$this->error($ExamPaper->getError());
 			}
 		} else {
-			$this->error('页面错误');
+			$this->error();
 		}
 	}
 	
