@@ -112,4 +112,20 @@ function decryptToken($token)
 		return false;
 	}
 }
+
+function isObsoleteIE() {
+	$ieTag = 'MSIE';
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
+	$iePos = strpos($user_agent, $ieTag);
+	if ($iePos === false) {
+		return false;
+	} else {
+		$ieVersion = substr($user_agent, $iePos + strlen($ieTag) + 1, 3);
+		if (is_numeric($ieVersion) && floatval($ieVersion) < 9.0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 ?>

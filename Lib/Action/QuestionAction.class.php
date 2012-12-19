@@ -104,7 +104,7 @@ class QuestionAction extends Action {
 	
 	public function edit() {
 		if (!isset($_GET['q'])) {
-			$this->error('页面错误');
+			$this->error();
 		}
 		$question_id = $_GET['q'];
 		
@@ -141,7 +141,7 @@ class QuestionAction extends Action {
 	
 	public function update() {
 		if (!$this->isPost()) {
-			$this->error('页面错误');
+			$this->error();
 		}
 		
 		$qId = $_POST['question_id'];
@@ -204,7 +204,7 @@ class QuestionAction extends Action {
 	
 	public function review() {
 		if (!isset($_GET['p']) || !isset($_GET['s'])) {
-			$this->error('页面错误');
+			$this->error();
 		}
 		
 		$QuestionNav = new QuestionNav($_GET['p'], $_GET['s'], 'review');

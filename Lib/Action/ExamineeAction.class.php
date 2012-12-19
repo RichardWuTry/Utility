@@ -1,8 +1,12 @@
 <?php
 class ExamineeAction extends Action {
 	public function attend() {
+		if(isObsoleteIE()) {
+			$this->error("浏览器不兼容，请选用Chrome，FireFox，Safari或IE9。<br>若您已使用IE9，请关闭兼容模式。");
+		}
+		
 		if (!isset($_GET['token'])) {
-			$this->error('页面错误');
+			$this->error();
 		}
 		
 		// $this->clearSession();
@@ -18,7 +22,7 @@ class ExamineeAction extends Action {
 			
 			//比对数据库中的token与链接中的token
 			if ($currExam['link'] != $token) {
-				$this->error('页面错误');
+				$this->error();
 			}
 			
 			//验证考试是否开放
@@ -68,13 +72,13 @@ class ExamineeAction extends Action {
 					$this->assign('examId', $examId);
 					$this->display();
 				} else {
-					$this->error('页面错误');
+					$this->error();
 				}
 			} else {
-				$this->error('页面错误');
+				$this->error();
 			}
 		} else {
-			$this->error('页面错误');
+			$this->error();
 		}
 	}
 	
