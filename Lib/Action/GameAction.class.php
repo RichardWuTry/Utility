@@ -5,13 +5,22 @@ class GameAction extends Action {
 		$s = $_GET['s'];
 		
 		$seqs = explode(',', $s);
+		$seqCnt = count($seqs);
+		shuffle($seqs);
+				
+		$imgPaths = glob("Public/images/fruits/*.jpg");
+		$randNums = array_rand($imgPaths, $seqCnt);
 		
-		$images = glob("../../Public/images/fruits/*.jpg");
-		foreach($images as $img) {
-			echo $img;
+		$imgs = array();
+		for ($i = 0; $i < $seqCnt; $i++) {
+			$img = array("id"=>$seqs[$i],
+						"path"=>basename($imgPaths[$randNums[$i]]));
+			array_push($imgs, $img);
 		}
 		
-		$this->assign('backName', $b);
+		
+		$this->assign('msg', $b);
+		$this->assign('imgs', $imgs);
 		
 		$this->display();
 	}

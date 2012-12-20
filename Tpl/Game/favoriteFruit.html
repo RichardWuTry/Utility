@@ -2,8 +2,60 @@
 <head>
 	<meta charset="utf-8" />
 	<title>你最喜欢的水果</title>
+	<style>
+		html, body, textarea, div, span, pre, input, aside, section, nav, header, footer, form {
+			font: 14px/1.4 "Microsoft Yahei","微软雅黑","Helvetica Neue",Arial,"Liberation Sans",FreeSans,sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			margin: 30px auto;
+			width: 960px;
+			text-align:center;
+		}
+		
+		h1 {
+			color: #FF3300;
+		}
+	
+		div.fruit_wrap {
+			display: inline-block;
+			width: 300px;
+			height: 200px;
+			vertical-align:middle;
+		}
+		
+		div.fruit_wrap img {
+			height: 190px;
+		}
+		
+		div.fruit_wrap strong {
+			font-size: 18px;
+			display:none;
+			position:relative;
+			top: 50%;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script>
+		$(function(){
+			$('.fruit_wrap').click(function(){
+				$(this).children('img').css('visibility','hidden');
+				$(this).children('strong').show(2500);
+			});
+		});
+	</script>
 </head>
 <body>
-	{$backName}
+	<h1>挑选你最爱的水果</h1>
+	<div>
+		<volist name="imgs" id="img">
+			<div class="fruit_wrap">
+				<strong>{$msg}&nbsp;{$img.id}</strong>
+				<img src="__PUBLIC__/images/fruits/{$img.path}" alt="fruit" />
+			</div>
+		</volist>
+	</div>
 </body>
 </html>
